@@ -1,5 +1,11 @@
 {
-  "companyName": "GlobalAI ERP",
-  "officeLat": 31.5204,
-  "officeLng": 74.3587
+  "storeName": "rahila",
+  "currency": "USD",
+  "taxRate": "",
+  "geofenceRadius": "",
+  "shiftStart": "",
+  "shiftEnd": "",
+  "companyName": "unity space",
+  "officeLat": 1,
+  "officeLng": 1
 }

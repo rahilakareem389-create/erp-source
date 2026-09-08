@@ -161,30 +161,10 @@ export const inventoryAPI = {
   restock: (data) => API.post('/inventory/restock', data),
   adjustStock: (data) => API.post('/inventory/adjust', data),
   getMovementLogs: () => API.get('/inventory/logs'),
-  importCSV: (data) =>
-    Promise.resolve({
-      data: {
-        ...data,
-        message: 'CSV imported successfully',
-      },
-    }),
-
-  getPredictive: () =>
-    Promise.resolve({
-      data: [],
-    }),
-
-  autoGeneratePO: () =>
-    Promise.resolve({
-      data: {
-        message: 'Purchase order generated',
-      },
-    }),
-
-  getAutoDiscount: () =>
-    Promise.resolve({
-      data: [],
-    }),
+  importCSV: (data) => API.post('/inventory/import', data),
+  getPredictive: () => API.get('/inventory/predictive'),
+  autoGeneratePO: () => API.post('/inventory/auto-po'),
+  getAutoDiscount: () => API.get('/inventory/auto-discount'),
 };
 
 // ======================================================
@@ -989,81 +969,14 @@ export const ridesAPI = {
 // ======================================================
 
 export const reportsAPI = {
-  getRevenue: () =>
-    Promise.resolve({
-      data: [
-        {
-          date: '2026-08-01',
-          revenue: 4500,
-        },
-        {
-          date: '2026-08-02',
-          revenue: 5200,
-        },
-        {
-          date: '2026-08-03',
-          revenue: 4800,
-        },
-      ],
-    }),
-
-  getPnL: () =>
-    Promise.resolve({
-      data: [
-        {
-          category: 'Revenue',
-          amount: 14500,
-        },
-        {
-          category: 'COGS',
-          amount: -6000,
-        },
-        {
-          category: 'Operating Expenses',
-          amount: -1500,
-        },
-      ],
-    }),
-
-  getTopProducts: () =>
-    Promise.resolve({
-      data: [
-        {
-          name: 'Portland Cement 50kg',
-          totalSold: 120,
-          revenue: 1800,
-        },
-        {
-          name: 'Steel Rebar 12mm',
-          totalSold: 85,
-          revenue: 680,
-        },
-      ],
-    }),
-
-  getSalesperson: () =>
-    Promise.resolve({
-      data: [
-        {
-          name: 'Ahmed Abdullah',
-          totalSales: 8500,
-        },
-        {
-          name: 'Sarah Khalid',
-          totalSales: 6000,
-        },
-      ],
-    }),
-
-  getDaily: () =>
-    Promise.resolve({
-      data: [],
-    }),
-
-  getCustomerReport: (id) =>
-    Promise.resolve({
-      data: {},
-    }),
+  getRevenue: (params) => API.get('/reports/revenue', { params }),
+  getPnL: (params) => API.get('/reports/pnl', { params }),
+  getTopProducts: (limit) => API.get('/reports/topproducts', { params: { limit } }),
+  getSalesperson: () => API.get('/reports/salesperson'),
+  getDaily: () => API.get('/reports/daily'),
+  getInventoryValuation: () => API.get('/reports/inventory-valuation'),
+  getDeadStock: () => API.get('/reports/dead-stock'),
+  getCustomerReport: (id) => API.get(`/reports/customer/${id}`),
 };
 
 // ======================================================

@@ -32,7 +32,7 @@ const MetricCard = ({ title, value, sub, trend, color = '#0a84ff', delay = 0 }) 
 
 const Revenue = () => {
   const today = new Date();
-  const firstDay = new Date(today.getFullYear(), today.getMonth(), 1).toISOString().slice(0, 10);
+  const firstDay = new Date(today.getFullYear(), 0, 1).toISOString().slice(0, 10);
   const todayStr = today.toISOString().slice(0, 10);
 
   const [from, setFrom] = useState(firstDay);

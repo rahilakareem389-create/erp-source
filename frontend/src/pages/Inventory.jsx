@@ -39,14 +39,14 @@ const Inventory = () => {
   const [autoDiscountLoading, setAutoDiscountLoading] = useState(false);
 
   useEffect(() => {
-    fetchData();
+    fetchData(true);
     fetchCategories();
     // Handle deep-linking from Dashboard
-    if (location.state?.filter) {
+    if (location.state?.filter && location.state.filter !== 'expiringSoon') {
       setSearch(location.state.filter);
     }
 
-    const interval = setInterval(fetchData, 3000); // Live stock sync every 3s
+    const interval = setInterval(() => fetchData(false), 3000); // Live stock sync every 3s
     return () => clearInterval(interval);
   }, [location.state]);
 
@@ -263,26 +263,26 @@ const Inventory = () => {
     reader.readAsText(file);
   };
 
-  const fetchData = async () => {
-    setLoading(true);
+  const fetchData = async (isInitial = false) => {
+    if (isInitial) setLoading(true);
     try {
       const [prodRes, alertRes] = await Promise.all([
         inventoryAPI.getProducts(),
         inventoryAPI.getAlerts()
       ]);
-      setProducts(prodRes.data);
-      setAlerts(alertRes.data);
+      setProducts(Array.isArray(prodRes.data) ? prodRes.data : []);
+      setAlerts(alertRes.data || { lowStock: [], expiringSoon: [] });
     } catch (err) {
-      console.error(err);
+      console.error('Inventory data fetch error:', err);
     } finally {
-      setLoading(false);
+      if (isInitial) setLoading(false);
     }
   };
 
   const fetchCategories = async () => {
     try {
       const res = await inventoryAPI.getCategories();
-      setCategories(res.data);
+      setCategories(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error('Failed to fetch categories', err);
     }
@@ -387,14 +387,18 @@ const Inventory = () => {
     return '#10b981';
   };
 
-  const filteredProducts = products.filter(p => {
+  const filteredProducts = (Array.isArray(products) ? products : []).filter(p => {
     if (location.state?.filter === 'expiringSoon') {
       if (!p.expiryDate) return false;
       const daysToExpiry = (new Date(p.expiryDate) - new Date()) / (1000 * 60 * 60 * 24);
       if (daysToExpiry > 30 || daysToExpiry <= 0) return false;
     }
 
-    const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase());
+    const term = (search || '').toLowerCase().trim();
+    const matchesSearch = !term || 
+      (p.name && p.name.toLowerCase().includes(term)) || 
+      (p.sku && p.sku.toLowerCase().includes(term)) ||
+      (p.manufacturer && p.manufacturer.toLowerCase().includes(term));
     const matchesCat = categoryFilter ? (p.categoryId === categoryFilter || p.Category?.id === categoryFilter) : true;
     return matchesSearch && matchesCat;
   });
@@ -491,62 +495,78 @@ const Inventory = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredProducts.map(product => {
-              const margin = product.costPrice ? (((product.price - product.costPrice) / product.price) * 100).toFixed(0) : 0;
-              return (
-                <tr key={product.id} style={{ borderBottom: '1px solid #f8fafc', background: selectedIds.has(product.id) ? 'rgba(10,132,255,0.05)' : (location.state?.filter === 'expiringSoon' && isExpiring(product.expiryDate) ? 'rgba(239,68,68,0.1)' : 'transparent') }}>
-                  <td style={{ padding: '16px 24px' }}>
-                    <input 
-                      type="checkbox" 
-                      checked={selectedIds.has(product.id)}
-                      onChange={(e) => {
-                        const newSelected = new Set(selectedIds);
-                        if (e.target.checked) newSelected.add(product.id);
-                        else newSelected.delete(product.id);
-                        setSelectedIds(newSelected);
-                      }}
-                    />
-                  </td>
-                  <td style={{ padding: '16px 24px' }}>
-                    <div style={{ fontWeight: 800, color: '#0f172a' }}>{product.name}</div>
-                    <div style={{ fontSize: 11, color: '#94a3b8', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 6 }}>
-                      {product.sku}
-                      {product.Variations?.length > 0 && (
-                        <span style={{ padding: '2px 6px', background: '#f1f5f9', color: '#64748b', borderRadius: 4, fontSize: 10 }}>
-                          {product.Variations.length} Variations
-                        </span>
-                      )}
-                    </div>
-                  </td>
-                  <td style={{ padding: '16px 24px' }}>
-                    <span style={{ fontSize: 12, fontWeight: 700, color: '#475569' }}>
-                      {product.manufacturer || 'N/A'}
-                    </span>
-                  </td>
-                  <td style={{ padding: '16px 24px' }}>
-                    <span style={{ fontSize: 12, fontWeight: 700, color: '#0a84ff', background: 'rgba(10,132,255,0.08)', padding: '4px 10px', borderRadius: 8 }}>
-                      {product.Category?.name || 'General'}
-                    </span>
-                  </td>
-                  <td style={{ padding: '16px 24px' }}>
-                     <span style={{ fontWeight: 900, color: getStatusColor(product.stock) }}>{product.stock}</span>
-                  </td>
-                  <td style={{ padding: '16px 24px', fontWeight: 800, color: '#0f172a' }}>${product.price}</td>
-                  <td style={{ padding: '16px 24px', fontWeight: 700, color: '#64748b' }}>${product.costPrice || 0}</td>
-                  <td style={{ padding: '16px 24px' }}>
-                    <span style={{ color: '#10b981', fontWeight: 800, fontSize: 12 }}>{margin}%</span>
-                  </td>
-                  <td style={{ padding: '16px 24px', textAlign: 'right', display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
-                    <button onClick={() => { setAdjustProduct(product); setShowAdjustModal(true); }} title="Adjust Stock" style={{ width: 36, height: 36, borderRadius: 10, background: '#f1f5f9', color: '#eab308', border: 'none', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <RefreshCw size={16} />
-                    </button>
-                    <button onClick={() => handleEditClick(product)} style={{ width: 36, height: 36, borderRadius: 10, background: '#f1f5f9', color: '#0a84ff', border: 'none', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <Edit3 size={16} />
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
+            {loading ? (
+              <tr>
+                <td colSpan="9" style={{ padding: '48px 24px', textAlign: 'center', color: '#64748b', fontWeight: 700 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
+                    <RefreshCw size={18} className="animate-spin" /> Loading inventory products...
+                  </div>
+                </td>
+              </tr>
+            ) : filteredProducts.length === 0 ? (
+              <tr>
+                <td colSpan="9" style={{ padding: '48px 24px', textAlign: 'center', color: '#64748b', fontWeight: 700 }}>
+                  No products found. {search ? `No matches for "${search}".` : ''}
+                </td>
+              </tr>
+            ) : (
+              filteredProducts.map(product => {
+                const margin = product.costPrice ? (((product.price - product.costPrice) / product.price) * 100).toFixed(0) : 0;
+                return (
+                  <tr key={product.id} style={{ borderBottom: '1px solid #f8fafc', background: selectedIds.has(product.id) ? 'rgba(10,132,255,0.05)' : (location.state?.filter === 'expiringSoon' && isExpiring(product.expiryDate) ? 'rgba(239,68,68,0.1)' : 'transparent') }}>
+                    <td style={{ padding: '16px 24px' }}>
+                      <input 
+                        type="checkbox" 
+                        checked={selectedIds.has(product.id)}
+                        onChange={(e) => {
+                          const newSelected = new Set(selectedIds);
+                          if (e.target.checked) newSelected.add(product.id);
+                          else newSelected.delete(product.id);
+                          setSelectedIds(newSelected);
+                        }}
+                      />
+                    </td>
+                    <td style={{ padding: '16px 24px' }}>
+                      <div style={{ fontWeight: 800, color: '#0f172a' }}>{product.name}</div>
+                      <div style={{ fontSize: 11, color: '#94a3b8', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 6 }}>
+                        {product.sku}
+                        {product.Variations?.length > 0 && (
+                          <span style={{ padding: '2px 6px', background: '#f1f5f9', color: '#64748b', borderRadius: 4, fontSize: 10 }}>
+                            {product.Variations.length} Variations
+                          </span>
+                        )}
+                      </div>
+                    </td>
+                    <td style={{ padding: '16px 24px' }}>
+                      <span style={{ fontSize: 12, fontWeight: 700, color: '#475569' }}>
+                        {product.manufacturer || 'N/A'}
+                      </span>
+                    </td>
+                    <td style={{ padding: '16px 24px' }}>
+                      <span style={{ fontSize: 12, fontWeight: 700, color: '#0a84ff', background: 'rgba(10,132,255,0.08)', padding: '4px 10px', borderRadius: 8 }}>
+                        {product.Category?.name || 'General'}
+                      </span>
+                    </td>
+                    <td style={{ padding: '16px 24px' }}>
+                       <span style={{ fontWeight: 900, color: getStatusColor(product.stock) }}>{product.stock}</span>
+                    </td>
+                    <td style={{ padding: '16px 24px', fontWeight: 800, color: '#0f172a' }}>${product.price}</td>
+                    <td style={{ padding: '16px 24px', fontWeight: 700, color: '#64748b' }}>${product.costPrice || 0}</td>
+                    <td style={{ padding: '16px 24px' }}>
+                      <span style={{ color: '#10b981', fontWeight: 800, fontSize: 12 }}>{margin}%</span>
+                    </td>
+                    <td style={{ padding: '16px 24px', textAlign: 'right', display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
+                      <button onClick={() => { setAdjustProduct(product); setShowAdjustModal(true); }} title="Adjust Stock" style={{ width: 36, height: 36, borderRadius: 10, background: '#f1f5f9', color: '#eab308', border: 'none', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <RefreshCw size={16} />
+                      </button>
+                      <button onClick={() => handleEditClick(product)} style={{ width: 36, height: 36, borderRadius: 10, background: '#f1f5f9', color: '#0a84ff', border: 'none', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Edit3 size={16} />
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })
+            )}
           </tbody>
         </table>
       </div>

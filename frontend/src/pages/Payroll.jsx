@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { employeeAPI, advanceAPI, leaveAPI } from '../api';
+import { employeeAPI, advanceAPI } from '../api';
 import { useLanguage } from '../context/LanguageContext';
-import { DollarSign, Printer, Download, CheckCircle, Clock } from 'lucide-react';
+import { Printer, Download, CheckCircle, Clock } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Payroll = () => {
@@ -36,6 +36,298 @@ const Payroll = () => {
     const net = gross - deductions;
 
     return { basic, allowances, gross, loanDeduction, deductions, net };
+  };
+
+  // Print the currently selected employee's payslip.
+  const handlePrint = () => {
+    if (!selectedEmployee) {
+      window.alert('Please select an employee first.');
+      return;
+    }
+
+    const pay = calculatePayroll(selectedEmployee);
+    const employeeName = isRTL
+      ? (selectedEmployee.arabicName || selectedEmployee.englishName || 'Employee')
+      : (selectedEmployee.englishName || selectedEmployee.arabicName || 'Employee');
+
+    const popup = window.open('', '_blank', 'width=900,height=800');
+
+    if (!popup) {
+      window.alert('Please allow pop-ups in your browser to print the payslip.');
+      return;
+    }
+
+    popup.document.write(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Payslip - ${employeeName}</title>
+        <meta charset="UTF-8" />
+        <style>
+          * { box-sizing: border-box; }
+          body {
+            margin: 0;
+            padding: 40px;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #0f172a;
+            background: #fff;
+          }
+          .payslip {
+            max-width: 760px;
+            margin: 0 auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 32px;
+          }
+          .header {
+            text-align: center;
+            padding-bottom: 22px;
+            border-bottom: 2px dashed #cbd5e1;
+          }
+          h1 { margin: 0; font-size: 24px; }
+          .muted { color: #64748b; margin-top: 6px; }
+          .info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin: 28px 0;
+          }
+          .label { color: #64748b; font-size: 12px; font-weight: bold; }
+          .value { margin-top: 5px; font-size: 15px; font-weight: bold; }
+          .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f5f9;
+          }
+          .net {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 2px solid #0f172a;
+            font-size: 19px;
+            font-weight: bold;
+          }
+          .footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #64748b;
+            font-size: 12px;
+          }
+          @media print {
+            body { padding: 0; }
+            .payslip { border: none; }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="payslip">
+          <div class="header">
+            <h1>Concrete Structures</h1>
+            <div class="muted">Payslip for ${selectedMonth}</div>
+          </div>
+
+          <div class="info">
+            <div>
+              <div class="label">Name</div>
+              <div class="value">${employeeName}</div>
+            </div>
+            <div>
+              <div class="label">Employee ID</div>
+              <div class="value">${selectedEmployee.id || '-'}</div>
+            </div>
+            <div>
+              <div class="label">Department</div>
+              <div class="value">${selectedEmployee.department || '-'}</div>
+            </div>
+            <div>
+              <div class="label">Project</div>
+              <div class="value">${selectedEmployee.siteProject || 'HQ'}</div>
+            </div>
+          </div>
+
+          <div class="row">
+            <span>Basic Salary</span>
+            <strong>SAR ${pay.basic.toFixed(2)}</strong>
+          </div>
+          <div class="row">
+            <span>Allowances</span>
+            <strong>SAR ${pay.allowances.toFixed(2)}</strong>
+          </div>
+          <div class="row">
+            <span>Gross Salary</span>
+            <strong>SAR ${pay.gross.toFixed(2)}</strong>
+          </div>
+          <div class="row">
+            <span>Loan Deduction</span>
+            <strong>SAR -${pay.loanDeduction.toFixed(2)}</strong>
+          </div>
+
+          <div class="net">
+            <span>Net Pay</span>
+            <span>SAR ${pay.net.toFixed(2)}</span>
+          </div>
+
+          <div class="footer">Generated from Payroll Management System</div>
+        </div>
+      </body>
+      </html>
+    `);
+
+    popup.document.close();
+    popup.focus();
+
+    // Wait for the print document to render before opening the print dialog.
+    setTimeout(() => {
+      popup.print();
+    }, 300);
+  };
+
+  // Download the selected payslip as a PDF using the browser's print-to-PDF
+  // dialog. This avoids requiring an additional PDF library/package.
+  const handleDownloadPDF = () => {
+    if (!selectedEmployee) {
+      window.alert('Please select an employee first.');
+      return;
+    }
+
+    const pay = calculatePayroll(selectedEmployee);
+    const employeeName = isRTL
+      ? (selectedEmployee.arabicName || selectedEmployee.englishName || 'Employee')
+      : (selectedEmployee.englishName || selectedEmployee.arabicName || 'Employee');
+
+    const popup = window.open('', '_blank', 'width=900,height=800');
+
+    if (!popup) {
+      window.alert('Please allow pop-ups in your browser to download the PDF.');
+      return;
+    }
+
+    popup.document.write(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Payslip - ${employeeName} - ${selectedMonth}</title>
+        <meta charset="UTF-8" />
+        <style>
+          * { box-sizing: border-box; }
+          body {
+            margin: 0;
+            padding: 40px;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #0f172a;
+            background: #fff;
+          }
+          .payslip {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 32px;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+          }
+          .header {
+            text-align: center;
+            padding-bottom: 22px;
+            border-bottom: 2px dashed #cbd5e1;
+          }
+          h1 { margin: 0; font-size: 24px; }
+          .muted { color: #64748b; margin-top: 6px; }
+          .info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin: 28px 0;
+          }
+          .label { color: #64748b; font-size: 12px; font-weight: bold; }
+          .value { margin-top: 5px; font-size: 15px; font-weight: bold; }
+          .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f5f9;
+          }
+          .net {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 2px solid #0f172a;
+            font-size: 19px;
+            font-weight: bold;
+          }
+          .footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #64748b;
+            font-size: 12px;
+          }
+          @media print {
+            body { padding: 0; }
+            .payslip { border: none; }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="payslip">
+          <div class="header">
+            <h1>Concrete Structures</h1>
+            <div class="muted">Payslip for ${selectedMonth}</div>
+          </div>
+
+          <div class="info">
+            <div>
+              <div class="label">Name</div>
+              <div class="value">${employeeName}</div>
+            </div>
+            <div>
+              <div class="label">Employee ID</div>
+              <div class="value">${selectedEmployee.id || '-'}</div>
+            </div>
+            <div>
+              <div class="label">Department</div>
+              <div class="value">${selectedEmployee.department || '-'}</div>
+            </div>
+            <div>
+              <div class="label">Project</div>
+              <div class="value">${selectedEmployee.siteProject || 'HQ'}</div>
+            </div>
+          </div>
+
+          <div class="row">
+            <span>Basic Salary</span>
+            <strong>SAR ${pay.basic.toFixed(2)}</strong>
+          </div>
+          <div class="row">
+            <span>Allowances</span>
+            <strong>SAR ${pay.allowances.toFixed(2)}</strong>
+          </div>
+          <div class="row">
+            <span>Gross Salary</span>
+            <strong>SAR ${pay.gross.toFixed(2)}</strong>
+          </div>
+          <div class="row">
+            <span>Loan Deduction</span>
+            <strong>SAR -${pay.loanDeduction.toFixed(2)}</strong>
+          </div>
+
+          <div class="net">
+            <span>Net Pay</span>
+            <span>SAR ${pay.net.toFixed(2)}</span>
+          </div>
+
+          <div class="footer">Use your browser's Save as PDF option in the print dialog.</div>
+        </div>
+      </body>
+      </html>
+    `);
+
+    popup.document.close();
+    popup.focus();
+
+    setTimeout(() => {
+      popup.print();
+    }, 300);
   };
 
   const handleApprove = () => {
@@ -168,10 +460,18 @@ const Payroll = () => {
                 })()}
 
                 <div style={{ display: 'flex', gap: 12, marginTop: 32 }}>
-                  <button style={{ flex: 1, padding: 12, borderRadius: 12, border: '1px solid rgba(0,0,0,0.1)', background: 'white', fontWeight: 800, cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 8 }}>
+                  <button
+                    type="button"
+                    onClick={handlePrint}
+                    style={{ flex: 1, padding: 12, borderRadius: 12, border: '1px solid rgba(0,0,0,0.1)', background: 'white', fontWeight: 800, cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 8 }}
+                  >
                     <Printer size={16} /> Print
                   </button>
-                  <button style={{ flex: 1, padding: 12, borderRadius: 12, border: 'none', background: '#0f172a', color: 'white', fontWeight: 800, cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 8 }}>
+                  <button
+                    type="button"
+                    onClick={handleDownloadPDF}
+                    style={{ flex: 1, padding: 12, borderRadius: 12, border: 'none', background: '#0f172a', color: 'white', fontWeight: 800, cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 8 }}
+                  >
                     <Download size={16} /> PDF
                   </button>
                 </div>

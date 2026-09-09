@@ -217,16 +217,13 @@ export const shiftAPI = {
 // ======================================================
 
 export const managerAPI = {
-  getOverview: () =>
-    API.get('/manager/overview'),
-
+  getDashboard: () => API.get('/manager/dashboard'),
+  getSalesSummary: (range) => API.get(`/manager/sales-summary?range=${range}`),
+  
   getEmployees: () =>
     Promise.resolve({
       data: mockDB.data.employees,
     }),
-
-  getSalesToday: () =>
-    API.get('/manager/sales-today'),
 
   getPendingLeaves: () =>
     API.get('/leaves/pending'),
@@ -1012,5 +1009,13 @@ export const advanceAPI = {
 // ======================================================
 // DEFAULT EXPORT
 // ======================================================
+
+export const returnAPI = {
+  getAll: () => API.get('/returns'),
+  getById: (id) => API.get(`/returns/${id}`),
+  create: (data) => API.post('/returns', data),
+  updateStatus: (id, status) => API.patch(`/returns/${id}/status`, { status }),
+  complete: (id) => API.patch(`/returns/${id}/complete`),
+};
 
 export default API;

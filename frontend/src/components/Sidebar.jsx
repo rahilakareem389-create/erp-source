@@ -19,29 +19,31 @@ const Sidebar = () => {
   }, []);
 
   const menuItems = [
-    { name: t('dashboard'),     icon: <LayoutDashboard size={18} />, path: '/',         roles: ['admin'] },
-    { name: 'Manager Hub',   icon: <Shield size={18} />,          path: '/manager',   roles: ['admin', 'manager'] },
-    { name: t('biDashboard'),icon: <PieChart size={18} />,        path: '/bi-dashboard',roles: ['admin', 'manager'] },
+    { name: t('dashboard'),     icon: <LayoutDashboard size={18} />, path: '/',         roles: ['admin', 'manager'] },
+    { name: 'Manager Overview', icon: <Shield size={18} />,          path: '/manager',   roles: ['admin', 'manager'] },
+    { name: t('biDashboard'),icon: <PieChart size={18} />,        path: '/bi-dashboard',roles: ['admin'] },
     
     // HR & Payroll
     { name: t('hrCenter'),   icon: <Shield size={18} />,           path: '/hr',        roles: ['admin', 'hr'] },
-    { name: t('employees'),  icon: <Briefcase size={18} />,        path: '/employees', roles: ['admin', 'hr', 'manager'] },
-    { name: t('attendance'), icon: <Clock size={18} />,            path: '/attendance', roles: ['admin', 'manager', 'cashier', 'hr', 'inventory', 'finance', 'staff', 'operations', 'pharmacist', 'expenses'] },
-    { name: t('leaves'),     icon: <Calendar size={18} />,         path: '/leaves',    roles: ['admin', 'manager', 'cashier', 'hr', 'inventory', 'finance', 'staff', 'operations', 'pharmacist', 'expenses'] },
+    { name: 'Staff',         icon: <Briefcase size={18} />,        path: '/employees', roles: ['admin', 'hr', 'manager'] },
+    { name: t('attendance'), icon: <Clock size={18} />,            path: '/attendance', roles: ['admin', 'cashier', 'hr', 'inventory', 'finance', 'staff', 'operations', 'pharmacist', 'expenses'] },
+    { name: t('leaves'),     icon: <Calendar size={18} />,         path: '/leaves',    roles: ['admin', 'cashier', 'hr', 'inventory', 'finance', 'staff', 'operations', 'pharmacist', 'expenses'] },
     { name: t('payroll'),    icon: <DollarSign size={18} />,       path: '/payroll',   roles: ['admin', 'hr'] },
     { name: 'Overtime',      icon: <Clock size={18} />,            path: '/overtime',  roles: ['admin', 'hr'] },
     { name: t('loans'),      icon: <DollarSign size={18} />,       path: '/loans',     roles: ['admin', 'hr'] },
-    { name: t('projectCosting'),icon: <Package size={18} />,       path: '/project-costing', roles: ['admin', 'hr', 'finance', 'manager'] },
+    { name: t('projectCosting'),icon: <Package size={18} />,       path: '/project-costing', roles: ['admin', 'hr', 'finance'] },
     { name: 'Reports',       icon: <FileText size={18} />,         path: '/reports',   roles: ['admin', 'hr', 'manager'] },
     { name: 'Alerts',        icon: <AlertTriangle size={18} />,    path: '/alerts',    roles: ['admin', 'hr'] },
     { name: 'Data Migration',icon: <Database size={18} />,         path: '/migration', roles: ['admin'] },
     
-    // Others
-    { name: 'Inventory',     icon: <Package size={18} />,          path: '/inventory', roles: ['admin', 'inventory', 'manager'] },
-    { name: 'Sales POS',     icon: <ShoppingCart size={18} />,     path: '/sales',     roles: ['admin', 'cashier', 'manager'] },
-    { name: 'Revenue',       icon: <DollarSign size={18} />,       path: '/revenue',   roles: ['admin', 'manager', 'finance'] },
-    { name: 'Expenses',      icon: <TrendingDown size={18} />,     path: '/expenses',  roles: ['admin', 'manager', 'expenses', 'finance'] },
+    // Sales, Inventory, Customers
+    { name: 'Products',      icon: <Package size={18} />,          path: '/inventory', roles: ['admin', 'inventory', 'manager'] },
+    { name: 'Sales / Orders',icon: <ShoppingCart size={18} />,     path: '/sales',     roles: ['admin', 'cashier', 'manager'] },
+    { name: 'Returns',       icon: <Navigation size={18} />,       path: '/manager',   roles: ['admin', 'manager'] },
+    { name: 'Inventory',     icon: <Database size={18} />,         path: '/inventory', roles: ['admin', 'inventory', 'manager'] },
     { name: 'Customers',     icon: <Users size={18} />,            path: '/customers', roles: ['admin', 'cashier', 'manager'] },
+    { name: 'Payments',      icon: <DollarSign size={18} />,       path: '/revenue',   roles: ['admin', 'manager', 'finance'] },
+    { name: 'Expenses',      icon: <TrendingDown size={18} />,     path: '/expenses',  roles: ['admin', 'expenses', 'finance'] },
   ];
 
   const filtered = menuItems.filter(i => i.roles.includes(role));

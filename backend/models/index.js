@@ -21,6 +21,8 @@ const Leave = require('./Leave');
 const LeaveBalance = require('./LeaveBalance');
 const PayrollRun = require('./PayrollRun');
 const Payslip = require('./Payslip');
+const Return = require('./Return');
+const ReturnItem = require('./ReturnItem');
 
 const Supplier = require('./Supplier');
 const PurchaseOrder = require('./PurchaseOrder');
@@ -54,6 +56,25 @@ SaleItem.belongsTo(Sale, { foreignKey: 'saleId' });
 
 Product.hasMany(SaleItem, { foreignKey: 'productId', onDelete: 'RESTRICT' });
 SaleItem.belongsTo(Product, { foreignKey: 'productId' });
+
+// Return Associations
+Sale.hasMany(Return, { foreignKey: 'saleId' });
+Return.belongsTo(Sale, { foreignKey: 'saleId' });
+
+Customer.hasMany(Return, { foreignKey: 'customerId' });
+Return.belongsTo(Customer, { foreignKey: 'customerId' });
+
+User.hasMany(Return, { foreignKey: 'userId' });
+Return.belongsTo(User, { foreignKey: 'userId' });
+
+Return.hasMany(ReturnItem, { as: 'ReturnItems', foreignKey: 'returnId', onDelete: 'CASCADE' });
+ReturnItem.belongsTo(Return, { foreignKey: 'returnId' });
+
+Product.hasMany(ReturnItem, { foreignKey: 'productId', onDelete: 'RESTRICT' });
+ReturnItem.belongsTo(Product, { foreignKey: 'productId' });
+
+SaleItem.hasMany(ReturnItem, { foreignKey: 'saleItemId', onDelete: 'RESTRICT' });
+ReturnItem.belongsTo(SaleItem, { foreignKey: 'saleItemId' });
 
 // User/SalesSession Associations
 User.hasMany(SalesSession, { foreignKey: 'userId' });
@@ -170,6 +191,8 @@ module.exports = {
   LeaveBalance,
   PayrollRun,
   Payslip,
+  Return,
+  ReturnItem,
 
   Supplier,
   PurchaseOrder,

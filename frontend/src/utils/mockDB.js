@@ -215,7 +215,9 @@ class MockDB {
     let totalPayroll = 0;
     data.employees.forEach(e => {
         const s = e.salaryStructure;
-        totalPayroll += (s.basicSalary + s.housingAllowance + s.transportationAllowance + s.foodAllowance + s.siteAllowance + s.mobileAllowance + s.otherAllowances);
+        if (s) {
+          totalPayroll += ((s.basicSalary || 0) + (s.housingAllowance || 0) + (s.transportationAllowance || 0) + (s.foodAllowance || 0) + (s.siteAllowance || 0) + (s.mobileAllowance || 0) + (s.otherAllowances || 0));
+        }
     });
 
     return {

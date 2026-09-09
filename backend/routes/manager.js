@@ -1,12 +1,11 @@
 const express = require('express');
-const { Sale, SalesSession, Employee, Department, Designation, User, Attendance, Leave } = require('../models');
+const { Sale, SalesSession, Employee, Department, Designation, User, Attendance, Leave, Product, Return, ReturnItem, SaleItem } = require('../models');
 const { auth, roleCheck } = require('../middleware/auth');
-const { Op } = require('sequelize');
+const { Op, fn, col } = require('sequelize');
 const router = express.Router();
 
-// ─── GET /api/manager/overview ────────────────────────────────────────────────
-// Monthly revenue + today's transaction count + active sessions
-router.get('/overview', auth, roleCheck(['admin', 'manager']), async (req, res) => {
+// 🟢 GET /api/manager/dashboard
+router.get('/dashboard', auth, roleCheck(['admin', 'manager']), async (req, res) => {
   try {
     const startOfCycle = new Date();
     startOfCycle.setDate(1);
@@ -15,63 +14,76 @@ router.get('/overview', auth, roleCheck(['admin', 'manager']), async (req, res) 
     const startOfDay = new Date();
     startOfDay.setHours(0, 0, 0, 0);
 
-    const [salesCycle, salesToday, activeSessions, pendingLeaves] = await Promise.all([
-      Sale.findAll({ where: { createdAt: { [Op.gte]: startOfCycle }, status: 'active' } }),
+    const [
+      salesTodayCount,
+      salesTodayTotal,
+      monthlySales,
+      pendingOrders,
+      totalProducts,
+      lowStockProducts,
+      totalReturns,
+      pendingReturns
+    ] = await Promise.all([
       Sale.count({ where: { createdAt: { [Op.gte]: startOfDay }, status: 'active' } }),
-      SalesSession.count({ where: { status: 'active' } }),
-      Leave.count({ where: { status: 'pending' } }),
+      Sale.sum('grandTotal', { where: { createdAt: { [Op.gte]: startOfDay }, status: 'active' } }),
+      Sale.sum('grandTotal', { where: { createdAt: { [Op.gte]: startOfCycle }, status: 'active' } }),
+      Sale.count({ where: { status: 'held' } }), // Assuming 'held' means pending
+      Product.count(),
+      Product.count({ where: { stock: { [Op.lt]: 10 } } }), // Assuming threshold is 10
+      Return.count(),
+      Return.count({ where: { status: 'pending' } })
     ]);
 
-    const revenue = salesCycle.reduce((sum, s) => sum + parseFloat(s.grandTotal || 0), 0);
+    // Recent Sales
+    const recentSales = await Sale.findAll({
+      limit: 5,
+      order: [['createdAt', 'DESC']],
+      include: [{ model: User, attributes: ['name'] }]
+    });
 
     res.json({
-      revenue,
-      salesCount: salesToday || 0,
-      activeStaff: activeSessions || 0,
-      pendingLeaves: pendingLeaves || 0,
+      revenue: parseFloat(monthlySales || 0),
+      salesToday: parseFloat(salesTodayTotal || 0),
+      salesCount: salesTodayCount || 0,
+      pendingOrders: pendingOrders || 0,
+      totalProducts: totalProducts || 0,
+      lowStockProducts: lowStockProducts || 0,
+      totalReturns: totalReturns || 0,
+      pendingReturns: pendingReturns || 0,
+      recentSales
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
 
-// ─── GET /api/manager/sales-today ────────────────────────────────────────────
-// Today's sales total, count, per-cashier breakdown, last 10 transactions
-router.get('/sales-today', auth, roleCheck(['admin', 'manager']), async (req, res) => {
+// 🟢 GET /api/manager/sales-summary (Chart Data)
+router.get('/sales-summary', auth, roleCheck(['admin', 'manager']), async (req, res) => {
   try {
-    const startOfDay = new Date();
-    startOfDay.setHours(0, 0, 0, 0);
+    const { range = '30d' } = req.query;
+    let startDate = new Date();
+    
+    if (range === '7d') startDate.setDate(startDate.getDate() - 7);
+    else if (range === '30d') startDate.setDate(startDate.getDate() - 30);
+    else if (range === 'this_month') startDate.setDate(1);
+    
+    startDate.setHours(0, 0, 0, 0);
 
     const sales = await Sale.findAll({
-      where: { createdAt: { [Op.gte]: startOfDay }, status: 'active' },
-      include: [{ model: User, attributes: ['id', 'name', 'email'] }],
-      order: [['createdAt', 'DESC']],
+      where: {
+        createdAt: { [Op.gte]: startDate },
+        status: 'active'
+      },
+      attributes: [
+        [fn('DATE', col('createdAt')), 'date'],
+        [fn('SUM', col('grandTotal')), 'total']
+      ],
+      group: [fn('DATE', col('createdAt'))],
+      order: [[fn('DATE', col('createdAt')), 'ASC']],
+      raw: true
     });
 
-    // Group by cashier
-    const byCashier = {};
-    sales.forEach(s => {
-      const key = s.User?.name || 'Unknown';
-      if (!byCashier[key]) byCashier[key] = { name: key, count: 0, revenue: 0 };
-      byCashier[key].count++;
-      byCashier[key].revenue += parseFloat(s.grandTotal || 0);
-    });
-
-    const totalRevenue = sales.reduce((sum, s) => sum + parseFloat(s.grandTotal || 0), 0);
-
-    res.json({
-      totalRevenue,
-      totalCount: sales.length,
-      byCashier: Object.values(byCashier).sort((a, b) => b.revenue - a.revenue),
-      recent: sales.slice(0, 12).map(s => ({
-        id: s.id,
-        grandTotal: s.grandTotal,
-        paymentMethod: s.paymentMethod,
-        cashier: s.User?.name || 'Unknown',
-        createdAt: s.createdAt,
-        status: s.status,
-      })),
-    });
+    res.json(sales);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

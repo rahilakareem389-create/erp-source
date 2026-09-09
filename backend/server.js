@@ -79,6 +79,7 @@ app.use('/api/auth/login', loginLimiter);
 // Routes
 app.use('/api/public', require('./routes/public'));
 app.use('/api/sales', require('./routes/sales'));
+app.use('/api/returns', require('./routes/returns'));
 app.use('/api/customers', require('./routes/customers'));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/inventory', require('./routes/inventory'));

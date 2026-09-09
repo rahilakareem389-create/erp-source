@@ -1,77 +1,60 @@
 import React, { useState, useEffect } from 'react';
-import { io } from 'socket.io-client';
 import { 
-  Shield, Users, Activity, TrendingUp, DollarSign, 
-  ArrowUpRight, Clock, UserCheck, ShieldCheck, Zap,
-  BarChart3, Target, Info
+  ShieldCheck, DollarSign, ShoppingCart, Package, 
+  ArrowUpRight, AlertTriangle, RefreshCcw, FileText,
+  Check, X, TrendingUp
 } from 'lucide-react';
-import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { managerAPI, employeeAPI } from '../api';
+import { managerAPI, returnAPI } from '../api';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const Manager = () => {
   const navigate = useNavigate();
-  const [overview, setOverview] = useState({ revenue: 0, salesCount: 0, activeStaff: 0 });
-  const [employees, setEmployees] = useState([]);
+  const [dashboard, setDashboard] = useState({
+    revenue: 0, salesToday: 0, salesCount: 0, pendingOrders: 0, 
+    totalProducts: 0, lowStockProducts: 0, totalReturns: 0, pendingReturns: 0, recentSales: []
+  });
+  const [salesData, setSalesData] = useState([]);
+  const [returns, setReturns] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [chartRange, setChartRange] = useState('30d');
 
-  const exportStaffData = () => {
-    if (!employees || employees.length === 0) {
-      alert("No employee data to export");
-      return;
+  const fetchData = async () => {
+    try {
+      const [dashRes, chartRes, returnRes] = await Promise.all([
+        managerAPI.getDashboard(),
+        managerAPI.getSalesSummary(chartRange),
+        returnAPI.getAll()
+      ]);
+      setDashboard(dashRes.data);
+      setSalesData(chartRes.data);
+      setReturns(returnRes.data.filter(r => r.status === 'pending').slice(0, 5));
+    } catch (err) {
+      console.error('Failed to fetch manager data', err);
+    } finally {
+      setLoading(false);
     }
-    const headers = ['First Name', 'Last Name', 'Email', 'Position', 'Status', 'Salary'];
-    const csvRows = [
-      headers.join(','),
-      ...employees.map(emp => [
-        `"${emp.firstName || ''}"`,
-        `"${emp.lastName || ''}"`,
-        `"${emp.User?.email || emp.email || ''}"`,
-        `"${emp.position || ''}"`,
-        `"${emp.status || ''}"`,
-        emp.salary || 0
-      ].join(','))
-    ].join('\n');
-
-    const blob = new Blob([csvRows], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', 'staff_directory.csv');
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
   };
 
   useEffect(() => {
-    const socketUrl = import.meta.env.VITE_SOCKET_URL || '';
-    const socket = io(socketUrl, {
-      auth: { token: localStorage.getItem('token') }
-    }); // connect to backend socket server
-    socket.on('staffEngagementUpdated', data => {
-      setOverview(prev => ({ ...prev, activeStaff: data.activeStaff }));
-    });
-    const fetchData = async () => {
-      try {
-        const [ovRes, empRes] = await Promise.all([
-          managerAPI.getOverview(),
-          employeeAPI.getAll()
-        ]);
-        setOverview(ovRes.data || { revenue: 0, salesCount: 0, activeStaff: 0 });
-        setEmployees(empRes.data?.employees || []);
-      } catch (err) {
-        console.error('Manager Hub fetch failed', err);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchData();
-    const interval = setInterval(fetchData, 3000);
-    return () => {
-      clearInterval(interval);
-      socket.disconnect();
-    };
-  }, []);
+    const interval = setInterval(fetchData, 10000); // 10s refresh
+    return () => clearInterval(interval);
+  }, [chartRange]);
+
+  const handleReturnAction = async (id, action) => {
+    try {
+      if (action === 'approve') {
+        await returnAPI.updateStatus(id, 'approved');
+        await returnAPI.complete(id); // auto complete for simplicity, or we could have a separate complete step
+      } else {
+        await returnAPI.updateStatus(id, 'rejected');
+      }
+      fetchData();
+    } catch (error) {
+      alert("Error processing return: " + (error.response?.data?.message || error.message));
+    }
+  };
 
   const StatBox = ({ title, value, sub, icon, rgb }) => (
     <div style={{ background: 'white', padding: 28, borderRadius: 28, border: '1px solid rgba(0,0,0,0.05)', flex: 1 }}>
@@ -79,12 +62,9 @@ const Manager = () => {
         <div style={{ width: 50, height: 50, borderRadius: 16, background: `rgba(${rgb}, 0.1)`, color: `rgb(${rgb})`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           {icon}
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4, color: '#10b981', fontSize: 13, fontWeight: 700 }}>
-          <ArrowUpRight size={14} /> +12%
-        </div>
       </div>
       <div style={{ fontSize: 14, fontWeight: 700, color: '#64748b', marginBottom: 4 }}>{title}</div>
-      <div style={{ fontSize: 32, fontWeight: 900, color: '#0f172a', marginBottom: 4 }}>{value}</div>
+      <div style={{ fontSize: 32, fontWeight: 900, color: '#0f172a', marginBottom: 4 }}>{value !== undefined ? value : '...'}</div>
       <div style={{ fontSize: 12, fontWeight: 600, color: '#94a3b8' }}>{sub}</div>
     </div>
   );
@@ -97,84 +77,157 @@ const Manager = () => {
             <div style={{ width: 32, height: 32, borderRadius: 8, background: '#0f172a', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <ShieldCheck size={18} />
             </div>
-            <span style={{ fontSize: 12, fontWeight: 800, color: '#64748b', textTransform: 'uppercase', letterSpacing: 1 }}>Administrative Portal</span>
+            <span style={{ fontSize: 12, fontWeight: 800, color: '#64748b', textTransform: 'uppercase', letterSpacing: 1 }}>Manager Portal</span>
           </div>
-          <h1 style={{ fontSize: 32, fontWeight: 900, color: '#0f172a' }}>Executive Command Center</h1>
+          <h1 style={{ fontSize: 32, fontWeight: 900, color: '#0f172a' }}>Sales & Inventory Overview</h1>
         </div>
         <div style={{ display: 'flex', gap: 12 }}>
-          <button onClick={exportStaffData} style={{ padding: '12px 24px', borderRadius: 14, background: 'white', border: '1px solid #e2e8f0', fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8 }}>
-            <BarChart3 size={18} /> Export Data
+          <button onClick={() => navigate('/sales')} style={{ padding: '12px 24px', borderRadius: 14, background: '#0a84ff', color: 'white', border: 'none', fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8 }}>
+            <ShoppingCart size={18} /> Point of Sale
           </button>
         </div>
       </header>
 
-      <div style={{ display: 'flex', gap: 24, marginBottom: 40 }}>
-        <StatBox title="Net Revenue" value={`$${(parseFloat(overview.revenue || 0)).toLocaleString()}`} sub="Current billing cycle" icon={<DollarSign />} rgb="34,197,94" />
-        <StatBox title="Transaction Volume" value={overview.salesCount || 0} sub="Last 24 hours" icon={<Zap />} rgb="10,132,255" />
-        <StatBox title="Staff Engagement" value={overview.activeStaff || 0} sub="Members currently clocked in" icon={<Users />} rgb="168,85,247" />
-        <StatBox title="Operations Score" value="98.2%" sub="System health & stability" icon={<Target />} rgb="249,115,22" />
+      {/* KPI Cards */}
+      <div style={{ display: 'flex', gap: 24, marginBottom: 40, flexWrap: 'wrap' }}>
+        <StatBox title="Today's Sales" value={`$${(dashboard.salesToday || 0).toLocaleString()}`} sub={`${dashboard.salesCount || 0} transactions`} icon={<DollarSign />} rgb="34,197,94" />
+        <StatBox title="Monthly Revenue" value={`$${(dashboard.revenue || 0).toLocaleString()}`} sub="This billing cycle" icon={<TrendingUp />} rgb="10,132,255" />
+        <StatBox title="Pending Orders" value={dashboard.pendingOrders || 0} sub="Held transactions" icon={<ShoppingCart />} rgb="249,115,22" />
+        <StatBox title="Low Stock Alerts" value={dashboard.lowStockProducts || 0} sub="Products below threshold" icon={<AlertTriangle />} rgb="239,68,68" />
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: 32 }}>
-        {/* Staff Management */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: 32, marginBottom: 32 }}>
+        {/* Sales Chart */}
         <div style={{ background: 'white', borderRadius: 32, border: '1px solid rgba(0,0,0,0.05)', padding: 32 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
-            <h2 style={{ fontSize: 20, fontWeight: 900, color: '#0f172a' }}>Staff Directory</h2>
-            <button onClick={() => navigate('/users')} style={{ padding: '10px 18px', borderRadius: 12, background: '#f1f5f9', border: 'none', color: '#0f172a', fontWeight: 800, fontSize: 13, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8 }}>
-              <UserCheck size={16} /> Manage Roles
-            </button>
+            <h2 style={{ fontSize: 20, fontWeight: 900, color: '#0f172a' }}>Revenue Overview</h2>
+            <select 
+              value={chartRange} 
+              onChange={e => setChartRange(e.target.value)}
+              style={{ padding: '8px 12px', borderRadius: 8, border: '1px solid #e2e8f0', outline: 'none' }}
+            >
+              <option value="7d">Last 7 Days</option>
+              <option value="30d">Last 30 Days</option>
+              <option value="this_month">This Month</option>
+            </select>
+          </div>
+          <div style={{ height: 300 }}>
+            {salesData.length > 0 ? (
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={salesData}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+                  <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} dy={10} />
+                  <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} dx={-10} tickFormatter={(val) => `$${val}`} />
+                  <Tooltip contentStyle={{ borderRadius: 12, border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} />
+                  <Line type="monotone" dataKey="total" stroke="#0a84ff" strokeWidth={3} dot={{ r: 4, strokeWidth: 2 }} activeDot={{ r: 6 }} />
+                </LineChart>
+              </ResponsiveContainer>
+            ) : (
+              <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94a3b8' }}>
+                No sales data available for this range
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Pending Returns */}
+        <div style={{ background: 'white', borderRadius: 32, border: '1px solid rgba(0,0,0,0.05)', padding: 32 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
+            <h2 style={{ fontSize: 20, fontWeight: 900, color: '#0f172a' }}>Return Requests</h2>
+            <div style={{ background: '#fef2f2', color: '#ef4444', padding: '4px 12px', borderRadius: 20, fontSize: 12, fontWeight: 800 }}>
+              {dashboard.pendingReturns} Pending
+            </div>
           </div>
           
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            {employees.map(emp => (
-              <div key={emp.id} style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '14px 20px', borderRadius: 20, background: '#f8fafc', border: '1px solid transparent' }}>
-                <div style={{ width: 44, height: 44, borderRadius: '50%', background: '#0a84ff', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 16 }}>
-                  {(emp.firstName || '')[0]}{(emp.lastName || '')[0]}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            {returns.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '40px 0', color: '#94a3b8', fontSize: 14, fontWeight: 600 }}>
+                No pending returns
+              </div>
+            ) : returns.map(ret => (
+              <div key={ret.id} style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '16px', borderRadius: 20, background: '#f8fafc', border: '1px solid #e2e8f0' }}>
+                <div style={{ width: 44, height: 44, borderRadius: '50%', background: '#fef2f2', color: '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <RefreshCcw size={18} />
                 </div>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: 800, color: '#0f172a' }}>{emp.firstName} {emp.lastName}</div>
-                  <div style={{ fontSize: 12, color: '#64748b', fontWeight: 600 }}>{emp.Designation?.name || emp.position || 'Staff'} • {emp.status}</div>
+                  <div style={{ fontWeight: 800, color: '#0f172a', fontSize: 14 }}>{ret.Customer?.name || 'Walk-in'} - ${ret.totalRefund}</div>
+                  <div style={{ fontSize: 12, color: '#64748b', fontWeight: 600 }}>Sale: {ret.saleId?.slice(0, 8)}</div>
                 </div>
-                <button onClick={() => navigate('/employees')} style={{ padding: '8px 14px', borderRadius: 10, background: 'white', border: '1px solid #e2e8f0', color: '#64748b', fontWeight: 700, fontSize: 12, cursor: 'pointer' }}>
-                  Profile
-                </button>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <button onClick={() => handleReturnAction(ret.id, 'approve')} style={{ width: 32, height: 32, borderRadius: 8, background: '#dcfce7', color: '#16a34a', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Check size={16} />
+                  </button>
+                  <button onClick={() => handleReturnAction(ret.id, 'reject')} style={{ width: 32, height: 32, borderRadius: 8, background: '#f1f5f9', color: '#64748b', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <X size={16} />
+                  </button>
+                </div>
               </div>
             ))}
           </div>
         </div>
+      </div>
 
-        {/* System Insights */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: 32 }}>
+        {/* Recent Orders */}
+        <div style={{ background: 'white', borderRadius: 32, border: '1px solid rgba(0,0,0,0.05)', padding: 32 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+            <h2 style={{ fontSize: 20, fontWeight: 900, color: '#0f172a' }}>Recent Sales / Orders</h2>
+            <button onClick={() => navigate('/sales')} style={{ background: 'transparent', border: 'none', color: '#0a84ff', fontWeight: 800, cursor: 'pointer' }}>
+              View All
+            </button>
+          </div>
+          
+          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <thead>
+              <tr style={{ borderBottom: '1px solid #e2e8f0', color: '#64748b', fontSize: 13, textAlign: 'left' }}>
+                <th style={{ padding: '12px 8px', fontWeight: 700 }}>Order ID</th>
+                <th style={{ padding: '12px 8px', fontWeight: 700 }}>Amount</th>
+                <th style={{ padding: '12px 8px', fontWeight: 700 }}>Cashier</th>
+                <th style={{ padding: '12px 8px', fontWeight: 700 }}>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {dashboard.recentSales?.length === 0 ? (
+                <tr>
+                  <td colSpan="4" style={{ textAlign: 'center', padding: '40px 0', color: '#94a3b8', fontSize: 14, fontWeight: 600 }}>
+                    No recent sales
+                  </td>
+                </tr>
+              ) : dashboard.recentSales?.map(sale => (
+                <tr key={sale.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                  <td style={{ padding: '16px 8px', fontSize: 14, fontWeight: 700, color: '#0f172a' }}>{sale.id.slice(0, 8)}...</td>
+                  <td style={{ padding: '16px 8px', fontSize: 14, fontWeight: 800, color: '#10b981' }}>${sale.grandTotal}</td>
+                  <td style={{ padding: '16px 8px', fontSize: 14, color: '#64748b' }}>{sale.User?.name || 'Unknown'}</td>
+                  <td style={{ padding: '16px 8px', fontSize: 14, color: '#64748b' }}>{new Date(sale.createdAt).toLocaleTimeString()}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Inventory Quick Stats */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
           <div style={{ background: 'linear-gradient(135deg, #0f172a, #1e293b)', borderRadius: 32, padding: 32, color: 'white' }}>
             <h3 style={{ fontSize: 18, fontWeight: 900, marginBottom: 16, display: 'flex', alignItems: 'center', gap: 10 }}>
-              <Activity size={20} color="#0a84ff" /> Live Connectivity
+              <Package size={20} color="#0a84ff" /> Inventory Summary
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: 14, fontWeight: 600, opacity: 0.7 }}>Database</span>
-                <span style={{ fontSize: 13, fontWeight: 800, color: '#22c55e' }}>ONLINE</span>
+                <span style={{ fontSize: 14, fontWeight: 600, opacity: 0.7 }}>Total Products</span>
+                <span style={{ fontSize: 16, fontWeight: 800 }}>{dashboard.totalProducts}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: 14, fontWeight: 600, opacity: 0.7 }}>Cloud Backup</span>
-                <span style={{ fontSize: 13, fontWeight: 800, color: '#22c55e' }}>SYNCED</span>
+                <span style={{ fontSize: 14, fontWeight: 600, opacity: 0.7 }}>Low Stock Alerts</span>
+                <span style={{ fontSize: 16, fontWeight: 800, color: dashboard.lowStockProducts > 0 ? '#ef4444' : '#22c55e' }}>{dashboard.lowStockProducts}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: 14, fontWeight: 600, opacity: 0.7 }}>API Response</span>
-                <span style={{ fontSize: 13, fontWeight: 800, color: '#0a84ff' }}>24ms</span>
+                <span style={{ fontSize: 14, fontWeight: 600, opacity: 0.7 }}>Total Returns Handled</span>
+                <span style={{ fontSize: 16, fontWeight: 800, color: '#0a84ff' }}>{dashboard.totalReturns}</span>
               </div>
             </div>
-          </div>
-
-          <div style={{ background: 'white', borderRadius: 32, border: '1px solid rgba(0,0,0,0.05)', padding: 32 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
-              <div style={{ width: 40, height: 40, borderRadius: 12, background: '#fef3c7', color: '#d97706', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Info size={20} />
-              </div>
-              <h3 style={{ fontSize: 18, fontWeight: 900, color: '#0f172a' }}>Management Tip</h3>
-            </div>
-            <p style={{ color: '#64748b', fontSize: 14, lineHeight: 1.6, fontWeight: 500 }}>
-              Inventory levels for "Tools" products are currently 15% below threshold. Consider restocking before the weekend rush.
-            </p>
+            <button onClick={() => navigate('/inventory')} style={{ width: '100%', marginTop: 24, padding: '12px', borderRadius: 14, background: 'rgba(255,255,255,0.1)', color: 'white', border: 'none', fontWeight: 800, cursor: 'pointer' }}>
+              Manage Inventory
+            </button>
           </div>
         </div>
       </div>

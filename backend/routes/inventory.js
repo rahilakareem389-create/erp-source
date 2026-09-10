@@ -1,8 +1,27 @@
 const express = require('express');
-const { Product, ProductVariation, Category, StockLog, sequelize, PurchaseOrder, POItem, Supplier } = require('../models');
+const { Product, ProductVariation, Category, StockLog, sequelize, PurchaseOrder, POItem, Supplier, User } = require('../models');
 const { auth, roleCheck } = require('../middleware/auth');
 const audit = require('../middleware/audit');
 const router = express.Router();
+
+// Public endpoints
+router.get('/public/products', async (req, res) => {
+  try {
+    const products = await Product.findAll({ include: [Category] });
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+router.get('/public/categories', async (req, res) => {
+  try {
+    const categories = await Category.findAll();
+    res.json(categories);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
 // Get all products
 router.get('/products', auth, async (req, res) => {

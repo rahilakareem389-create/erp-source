@@ -33,6 +33,8 @@ import EmployeeProfile from './pages/EmployeeProfile';
 
 import Customers from './pages/Customers';
 import Manager from './pages/Manager';
+import Returns from './pages/Returns';
+import CustomerOrders from './pages/CustomerOrders';
 import Revenue from './pages/Revenue';
 import Users from './pages/Users';
 import Attendance from './pages/Attendance';
@@ -339,6 +341,39 @@ function AppContent() {
                       <Manager />
                     </PageTransition>
                   </PrivateRoute>
+                }
+              />
+
+              {/* ========================================
+                  RETURNS
+              ======================================== */}
+
+              <Route
+                path="/returns"
+                element={
+                  <PrivateRoute
+                    roles={[
+                      'admin',
+                      'manager',
+                    ]}
+                  >
+                    <PageTransition>
+                      <Returns />
+                    </PageTransition>
+                  </PrivateRoute>
+                }
+              />
+
+              {/* ========================================
+                  CUSTOMER ORDERS (Portal)
+              ======================================== */}
+
+              <Route
+                path="/customer-orders"
+                element={
+                  <PageTransition>
+                    <CustomerOrders />
+                  </PageTransition>
                 }
               />
 

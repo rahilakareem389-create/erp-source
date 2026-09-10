@@ -68,9 +68,15 @@ router.post('/', auth, async (req, res) => {
   try {
     const { items, customerId, totalAmount, discount, tax, grandTotal, paymentMethod, cashAmount, cardAmount, discountType, extraCharges, extraChargeReason, creditReason, customerName, customerPhone, cashierName, notes } = req.body;
     
+    let saleUserId = req.user.id;
+    if (req.user.isCustomer) {
+      const admin = await User.findOne({ where: { role: 'admin' }, transaction });
+      if (admin) saleUserId = admin.id;
+    }
+
     const sale = await Sale.create({
       customerId,
-      userId: req.user.id,
+      userId: saleUserId,
       totalAmount,
       discount,
       tax,
@@ -86,6 +92,7 @@ router.post('/', auth, async (req, res) => {
       customerPhone,
       cashierName,
       notes,
+      orderStatus: req.body.orderStatus || 'Delivered',
       status: 'active'
     }, { transaction });
 
@@ -108,7 +115,7 @@ router.post('/', auth, async (req, res) => {
       
       await StockLog.create({
         productId: item.productId,
-        userId: req.user.id,
+        userId: saleUserId,
         change: -item.quantity,
         type: 'sale',
         notes: 'sale',
@@ -121,6 +128,22 @@ router.post('/', auth, async (req, res) => {
   } catch (err) {
     await transaction.rollback();
     res.status(400).json({ message: err.message });
+  }
+});
+
+// Get Customer's Sales
+router.get('/customer/:customerId', auth, async (req, res) => {
+  try {
+    const sales = await Sale.findAll({
+      where: { customerId: req.params.customerId },
+      include: [
+        { model: SaleItem, as: 'Items', include: [{ model: Product }] },
+      ],
+      order: [['createdAt', 'DESC']]
+    });
+    res.json(sales);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
 
@@ -331,6 +354,18 @@ router.get('/analytics', auth, async (req, res) => {
         total: sales.length
       }
     });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+router.patch('/:id/status', auth, async (req, res) => {
+  try {
+    const { orderStatus } = req.body;
+    const sale = await Sale.findByPk(req.params.id);
+    if (!sale) return res.status(404).json({ message: 'Sale not found' });
+    await sale.update({ orderStatus });
+    res.json(sale);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

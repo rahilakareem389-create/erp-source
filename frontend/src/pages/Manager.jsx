@@ -56,6 +56,22 @@ const Manager = () => {
     }
   };
 
+  const handleOrderStatus = async (id, newStatus) => {
+    try {
+      await fetch(`http://localhost:5002/api/sales/${id}/status`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ orderStatus: newStatus })
+      });
+      fetchData();
+    } catch (err) {
+      alert("Failed to update order status");
+    }
+  };
+
   const StatBox = ({ title, value, sub, icon, rgb }) => (
     <div style={{ background: 'white', padding: 28, borderRadius: 28, border: '1px solid rgba(0,0,0,0.05)', flex: 1 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: 20 }}>
@@ -132,11 +148,14 @@ const Manager = () => {
 
         {/* Pending Returns */}
         <div style={{ background: 'white', borderRadius: 32, border: '1px solid rgba(0,0,0,0.05)', padding: 32 }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
             <h2 style={{ fontSize: 20, fontWeight: 900, color: '#0f172a' }}>Return Requests</h2>
             <div style={{ background: '#fef2f2', color: '#ef4444', padding: '4px 12px', borderRadius: 20, fontSize: 12, fontWeight: 800 }}>
               {dashboard.pendingReturns} Pending
             </div>
+          </div>
+          <div style={{ marginBottom: 24, fontSize: 12, color: '#475569', background: '#f8fafc', padding: 12, borderRadius: 8, borderLeft: '3px solid #3b82f6' }}>
+            <strong>Policy:</strong> Returns allowed within 30 days. Deduct delivery/restocking fees if applicable before approving.
           </div>
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
@@ -152,6 +171,8 @@ const Manager = () => {
                 <div style={{ flex: 1 }}>
                   <div style={{ fontWeight: 800, color: '#0f172a', fontSize: 14 }}>{ret.Customer?.name || 'Walk-in'} - ${ret.totalRefund}</div>
                   <div style={{ fontSize: 12, color: '#64748b', fontWeight: 600 }}>Sale: {ret.saleId?.slice(0, 8)}</div>
+                  {ret.returnReason && <div style={{ fontSize: 12, color: '#ef4444', fontWeight: 600, marginTop: 4 }}>Reason: {ret.returnReason}</div>}
+                  {ret.notes && <div style={{ fontSize: 12, color: '#64748b', fontStyle: 'italic', marginTop: 2 }}>"{ret.notes}"</div>}
                 </div>
                 <div style={{ display: 'flex', gap: 8 }}>
                   <button onClick={() => handleReturnAction(ret.id, 'approve')} style={{ width: 32, height: 32, borderRadius: 8, background: '#dcfce7', color: '#16a34a', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -166,6 +187,36 @@ const Manager = () => {
           </div>
         </div>
       </div>
+
+      {/* Pending Online Orders */}
+      {dashboard.pendingOnlineOrders && dashboard.pendingOnlineOrders.length > 0 && (
+        <div style={{ background: 'white', borderRadius: 32, border: '1px solid rgba(0,0,0,0.05)', padding: 32, marginBottom: 32 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+            <h2 style={{ fontSize: 20, fontWeight: 900, color: '#0f172a' }}>Pending Online Orders</h2>
+            <div style={{ background: '#fef9c3', color: '#ca8a04', padding: '4px 12px', borderRadius: 20, fontSize: 12, fontWeight: 800 }}>
+              {dashboard.pendingOnlineOrders.length} New
+            </div>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 16 }}>
+            {dashboard.pendingOnlineOrders.map(order => (
+              <div key={order.id} style={{ padding: 20, borderRadius: 20, background: '#f8fafc', border: '1px solid #e2e8f0' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
+                  <div style={{ fontWeight: 800 }}>Order #{order.id.slice(0,8)}</div>
+                  <div style={{ fontWeight: 800, color: '#10b981' }}>${order.grandTotal}</div>
+                </div>
+                <div style={{ fontSize: 13, color: '#64748b', marginBottom: 12 }}>
+                  <div>Customer: {order.customerName || 'Online Client'}</div>
+                  {order.notes && <div style={{ marginTop: 8, fontStyle: 'italic' }}>Message: "{order.notes}"</div>}
+                </div>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <button onClick={() => handleOrderStatus(order.id, 'Delivered')} style={{ flex: 1, padding: '8px', background: '#0a84ff', color: 'white', border: 'none', borderRadius: 8, fontWeight: 700, cursor: 'pointer' }}>Accept / Deliver</button>
+                  <button onClick={() => handleOrderStatus(order.id, 'Cancelled')} style={{ flex: 1, padding: '8px', background: '#fef2f2', color: '#ef4444', border: 'none', borderRadius: 8, fontWeight: 700, cursor: 'pointer' }}>Cancel Order</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: 32 }}>
         {/* Recent Orders */}

@@ -39,8 +39,8 @@ const Sidebar = () => {
     // Sales, Inventory, Customers
     { name: 'Products',      icon: <Package size={18} />,          path: '/inventory', roles: ['admin', 'inventory', 'manager'] },
     { name: 'Sales / Orders',icon: <ShoppingCart size={18} />,     path: '/sales',     roles: ['admin', 'cashier', 'manager'] },
-    { name: 'Returns',       icon: <Navigation size={18} />,       path: '/manager',   roles: ['admin', 'manager'] },
-    { name: 'Inventory',     icon: <Database size={18} />,         path: '/inventory', roles: ['admin', 'inventory', 'manager'] },
+    { name: 'Returns',       icon: <Navigation size={18} />,       path: '/returns',   roles: ['admin', 'manager'] },
+    { name: 'Customer Portal',icon: <User size={18} />,            path: '/customer-orders', roles: ['admin', 'manager'] },
     { name: 'Customers',     icon: <Users size={18} />,            path: '/customers', roles: ['admin', 'cashier', 'manager'] },
     { name: 'Payments',      icon: <DollarSign size={18} />,       path: '/revenue',   roles: ['admin', 'manager', 'finance'] },
     { name: 'Expenses',      icon: <TrendingDown size={18} />,     path: '/expenses',  roles: ['admin', 'expenses', 'finance'] },

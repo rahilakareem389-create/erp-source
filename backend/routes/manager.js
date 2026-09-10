@@ -41,6 +41,12 @@ router.get('/dashboard', auth, roleCheck(['admin', 'manager']), async (req, res)
       include: [{ model: User, attributes: ['name'] }]
     });
 
+    const pendingOnlineOrders = await Sale.findAll({
+      where: { orderStatus: 'Pending' },
+      order: [['createdAt', 'DESC']],
+      include: [{ model: User, attributes: ['name'] }]
+    });
+
     res.json({
       revenue: parseFloat(monthlySales || 0),
       salesToday: parseFloat(salesTodayTotal || 0),
@@ -50,7 +56,8 @@ router.get('/dashboard', auth, roleCheck(['admin', 'manager']), async (req, res)
       lowStockProducts: lowStockProducts || 0,
       totalReturns: totalReturns || 0,
       pendingReturns: pendingReturns || 0,
-      recentSales
+      recentSales,
+      pendingOnlineOrders
     });
   } catch (err) {
     res.status(500).json({ message: err.message });

@@ -47,6 +47,10 @@ const Sale = sequelize.define('Sale', {
     type: DataTypes.ENUM('active', 'voided', 'refunded', 'held'),
     defaultValue: 'active',
   },
+  orderStatus: {
+    type: DataTypes.ENUM('Pending', 'Confirmed', 'Processing', 'Shipped', 'Delivered', 'Return Requested', 'Return Approved', 'Return Rejected', 'Returned', 'Refunded', 'Cancelled'),
+    defaultValue: 'Delivered', // Default to Delivered for existing POS sales
+  },
   voidReason: {
     type: DataTypes.STRING,
   },

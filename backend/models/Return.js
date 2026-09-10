@@ -18,7 +18,7 @@ const Return = sequelize.define('Return', {
   },
   userId: { // The employee who processed the return
     type: DataTypes.UUID,
-    allowNull: false,
+    allowNull: true,
   },
   totalRefund: {
     type: DataTypes.DECIMAL(12, 2),
@@ -32,11 +32,35 @@ const Return = sequelize.define('Return', {
     defaultValue: 'refund',
   },
   status: {
-    type: DataTypes.ENUM('pending', 'approved', 'rejected', 'completed'),
+    type: DataTypes.ENUM('pending', 'approved', 'rejected', 'received', 'verified', 'completed'),
     defaultValue: 'pending',
   },
-  notes: {
+  notes: { // Customer notes
     type: DataTypes.TEXT,
+  },
+  adminNote: {
+    type: DataTypes.TEXT,
+  },
+  rejectionReason: {
+    type: DataTypes.STRING,
+  },
+  returnNumber: {
+    type: DataTypes.STRING,
+  },
+  requestedAt: {
+    type: DataTypes.DATE,
+  },
+  approvedAt: {
+    type: DataTypes.DATE,
+  },
+  receivedAt: {
+    type: DataTypes.DATE,
+  },
+  verifiedAt: {
+    type: DataTypes.DATE,
+  },
+  completedAt: {
+    type: DataTypes.DATE,
   },
 }, {
   tableName: 'returns',

@@ -143,7 +143,28 @@ sequelize
   .then(() => {
     console.log('Database connection verified.');
     // Validate required tables exist
-    return sequelize.getQueryInterface().showAllTables().then(tables => {
+    return sequelize.getQueryInterface().showAllTables().then(async tables => {
+      // Temporary auto-patch for new columns
+      try {
+        const [results] = await sequelize.query("SHOW COLUMNS FROM `sales` LIKE 'orderStatus'");
+        if (results.length === 0) {
+          console.log('Auto-patching: Adding orderStatus to sales...');
+          await sequelize.query("ALTER TABLE `sales` ADD COLUMN `orderStatus` ENUM('Pending', 'Confirmed', 'Processing', 'Shipped', 'Delivered', 'Return Requested', 'Return Approved', 'Return Rejected', 'Returned', 'Refunded', 'Cancelled') DEFAULT 'Pending'");
+        }
+        const [ri] = await sequelize.query("SHOW COLUMNS FROM `return_items` LIKE 'inventoryUpdated'");
+        if (ri.length === 0) {
+          await sequelize.query("ALTER TABLE `return_items` ADD COLUMN `inventoryUpdated` TINYINT(1) DEFAULT 0");
+        }
+        const [r1] = await sequelize.query("SHOW COLUMNS FROM `returns` LIKE 'returnNumber'");
+        if (r1.length === 0) {
+           await sequelize.query("ALTER TABLE `returns` ADD COLUMN `returnNumber` VARCHAR(255) NULL");
+           await sequelize.query("ALTER TABLE `returns` ADD COLUMN `adminNote` TEXT NULL");
+           await sequelize.query("ALTER TABLE `returns` ADD COLUMN `rejectionReason` TEXT NULL");
+        }
+      } catch (e) {
+         console.log('Auto-patch failed, ignoring...', e.message);
+      }
+
       const requiredTables = ['users', 'employees', 'departments'];
       const missing = requiredTables.filter(t => !tables.includes(t));
       if (missing.length > 0) {

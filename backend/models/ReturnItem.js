@@ -26,12 +26,16 @@ const ReturnItem = sequelize.define('ReturnItem', {
     defaultValue: 1,
   },
   condition: {
-    type: DataTypes.ENUM('new', 'damaged'),
+    type: DataTypes.ENUM('new', 'Good', 'Damaged', 'Defective', 'Rejected'),
     defaultValue: 'new',
   },
   refundAmount: {
     type: DataTypes.DECIMAL(10, 2),
     defaultValue: 0,
+  },
+  inventoryUpdated: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
   },
 }, {
   tableName: 'return_items',

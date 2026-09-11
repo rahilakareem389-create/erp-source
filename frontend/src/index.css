@@ -33,7 +33,7 @@ body {
 .orb-1 {
   width: 600px;
   height: 600px;
-  background: radial-gradient(circle, #0a84ff 0%, transparent 70%);
+  background: radial-gradient(circle, var(--theme-primary) 0%, transparent 70%);
   top: -200px;
   right: -100px;
 }
@@ -41,7 +41,7 @@ body {
 .orb-2 {
   width: 500px;
   height: 500px;
-  background: radial-gradient(circle, #6366f1 0%, transparent 70%);
+  background: radial-gradient(circle, var(--theme-hover) 0%, transparent 70%);
   bottom: -100px;
   left: -100px;
 }

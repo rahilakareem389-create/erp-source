@@ -3,12 +3,14 @@ import { LayoutDashboard, Package, ShoppingCart, Users, Briefcase, LogOut, User,
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
+import { useTheme, themes } from '../context/ThemeContext';
 import { motion } from 'framer-motion';
 import { settingsAPI } from '../api';
 
 const Sidebar = () => {
   const { user, logout } = useAuth();
   const { t, isRTL, toggleLanguage } = useLanguage();
+  const { themeName, setThemeName } = useTheme();
   const role = user?.role || 'admin';
   const [companyName, setCompanyName] = React.useState('Concrete Structures');
 
@@ -52,8 +54,8 @@ const Sidebar = () => {
     width: 260, height: 'calc(100vh - 32px)',
     position: 'fixed', top: 16,
     zIndex: 50, borderRadius: 24,
-    background: 'white',
-    border: '1px solid rgba(0,0,0,0.07)',
+    background: 'var(--bg-surface)',
+    border: '1px solid var(--border-main)',
     boxShadow: '0 8px 32px rgba(0,0,0,0.08)',
     display: 'flex', flexDirection: 'column',
     padding: '24px 16px',
@@ -69,12 +71,12 @@ const Sidebar = () => {
   return (
     <div style={sidebarStyle}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 32, padding: '0 8px' }}>
-        <motion.div whileHover={{ rotate: 360 }} style={{ width: 38, height: 38, borderRadius: 11, background: '#0a84ff', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
+        <motion.div whileHover={{ rotate: 360 }} style={{ width: 38, height: 38, borderRadius: 11, background: 'var(--theme-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
           <Zap size={18} fill="currentColor" />
         </motion.div>
         <div>
-          <div style={{ fontSize: 17, fontWeight: 900, color: '#0f172a' }}>{companyName}</div>
-          <div style={{ fontSize: 9, fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase' }}>ERP v2.0</div>
+          <div style={{ fontSize: 17, fontWeight: 900, color: 'var(--text-main)' }}>{companyName}</div>
+          <div style={{ fontSize: 9, fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>ERP v2.0</div>
         </div>
       </div>
 
@@ -84,8 +86,8 @@ const Sidebar = () => {
             <li key={item.name}>
               <NavLink to={item.path} style={({ isActive }) => ({
                 display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', borderRadius: 12, textDecoration: 'none',
-                fontWeight: 700, fontSize: 14, background: isActive ? 'rgba(10,132,255,0.08)' : 'transparent',
-                color: isActive ? '#0a84ff' : '#64748b',
+                fontWeight: 700, fontSize: 14, background: isActive ? 'rgba(var(--theme-primary-rgb),0.08)' : 'transparent',
+                color: isActive ? 'var(--theme-primary)' : '#64748b',
               })}>
                 {item.icon} {item.name}
               </NavLink>
@@ -95,10 +97,26 @@ const Sidebar = () => {
       </nav>
 
       <div style={{ borderTop: '1px solid rgba(0,0,0,0.05)', paddingTop: 16, marginTop: 16, display: 'flex', flexDirection: 'column', gap: 8 }}>
-        <button onClick={toggleLanguage} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', borderRadius: 12, border: 'none', background: '#f8fafc', color: '#0f172a', cursor: 'pointer', fontWeight: 800 }}>
-          <Languages size={16} color="#0a84ff" /> {isRTL ? 'English' : 'عربي'}
+        <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 8, padding: '4px 0 12px 0' }}>
+          {Object.entries(themes).map(([key, themeObj]) => (
+            <button
+              key={key}
+              onClick={() => setThemeName(key)}
+              title={`Switch to ${themeObj.name} theme`}
+              style={{
+                width: 24, height: 24, borderRadius: '50%',
+                background: themeObj.primary,
+                border: themeName === key ? '3px solid var(--bg-surface)' : 'none',
+                boxShadow: themeName === key ? `0 0 0 2px ${themeObj.primary}` : '0 2px 5px rgba(0,0,0,0.1)',
+                cursor: 'pointer', transition: 'all 0.2s'
+              }}
+            />
+          ))}
+        </div>
+        <button onClick={toggleLanguage} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', borderRadius: 12, border: 'none', background: 'var(--bg-body)', color: 'var(--text-main)', cursor: 'pointer', fontWeight: 800 }}>
+          <Languages size={16} color="var(--theme-primary)" /> {isRTL ? 'English' : 'عربي'}
         </button>
-        <button onClick={logout} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', borderRadius: 12, border: 'none', background: 'transparent', color: '#94a3b8', cursor: 'pointer', fontWeight: 700 }}>
+        <button onClick={logout} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', borderRadius: 12, border: 'none', background: 'transparent', color: 'var(--text-muted)', cursor: 'pointer', fontWeight: 700 }}>
           <LogOut size={16} /> Sign Out
         </button>
       </div>

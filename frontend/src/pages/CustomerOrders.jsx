@@ -253,13 +253,13 @@ const CustomerOrders = () => {
 
   if (!customer) {
     return (
-      <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f8fafc', fontFamily: 'system-ui, sans-serif' }}>
-        <div style={{ background: 'white', padding: 40, borderRadius: 24, boxShadow: '0 10px 25px rgba(0,0,0,0.05)', width: '100%', maxWidth: 400, textAlign: 'center' }}>
+      <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-body)', fontFamily: 'system-ui, sans-serif' }}>
+        <div style={{ background: 'var(--bg-surface)', padding: 40, borderRadius: 24, boxShadow: '0 10px 25px rgba(0,0,0,0.05)', width: '100%', maxWidth: 400, textAlign: 'center' }}>
           <div style={{ background: '#e0e7ff', width: 64, height: 64, borderRadius: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px auto' }}>
             <ShoppingBag size={32} color="#4f46e5" />
           </div>
-          <h2 style={{ fontSize: 24, fontWeight: 900, marginBottom: 8, color: '#0f172a' }}>Customer Portal</h2>
-          <p style={{ color: '#64748b', marginBottom: 24, fontSize: 14 }}>{isRegistering ? 'Create an account to shop and track orders.' : 'Enter your email to view your orders and process returns.'}</p>
+          <h2 style={{ fontSize: 24, fontWeight: 900, marginBottom: 8, color: 'var(--text-main)' }}>Customer Portal</h2>
+          <p style={{ color: 'var(--text-muted)', marginBottom: 24, fontSize: 14 }}>{isRegistering ? 'Create an account to shop and track orders.' : 'Enter your email to view your orders and process returns.'}</p>
           <form onSubmit={isRegistering ? handleRegister : handleLogin}>
             {isRegistering && (
               <>
@@ -269,14 +269,14 @@ const CustomerOrders = () => {
                   value={nameInput}
                   onChange={e => setNameInput(e.target.value)}
                   required
-                  style={{ width: '100%', padding: '14px 16px', borderRadius: 12, border: '1px solid #e2e8f0', marginBottom: 16, outline: 'none', fontSize: 16 }}
+                  style={{ width: '100%', padding: '14px 16px', borderRadius: 12, border: '1px solid var(--border-main)', marginBottom: 16, outline: 'none', fontSize: 16 }}
                 />
                 <input 
                   type="text" 
                   placeholder="Phone Number"
                   value={phoneInput}
                   onChange={e => setPhoneInput(e.target.value)}
-                  style={{ width: '100%', padding: '14px 16px', borderRadius: 12, border: '1px solid #e2e8f0', marginBottom: 16, outline: 'none', fontSize: 16 }}
+                  style={{ width: '100%', padding: '14px 16px', borderRadius: 12, border: '1px solid var(--border-main)', marginBottom: 16, outline: 'none', fontSize: 16 }}
                 />
               </>
             )}
@@ -286,12 +286,12 @@ const CustomerOrders = () => {
               value={emailInput}
               onChange={e => setEmailInput(e.target.value)}
               required
-              style={{ width: '100%', padding: '14px 16px', borderRadius: 12, border: '1px solid #e2e8f0', marginBottom: 16, outline: 'none', fontSize: 16 }}
+              style={{ width: '100%', padding: '14px 16px', borderRadius: 12, border: '1px solid var(--border-main)', marginBottom: 16, outline: 'none', fontSize: 16 }}
             />
             <button type="submit" disabled={loading} style={{ width: '100%', padding: 14, background: '#4f46e5', color: 'white', borderRadius: 12, border: 'none', fontWeight: 800, fontSize: 16, cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 8 }}>
               {loading ? 'Verifying...' : (isRegistering ? <><LogIn size={18} /> Register</> : <><LogIn size={18} /> Sign In</>)}
             </button>
-            <div style={{ marginTop: 16, fontSize: 14, color: '#64748b' }}>
+            <div style={{ marginTop: 16, fontSize: 14, color: 'var(--text-muted)' }}>
               {isRegistering ? 'Already have an account?' : 'New here?'} 
               <button type="button" onClick={() => setIsRegistering(!isRegistering)} style={{ background: 'transparent', border: 'none', color: '#4f46e5', fontWeight: 800, cursor: 'pointer', marginLeft: 4 }}>
                 {isRegistering ? 'Sign In' : 'Register'}
@@ -307,8 +307,8 @@ const CustomerOrders = () => {
     <div style={{ padding: '40px 24px', maxWidth: 1000, margin: '0 auto', fontFamily: 'system-ui, sans-serif' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
           <div>
-            <h1 style={{ fontSize: 32, fontWeight: 900, color: '#0f172a', margin: '0 0 8px 0' }}>Welcome, {customer.name}</h1>
-            <p style={{ color: '#64748b', margin: 0, fontSize: 15 }}>Manage your orders and shop products.</p>
+            <h1 style={{ fontSize: 32, fontWeight: 900, color: 'var(--text-main)', margin: '0 0 8px 0' }}>Welcome, {customer.name}</h1>
+            <p style={{ color: 'var(--text-muted)', margin: 0, fontSize: 15 }}>Manage your orders and shop products.</p>
           </div>
           <button onClick={handleLogout} style={{ padding: '10px 20px', background: '#fef2f2', color: '#ef4444', borderRadius: 12, border: 'none', fontWeight: 700, cursor: 'pointer' }}>
             Logout
@@ -322,21 +322,21 @@ const CustomerOrders = () => {
         </div>
 
         {loading ? (
-          <div style={{ textAlign: 'center', padding: 40, color: '#64748b', fontWeight: 600 }}>Loading...</div>
+          <div style={{ textAlign: 'center', padding: 40, color: 'var(--text-muted)', fontWeight: 600 }}>Loading...</div>
         ) : activeTab === 'store' ? (
           <div style={{ display: 'flex', gap: 24, alignItems: 'flex-start' }}>
             <div style={{ flex: 1, display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 16 }}>
               {products.map(p => (
-                <div key={p.id} style={{ background: 'white', padding: 20, borderRadius: 16, border: '1px solid #e2e8f0', textAlign: 'center' }}>
+                <div key={p.id} style={{ background: 'var(--bg-surface)', padding: 20, borderRadius: 16, border: '1px solid var(--border-main)', textAlign: 'center' }}>
                   <h3 style={{ margin: '0 0 8px 0', fontSize: 16 }}>{p.name}</h3>
-                  <p style={{ margin: '0 0 16px 0', color: '#0a84ff', fontWeight: 800 }}>Rs. {p.price}</p>
-                  <button onClick={() => addToCart(p)} style={{ width: '100%', padding: '8px', background: '#f1f5f9', border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 700 }}>Add to Cart</button>
+                  <p style={{ margin: '0 0 16px 0', color: 'var(--theme-primary)', fontWeight: 800 }}>Rs. {p.price}</p>
+                  <button onClick={() => addToCart(p)} style={{ width: '100%', padding: '8px', background: 'var(--bg-hover)', border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 700 }}>Add to Cart</button>
                 </div>
               ))}
             </div>
-            <div style={{ width: 300, background: 'white', padding: 24, borderRadius: 16, border: '1px solid #e2e8f0' }}>
+            <div style={{ width: 300, background: 'var(--bg-surface)', padding: 24, borderRadius: 16, border: '1px solid var(--border-main)' }}>
               <h3 style={{ margin: '0 0 16px 0' }}>Your Cart</h3>
-              {cart.length === 0 ? <p style={{ color: '#94a3b8' }}>Cart is empty</p> : (
+              {cart.length === 0 ? <p style={{ color: 'var(--text-muted)' }}>Cart is empty</p> : (
                 <div>
                   {cart.map(i => (
                     <div key={i.id} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12, fontSize: 14 }}>
@@ -348,37 +348,37 @@ const CustomerOrders = () => {
                     <span>Total:</span>
                     <span>Rs. {cart.reduce((s, i) => s + (i.price * i.qty), 0)}</span>
                   </div>
-                  <button onClick={() => setShowCheckoutModal(true)} style={{ width: '100%', padding: 12, background: '#0a84ff', color: 'white', border: 'none', borderRadius: 12, fontWeight: 800, marginTop: 16, cursor: 'pointer' }}>Checkout</button>
+                  <button onClick={() => setShowCheckoutModal(true)} style={{ width: '100%', padding: 12, background: 'var(--theme-primary)', color: 'white', border: 'none', borderRadius: 12, fontWeight: 800, marginTop: 16, cursor: 'pointer' }}>Checkout</button>
                 </div>
               )}
             </div>
           </div>
         ) : activeTab === 'orders' ? (
           <div style={{ display: 'grid', gap: 16 }}>
-            <div style={{ marginBottom: 8, fontSize: 13, color: '#475569', background: '#f8fafc', padding: 16, borderRadius: 12, borderLeft: '4px solid #0a84ff' }}>
+            <div style={{ marginBottom: 8, fontSize: 13, color: 'var(--text-main)', background: 'var(--bg-body)', padding: 16, borderRadius: 12, borderLeft: '4px solid var(--theme-primary)' }}>
               <strong>Delivery Instructions:</strong> Orders are typically delivered within 2-4 business days. For any issues during delivery or if you want to leave specific instructions, please use the Message feature when placing an order.
             </div>
             {orders.length === 0 ? (
-              <div style={{ textAlign: 'center', padding: 60, background: 'white', borderRadius: 24, border: '1px dashed #cbd5e1' }}>
+              <div style={{ textAlign: 'center', padding: 60, background: 'var(--bg-surface)', borderRadius: 24, border: '1px dashed #cbd5e1' }}>
                 <ShoppingBag size={48} color="#cbd5e1" style={{ marginBottom: 16 }} />
-                <h3 style={{ fontSize: 18, color: '#475569', fontWeight: 700 }}>No orders found</h3>
+                <h3 style={{ fontSize: 18, color: 'var(--text-main)', fontWeight: 700 }}>No orders found</h3>
               </div>
             ) : (
               orders.map(order => {
                 const canReturn = order.orderStatus === 'Delivered';
                 return (
-                  <div key={order.id} style={{ background: 'white', borderRadius: 24, overflow: 'hidden', border: '1px solid #e2e8f0' }}>
-                    <div style={{ padding: '20px 24px', background: '#f8fafc', borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div key={order.id} style={{ background: 'var(--bg-surface)', borderRadius: 24, overflow: 'hidden', border: '1px solid var(--border-main)' }}>
+                    <div style={{ padding: '20px 24px', background: 'var(--bg-body)', borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <div>
-                        <div style={{ fontSize: 12, fontWeight: 800, color: '#64748b', textTransform: 'uppercase', marginBottom: 4 }}>Order Placed</div>
-                        <div style={{ fontSize: 14, fontWeight: 700, color: '#0f172a' }}>{new Date(order.createdAt).toLocaleDateString()}</div>
+                        <div style={{ fontSize: 12, fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: 4 }}>Order Placed</div>
+                        <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-main)' }}>{new Date(order.createdAt).toLocaleDateString()}</div>
                       </div>
                       <div>
-                        <div style={{ fontSize: 12, fontWeight: 800, color: '#64748b', textTransform: 'uppercase', marginBottom: 4 }}>Total</div>
-                        <div style={{ fontSize: 14, fontWeight: 700, color: '#0f172a' }}>Rs. {parseFloat(order.grandTotal).toFixed(2)}</div>
+                        <div style={{ fontSize: 12, fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: 4 }}>Total</div>
+                        <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-main)' }}>Rs. {parseFloat(order.grandTotal).toFixed(2)}</div>
                       </div>
                       <div>
-                        <div style={{ fontSize: 12, fontWeight: 800, color: '#64748b', textTransform: 'uppercase', marginBottom: 4 }}>Status</div>
+                        <div style={{ fontSize: 12, fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: 4 }}>Status</div>
                         <div style={{ padding: '6px 12px', background: order.orderStatus === 'Delivered' ? '#dcfce7' : '#fef9c3', color: order.orderStatus === 'Delivered' ? '#16a34a' : '#ca8a04', borderRadius: 12, fontWeight: 700, fontSize: 12 }}>
                           {order.orderStatus}
                         </div>
@@ -389,17 +389,17 @@ const CustomerOrders = () => {
                       {order.Items?.map(item => (
                         <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12, paddingBottom: 12, borderBottom: '1px solid #f1f5f9' }}>
                           <div>
-                            <div style={{ fontWeight: 800, fontSize: 15, color: '#0f172a' }}>{item.Product?.name}</div>
-                            <div style={{ fontSize: 13, color: '#64748b' }}>Qty: {item.quantity}</div>
+                            <div style={{ fontWeight: 800, fontSize: 15, color: 'var(--text-main)' }}>{item.Product?.name}</div>
+                            <div style={{ fontSize: 13, color: 'var(--text-muted)' }}>Qty: {item.quantity}</div>
                           </div>
-                          <div style={{ fontWeight: 700, color: '#0f172a' }}>
+                          <div style={{ fontWeight: 700, color: 'var(--text-main)' }}>
                             Rs. {parseFloat(item.total).toFixed(2)}
                           </div>
                         </div>
                       ))}
                       {canReturn && (
                         <div style={{ marginTop: 24, textAlign: 'right' }}>
-                          <button onClick={() => openReturnModal(order)} style={{ padding: '10px 20px', background: '#f8fafc', color: '#0f172a', border: '1px solid #e2e8f0', borderRadius: 12, fontWeight: 800, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+                          <button onClick={() => openReturnModal(order)} style={{ padding: '10px 20px', background: 'var(--bg-body)', color: 'var(--text-main)', border: '1px solid var(--border-main)', borderRadius: 12, fontWeight: 800, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
                             <RefreshCcw size={16} /> Request Return
                           </button>
                         </div>
@@ -412,28 +412,28 @@ const CustomerOrders = () => {
           </div>
         ) : (
           <div style={{ display: 'grid', gap: 16 }}>
-            <div style={{ marginBottom: 8, fontSize: 13, color: '#475569', background: '#f8fafc', padding: 16, borderRadius: 12, borderLeft: '4px solid #ef4444' }}>
+            <div style={{ marginBottom: 8, fontSize: 13, color: 'var(--text-main)', background: 'var(--bg-body)', padding: 16, borderRadius: 12, borderLeft: '4px solid #ef4444' }}>
               <strong>Returns Policy:</strong> Returns are accepted within 30 days of delivery. Refunds are credited to your account balance after inspection. Note: delivery or restocking charges may be deducted.
             </div>
             {returns.length === 0 ? (
-              <div style={{ textAlign: 'center', padding: 60, background: 'white', borderRadius: 24, border: '1px dashed #cbd5e1' }}>
+              <div style={{ textAlign: 'center', padding: 60, background: 'var(--bg-surface)', borderRadius: 24, border: '1px dashed #cbd5e1' }}>
                 <PackageX size={48} color="#cbd5e1" style={{ marginBottom: 16 }} />
-                <h3 style={{ fontSize: 18, color: '#475569', fontWeight: 700 }}>No returns found</h3>
+                <h3 style={{ fontSize: 18, color: 'var(--text-main)', fontWeight: 700 }}>No returns found</h3>
               </div>
             ) : (
               returns.map(ret => (
-                <div key={ret.id} style={{ background: 'white', borderRadius: 24, overflow: 'hidden', border: '1px solid #e2e8f0', padding: 24 }}>
+                <div key={ret.id} style={{ background: 'var(--bg-surface)', borderRadius: 24, overflow: 'hidden', border: '1px solid var(--border-main)', padding: 24 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
                     <div>
                       <div style={{ fontSize: 14, fontWeight: 800 }}>Return ID: {ret.id.slice(0,8).toUpperCase()}</div>
-                      <div style={{ fontSize: 12, color: '#64748b' }}>Date: {new Date(ret.createdAt).toLocaleDateString()}</div>
+                      <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Date: {new Date(ret.createdAt).toLocaleDateString()}</div>
                     </div>
                     <div style={{ padding: '6px 12px', background: ret.status === 'completed' ? '#dcfce7' : '#fef9c3', color: ret.status === 'completed' ? '#16a34a' : '#ca8a04', borderRadius: 12, fontWeight: 700, fontSize: 12 }}>
                       {ret.status.toUpperCase()}
                     </div>
                   </div>
-                  <div style={{ fontSize: 14, color: '#0f172a', fontWeight: 700 }}>Refund Amount: ${parseFloat(ret.totalRefund).toFixed(2)}</div>
-                  {ret.notes && <div style={{ fontSize: 13, color: '#64748b', fontStyle: 'italic', marginTop: 8 }}>"{ret.notes}"</div>}
+                  <div style={{ fontSize: 14, color: 'var(--text-main)', fontWeight: 700 }}>Refund Amount: ${parseFloat(ret.totalRefund).toFixed(2)}</div>
+                  {ret.notes && <div style={{ fontSize: 13, color: 'var(--text-muted)', fontStyle: 'italic', marginTop: 8 }}>"{ret.notes}"</div>}
                 </div>
               ))
             )}
@@ -443,18 +443,18 @@ const CustomerOrders = () => {
       {/* Checkout Modal */}
       <AnimatePresence>
         {showCheckoutModal && (
-          <div style={{ position: 'fixed', inset: 0, zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
+          <div style={{ position: 'fixed', inset: 0, zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', padding: 32 }}>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowCheckoutModal(false)} style={{ position: 'absolute', inset: 0, background: 'rgba(15,23,42,0.6)', backdropFilter: 'blur(8px)' }} />
-            <motion.div initial={{ scale: 0.95, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 20 }} style={{ background: 'white', borderRadius: 24, width: '100%', maxWidth: 500, position: 'relative', padding: 32, boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)' }}>
+            <motion.div initial={{ scale: 0.95, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 20 }} style={{ background: 'var(--bg-surface)', borderRadius: 24, width: '100%', maxWidth: 500, position: 'relative', padding: 32, boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-                <h2 style={{ fontSize: 24, fontWeight: 900, color: '#0f172a', margin: 0 }}>Confirm Order</h2>
-                <button onClick={() => setShowCheckoutModal(false)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#64748b' }}>
+                <h2 style={{ fontSize: 24, fontWeight: 900, color: 'var(--text-main)', margin: 0 }}>Confirm Order</h2>
+                <button onClick={() => setShowCheckoutModal(false)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}>
                   <PackageX size={24} />
                 </button>
               </div>
 
-              <div style={{ marginBottom: 24, background: '#f8fafc', padding: 16, borderRadius: 12 }}>
-                <div style={{ fontWeight: 800, fontSize: 14, color: '#64748b', marginBottom: 8 }}>Order Summary</div>
+              <div style={{ marginBottom: 24, background: 'var(--bg-body)', padding: 16, borderRadius: 12 }}>
+                <div style={{ fontWeight: 800, fontSize: 14, color: 'var(--text-muted)', marginBottom: 8 }}>Order Summary</div>
                 {cart.map(i => (
                   <div key={i.id} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4, fontSize: 14 }}>
                     <span>{i.name} x {i.qty}</span>
@@ -463,7 +463,7 @@ const CustomerOrders = () => {
                 ))}
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 12, paddingTop: 12, borderTop: '1px solid #e2e8f0', fontWeight: 900, fontSize: 18 }}>
                   <span>Total</span>
-                  <span style={{ color: '#0a84ff' }}>Rs. {cart.reduce((s, i) => s + (i.price * i.qty), 0)}</span>
+                  <span style={{ color: 'var(--theme-primary)' }}>Rs. {cart.reduce((s, i) => s + (i.price * i.qty), 0)}</span>
                 </div>
               </div>
 
@@ -473,13 +473,13 @@ const CustomerOrders = () => {
                   value={orderNotes}
                   onChange={e => setOrderNotes(e.target.value)}
                   placeholder="Special instructions or comments..."
-                  style={{ width: '100%', padding: 16, borderRadius: 12, border: '1px solid #e2e8f0', minHeight: 80, outline: 'none', fontFamily: 'inherit' }}
+                  style={{ width: '100%', padding: 16, borderRadius: 12, border: '1px solid var(--border-main)', minHeight: 80, outline: 'none', fontFamily: 'inherit' }}
                 />
               </div>
 
               <div style={{ display: 'flex', gap: 12 }}>
-                <button onClick={() => setShowCheckoutModal(false)} style={{ flex: 1, padding: 14, background: '#f1f5f9', color: '#64748b', border: 'none', borderRadius: 12, fontWeight: 800, cursor: 'pointer' }}>Cancel</button>
-                <button onClick={placeOrder} style={{ flex: 1, padding: 14, background: '#0a84ff', color: 'white', border: 'none', borderRadius: 12, fontWeight: 800, cursor: 'pointer' }}>Confirm Order</button>
+                <button onClick={() => setShowCheckoutModal(false)} style={{ flex: 1, padding: 14, background: 'var(--bg-hover)', color: 'var(--text-muted)', border: 'none', borderRadius: 12, fontWeight: 800, cursor: 'pointer' }}>Cancel</button>
+                <button onClick={placeOrder} style={{ flex: 1, padding: 14, background: 'var(--theme-primary)', color: 'white', border: 'none', borderRadius: 12, fontWeight: 800, cursor: 'pointer' }}>Confirm Order</button>
               </div>
             </motion.div>
           </div>
@@ -489,20 +489,20 @@ const CustomerOrders = () => {
       {/* Return Modal */}
       <AnimatePresence>
         {showReturnModal && selectedOrder && (
-          <div style={{ position: 'fixed', inset: 0, zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
+          <div style={{ position: 'fixed', inset: 0, zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', padding: 32 }}>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowReturnModal(false)} style={{ position: 'absolute', inset: 0, background: 'rgba(15,23,42,0.6)', backdropFilter: 'blur(8px)' }} />
-            <motion.div initial={{ scale: 0.95, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 20 }} style={{ background: 'white', borderRadius: 24, width: '100%', maxWidth: 700, position: 'relative', padding: 32, boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', maxHeight: '90vh', overflowY: 'auto' }}>
+            <motion.div initial={{ scale: 0.95, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 20 }} style={{ background: 'var(--bg-surface)', borderRadius: 24, width: '100%', maxWidth: 700, position: 'relative', padding: 32, boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', maxHeight: '90vh', overflowY: 'auto' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-                <h2 style={{ fontSize: 24, fontWeight: 900, color: '#0f172a', margin: 0 }}>Request Return</h2>
-                <button onClick={() => setShowReturnModal(false)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#64748b' }}>
+                <h2 style={{ fontSize: 24, fontWeight: 900, color: 'var(--text-main)', margin: 0 }}>Request Return</h2>
+                <button onClick={() => setShowReturnModal(false)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}>
                   <PackageX size={24} />
                 </button>
               </div>
 
               {/* Return Policy */}
-              <div style={{ background: '#f8fafc', borderLeft: '4px solid #3b82f6', padding: 16, borderRadius: 12, marginBottom: 32 }}>
-                <h4 style={{ fontSize: 14, fontWeight: 800, color: '#0f172a', margin: '0 0 8px 0' }}>Return Policy</h4>
-                <ul style={{ margin: 0, paddingLeft: 16, fontSize: 13, color: '#475569', lineHeight: 1.6 }}>
+              <div style={{ background: 'var(--bg-body)', borderLeft: '4px solid #3b82f6', padding: 16, borderRadius: 12, marginBottom: 32 }}>
+                <h4 style={{ fontSize: 14, fontWeight: 800, color: 'var(--text-main)', margin: '0 0 8px 0' }}>Return Policy</h4>
+                <ul style={{ margin: 0, paddingLeft: 16, fontSize: 13, color: 'var(--text-main)', lineHeight: 1.6 }}>
                   <li>Returns available within 30 days after delivery.</li>
                   <li>Product must be unused / in acceptable condition.</li>
                   <li>Refund will be credited to your account balance after inspection.</li>
@@ -513,13 +513,13 @@ const CustomerOrders = () => {
               <div style={{ marginBottom: 24 }}>
                 <h3 style={{ fontSize: 16, fontWeight: 800, marginBottom: 12 }}>Select Items to Return</h3>
                 {returnItems.map(item => (
-                  <div key={item.saleItemId} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', border: '1px solid #e2e8f0', borderRadius: 12, marginBottom: 12 }}>
+                  <div key={item.saleItemId} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', border: '1px solid var(--border-main)', borderRadius: 12, marginBottom: 12 }}>
                     <div>
                       <div style={{ fontWeight: 700, fontSize: 15 }}>{item.name}</div>
-                      <div style={{ fontSize: 13, color: '#64748b' }}>Purchased: {item.purchasedQty} @ ${parseFloat(item.price).toFixed(2)}</div>
+                      <div style={{ fontSize: 13, color: 'var(--text-muted)' }}>Purchased: {item.purchasedQty} @ ${parseFloat(item.price).toFixed(2)}</div>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                      <span style={{ fontSize: 12, fontWeight: 700, color: '#64748b' }}>Return Qty:</span>
+                      <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-muted)' }}>Return Qty:</span>
                       <input 
                         type="number" 
                         min="0" 
@@ -535,7 +535,7 @@ const CustomerOrders = () => {
 
               <div style={{ marginBottom: 24 }}>
                 <label style={{ display: 'block', fontSize: 13, fontWeight: 800, marginBottom: 8 }}>Return Reason *</label>
-                <select value={returnReason} onChange={e => setReturnReason(e.target.value)} style={{ width: '100%', padding: 12, borderRadius: 12, border: '1px solid #e2e8f0', background: 'white', fontWeight: 600 }}>
+                <select value={returnReason} onChange={e => setReturnReason(e.target.value)} style={{ width: '100%', padding: 12, borderRadius: 12, border: '1px solid var(--border-main)', background: 'var(--bg-surface)', fontWeight: 600 }}>
                   <option value="">Select a reason...</option>
                   <option value="Damaged product">Damaged product</option>
                   <option value="Wrong product received">Wrong product received</option>
@@ -552,12 +552,12 @@ const CustomerOrders = () => {
                   value={customerNotes}
                   onChange={e => setCustomerNotes(e.target.value)}
                   placeholder="Tell us more about the issue..."
-                  style={{ width: '100%', padding: 16, borderRadius: 12, border: '1px solid #e2e8f0', minHeight: 100, outline: 'none', fontFamily: 'inherit' }}
+                  style={{ width: '100%', padding: 16, borderRadius: 12, border: '1px solid var(--border-main)', minHeight: 100, outline: 'none', fontFamily: 'inherit' }}
                 />
               </div>
 
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12, borderTop: '1px solid #e2e8f0', paddingTop: 24 }}>
-                <button onClick={() => setShowReturnModal(false)} style={{ padding: '12px 24px', background: 'white', color: '#64748b', border: '1px solid #e2e8f0', borderRadius: 12, fontWeight: 800, cursor: 'pointer' }}>Cancel</button>
+                <button onClick={() => setShowReturnModal(false)} style={{ padding: '12px 24px', background: 'var(--bg-surface)', color: 'var(--text-muted)', border: '1px solid var(--border-main)', borderRadius: 12, fontWeight: 800, cursor: 'pointer' }}>Cancel</button>
                 <button onClick={submitReturn} disabled={loading} style={{ padding: '12px 24px', background: '#0f172a', color: 'white', border: 'none', borderRadius: 12, fontWeight: 800, cursor: 'pointer' }}>
                   {loading ? 'Submitting...' : 'Submit Return'}
                 </button>

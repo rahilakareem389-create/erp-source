@@ -564,8 +564,8 @@ const Leaves = () => {
     if (normalized === 'withdrawn') {
       return {
         label: 'Withdrawn',
-        background: '#f1f5f9',
-        color: '#64748b',
+        background: 'var(--bg-hover)',
+        color: 'var(--text-muted)',
         icon: Ban,
       };
     }
@@ -596,7 +596,7 @@ const Leaves = () => {
       style={{
         minHeight: '100vh',
         width: '100%',
-        background: '#f8fafc',
+        background: 'var(--bg-body)',
         padding: '32px',
         boxSizing: 'border-box',
         direction: isRTL ? 'rtl' : 'ltr',
@@ -620,7 +620,7 @@ const Leaves = () => {
               margin: 0,
               fontSize: '32px',
               fontWeight: 900,
-              color: '#0f172a',
+              color: 'var(--text-main)',
             }}
           >
             {t('leaves') || 'Leaves'} Management
@@ -629,7 +629,7 @@ const Leaves = () => {
           <p
             style={{
               margin: '8px 0 0',
-              color: '#64748b',
+              color: 'var(--text-muted)',
               fontSize: '15px',
               fontWeight: 600,
             }}
@@ -669,9 +669,9 @@ const Leaves = () => {
               gap: '8px',
               padding: '11px 18px',
               borderRadius: '10px',
-              border: '1px solid #e2e8f0',
+              border: '1px solid var(--border-main)',
               background: '#ffffff',
-              color: '#334155',
+              color: 'var(--text-main)',
               fontWeight: 800,
               cursor: loading
                 ? 'not-allowed'
@@ -796,7 +796,7 @@ const Leaves = () => {
         style={{
           background: '#ffffff',
           borderRadius: '22px',
-          border: '1px solid #e2e8f0',
+          border: '1px solid var(--border-main)',
           overflow: 'hidden',
           boxShadow:
             '0 5px 25px rgba(15,23,42,0.05)',
@@ -815,7 +815,7 @@ const Leaves = () => {
             <h2
               style={{
                 margin: 0,
-                color: '#0f172a',
+                color: 'var(--text-main)',
                 fontSize: '19px',
                 fontWeight: 900,
               }}
@@ -826,7 +826,7 @@ const Leaves = () => {
             <p
               style={{
                 margin: '5px 0 0',
-                color: '#64748b',
+                color: 'var(--text-muted)',
                 fontSize: '13px',
                 fontWeight: 600,
               }}
@@ -839,8 +839,8 @@ const Leaves = () => {
             style={{
               padding: '7px 12px',
               borderRadius: '20px',
-              background: '#f1f5f9',
-              color: '#475569',
+              background: 'var(--bg-hover)',
+              color: 'var(--text-main)',
               fontSize: '12px',
               fontWeight: 800,
             }}
@@ -866,7 +866,7 @@ const Leaves = () => {
             <thead>
               <tr
                 style={{
-                  background: '#f8fafc',
+                  background: 'var(--bg-body)',
                   borderBottom:
                     '1px solid #e2e8f0',
                 }}
@@ -897,7 +897,7 @@ const Leaves = () => {
                         flexDirection: 'column',
                         alignItems: 'center',
                         gap: '12px',
-                        color: '#64748b',
+                        color: 'var(--text-muted)',
                         fontWeight: 700,
                       }}
                     >
@@ -962,11 +962,11 @@ const Leaves = () => {
                               width: '42px',
                               height: '42px',
                               borderRadius: '12px',
-                              background: '#f1f5f9',
+                              background: 'var(--bg-hover)',
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'center',
-                              color: '#475569',
+                              color: 'var(--text-main)',
                               fontWeight: 900,
                             }}
                           >
@@ -980,7 +980,7 @@ const Leaves = () => {
                           <div>
                             <div
                               style={{
-                                color: '#0f172a',
+                                color: 'var(--text-main)',
                                 fontWeight: 800,
                                 fontSize: '14px',
                               }}
@@ -993,7 +993,7 @@ const Leaves = () => {
                             <div
                               style={{
                                 marginTop: '4px',
-                                color: '#94a3b8',
+                                color: 'var(--text-muted)',
                                 fontSize: '12px',
                                 fontWeight: 600,
                               }}
@@ -1009,7 +1009,7 @@ const Leaves = () => {
                       <td style={cellStyle}>
                         <div
                           style={{
-                            color: '#334155',
+                            color: 'var(--text-main)',
                             fontSize: '14px',
                             fontWeight: 800,
                           }}
@@ -1031,7 +1031,7 @@ const Leaves = () => {
                                 'ellipsis',
                               whiteSpace:
                                 'nowrap',
-                              color: '#94a3b8',
+                              color: 'var(--text-muted)',
                               fontSize: '12px',
                             }}
                           >
@@ -1048,7 +1048,7 @@ const Leaves = () => {
                             display: 'flex',
                             alignItems: 'center',
                             gap: '8px',
-                            color: '#0f172a',
+                            color: 'var(--text-main)',
                             fontSize: '14px',
                             fontWeight: 800,
                           }}
@@ -1061,7 +1061,7 @@ const Leaves = () => {
 
                           <span
                             style={{
-                              color: '#94a3b8',
+                              color: 'var(--text-muted)',
                               fontWeight: 700,
                             }}
                           >
@@ -1076,7 +1076,7 @@ const Leaves = () => {
                         <div
                           style={{
                             marginTop: '7px',
-                            color: '#64748b',
+                            color: 'var(--text-muted)',
                             fontSize: '12px',
                             fontWeight: 700,
                           }}
@@ -1278,7 +1278,7 @@ const Leaves = () => {
                         <h3
                           style={{
                             margin: 0,
-                            color: '#475569',
+                            color: 'var(--text-main)',
                             fontSize: '17px',
                             fontWeight: 900,
                           }}
@@ -1289,7 +1289,7 @@ const Leaves = () => {
                         <p
                           style={{
                             margin: 0,
-                            color: '#94a3b8',
+                            color: 'var(--text-muted)',
                             fontSize: '13px',
                             fontWeight: 600,
                           }}
@@ -1368,7 +1368,7 @@ const Leaves = () => {
                 <h2
                   style={{
                     margin: 0,
-                    color: '#0f172a',
+                    color: 'var(--text-main)',
                     fontSize: '20px',
                     fontWeight: 900,
                   }}
@@ -1379,7 +1379,7 @@ const Leaves = () => {
                 <p
                   style={{
                     margin: '4px 0 0',
-                    color: '#64748b',
+                    color: 'var(--text-muted)',
                     fontSize: '13px',
                     fontWeight: 600,
                   }}
@@ -1397,7 +1397,7 @@ const Leaves = () => {
               style={{
                 display: 'block',
                 marginBottom: '8px',
-                color: '#334155',
+                color: 'var(--text-main)',
                 fontSize: '13px',
                 fontWeight: 800,
               }}
@@ -1424,7 +1424,7 @@ const Leaves = () => {
                   '1px solid #cbd5e1',
                 borderRadius: '10px',
                 outline: 'none',
-                color: '#0f172a',
+                color: 'var(--text-main)',
                 fontSize: '14px',
                 fontFamily: 'inherit',
               }}
@@ -1447,10 +1447,9 @@ const Leaves = () => {
                 style={{
                   padding: '10px 18px',
                   borderRadius: '9px',
-                  border:
-                    '1px solid #e2e8f0',
+                  border: '1px solid var(--border-main)',
                   background: '#ffffff',
-                  color: '#475569',
+                  color: 'var(--text-main)',
                   fontWeight: 800,
                   cursor: 'pointer',
                 }}
@@ -1563,7 +1562,7 @@ const StatCard = ({
         background: '#ffffff',
         borderRadius: '18px',
         padding: '22px',
-        border: '1px solid #e2e8f0',
+        border: '1px solid var(--border-main)',
         boxShadow:
           '0 4px 15px rgba(15,23,42,0.04)',
       }}
@@ -1579,7 +1578,7 @@ const StatCard = ({
           <p
             style={{
               margin: 0,
-              color: '#64748b',
+              color: 'var(--text-muted)',
               fontSize: '13px',
               fontWeight: 800,
               textTransform: 'uppercase',
@@ -1592,7 +1591,7 @@ const StatCard = ({
             style={{
               margin: '8px 0 0',
               fontSize: '30px',
-              color: '#0f172a',
+              color: 'var(--text-main)',
               fontWeight: 900,
             }}
           >
@@ -1627,7 +1626,7 @@ const headerStyle = {
   padding: '15px 22px',
   fontSize: '11px',
   fontWeight: 900,
-  color: '#64748b',
+  color: 'var(--text-muted)',
   textTransform: 'uppercase',
   letterSpacing: '0.04em',
   whiteSpace: 'nowrap',

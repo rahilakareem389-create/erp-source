@@ -78,6 +78,10 @@ import {
   useLanguage,
 } from './context/LanguageContext';
 
+import {
+  ThemeProvider,
+} from './context/ThemeContext';
+
 import PrivateRoute from './components/PrivateRoute';
 
 import {
@@ -231,9 +235,9 @@ function AppContent() {
       className="
         flex
         min-h-screen
-        bg-gray-50
+        bg-body
         relative
-        text-gray-900
+        text-text-main
         font-sans
         overflow-hidden
       "
@@ -965,24 +969,26 @@ function AppContent() {
 
 function App() {
   return (
-    <LanguageProvider>
+    <ThemeProvider>
+      <LanguageProvider>
 
-      <AuthProvider>
+        <AuthProvider>
 
-        <Router
-          future={{
-            v7_startTransition: true,
-            v7_relativeSplatPath: true,
-          }}
-        >
+          <Router
+            future={{
+              v7_startTransition: true,
+              v7_relativeSplatPath: true,
+            }}
+          >
 
-          <AppContent />
+            <AppContent />
 
-        </Router>
+          </Router>
 
-      </AuthProvider>
+        </AuthProvider>
 
-    </LanguageProvider>
+      </LanguageProvider>
+    </ThemeProvider>
   );
 }
 

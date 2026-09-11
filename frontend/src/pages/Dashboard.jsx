@@ -15,8 +15,8 @@ const StatCard = ({ title, value, icon, rgb, delay, onClick }) => (
     transition={{ delay }}
     onClick={onClick}
     style={{
-      background: 'white', padding: 24, borderRadius: 24,
-      border: '1px solid rgba(0,0,0,0.05)',
+      background: 'var(--bg-surface)', padding: 24, borderRadius: 24,
+      border: '1px solid var(--border-main)',
       boxShadow: '0 4px 20px rgba(0,0,0,0.03)',
       display: 'flex', alignItems: 'center', gap: 20,
       cursor: onClick ? 'pointer' : 'default'
@@ -31,8 +31,8 @@ const StatCard = ({ title, value, icon, rgb, delay, onClick }) => (
       {icon}
     </div>
     <div>
-      <div style={{ fontSize: 13, fontWeight: 700, color: '#64748b', marginBottom: 4 }}>{title}</div>
-      <div style={{ fontSize: 24, fontWeight: 900, color: '#0f172a' }}>{value}</div>
+      <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-muted)', marginBottom: 4 }}>{title}</div>
+      <div style={{ fontSize: 24, fontWeight: 900, color: 'var(--text-main)' }}>{value}</div>
     </div>
   </motion.div>
 );
@@ -142,13 +142,13 @@ const handleDownloadReport = async () => {
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 24, marginBottom: 32 }}>
       <StatCard title="Total Revenue" value={`$${stats.totalRevenue || 0}`} icon={<TrendingUp />} rgb="34,197,94" delay={0.1} />
       <StatCard title="Net Profit" value={`$${stats.netProfit || 0}`} icon={<Activity />} rgb="16,185,129" delay={0.2} />
-      <StatCard title="Today's Sales" value={stats.totalSales} icon={<ShoppingCart />} rgb="10,132,255" delay={0.3} />
+      <StatCard title="Today's Sales" value={stats.totalSales} icon={<ShoppingCart />} rgb="var(--theme-primary-rgb)" delay={0.3} />
       <StatCard title="Low Stock" value={alerts.lowStock?.length || 0} icon={<AlertTriangle />} rgb="249,115,22" delay={0.4} onClick={() => navigate('/suppliers')} />
       <StatCard 
         title="Staff Strength" 
         value={
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 4 }}>
-            <div style={{ fontSize: 24, fontWeight: 900 }}>{stats.activeEmployees} <span style={{ fontSize: 13, fontWeight: 600, color: '#94a3b8' }}>Active</span></div>
+            <div style={{ fontSize: 24, fontWeight: 900 }}>{stats.activeEmployees} <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-muted)' }}>Active</span></div>
             <div style={{ display: 'flex', gap: 4, height: 6, width: '100%', borderRadius: 4, overflow: 'hidden' }}>
               <div style={{ background: '#3b82f6', width: `${(stats.maleEmployees / Math.max(1, stats.activeEmployees)) * 100}%` }} title={`Male: ${stats.maleEmployees}`} />
               <div style={{ background: '#ec4899', width: `${(stats.femaleEmployees / Math.max(1, stats.activeEmployees)) * 100}%` }} title={`Female: ${stats.femaleEmployees}`} />
@@ -171,14 +171,14 @@ const handleDownloadReport = async () => {
       <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 24 }}>
         <motion.div 
           initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
-          style={{ background: 'linear-gradient(135deg, #0a84ff, #0055ff)', borderRadius: 32, padding: 40, color: 'white', position: 'relative', overflow: 'hidden' }}
+          style={{ background: 'linear-gradient(135deg, var(--theme-primary), var(--theme-hover))', borderRadius: 32, padding: 40, color: 'white', position: 'relative', overflow: 'hidden' }}
         >
           <div style={{ position: 'relative', zIndex: 1 }}>
             <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12 }}>Ready to sell?</h2>
             <p style={{ opacity: 0.8, marginBottom: 32, maxWidth: 400 }}>Access the sales terminal to process transactions and manage customer orders efficiently.</p>
             <button 
               onClick={() => navigate('/sales')}
-              style={{ background: 'white', color: '#0a84ff', border: 'none', padding: '14px 28px', borderRadius: 16, fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 10 }}
+              style={{ background: 'var(--bg-surface)', color: 'var(--theme-primary)', border: 'none', padding: '14px 28px', borderRadius: 16, fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 10 }}
             >
               Open Terminal <ArrowUpRight size={18} />
             </button>
@@ -188,16 +188,16 @@ const handleDownloadReport = async () => {
 
         <motion.div 
           initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
-          style={{ background: 'white', borderRadius: 32, padding: 32, border: '1px solid rgba(0,0,0,0.05)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}
+          style={{ background: 'var(--bg-surface)', borderRadius: 32, padding: 32, border: '1px solid var(--border-main)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}
         >
-          <div style={{ color: '#64748b', fontSize: 14, fontWeight: 700, marginBottom: 12 }}>ATTENDANCE STATUS</div>
+          <div style={{ color: 'var(--text-muted)', fontSize: 14, fontWeight: 700, marginBottom: 12 }}>ATTENDANCE STATUS</div>
           {activeAttendance ? (
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
                 <div style={{ width: 12, height: 12, borderRadius: '50%', background: '#22c55e', boxShadow: '0 0 12px rgba(34,197,94,0.5)' }} />
-                <span style={{ fontSize: 20, fontWeight: 900, color: '#0f172a' }}>On Duty</span>
+                <span style={{ fontSize: 20, fontWeight: 900, color: 'var(--text-main)' }}>On Duty</span>
               </div>
-              <div style={{ fontSize: 13, color: '#64748b', fontWeight: 600, marginBottom: 20 }}>
+              <div style={{ fontSize: 13, color: 'var(--text-muted)', fontWeight: 600, marginBottom: 20 }}>
                 Clocked in at {new Date(activeAttendance.clockIn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
               </div>
               <button 
@@ -245,7 +245,7 @@ const handleDownloadReport = async () => {
                   clockInWithCoords(settings.officeLat, settings.officeLng);
                 }
               }}
-              style={{ width: '100%', padding: '16px', borderRadius: 16, background: '#f1f5f9', border: 'none', color: '#0f172a', fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}
+              style={{ width: '100%', padding: '16px', borderRadius: 16, background: 'var(--bg-hover)', border: 'none', color: 'var(--text-main)', fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}
             >
               <Clock size={18} /> Clock In Now
             </button>
@@ -256,21 +256,21 @@ const handleDownloadReport = async () => {
   );
 
   return (
-    <div style={{ padding: '40px', minHeight: '100vh', background: '#f8fafc', fontFamily: "'Outfit', sans-serif" }}>
+    <div style={{ padding: '40px', minHeight: '100vh', background: 'var(--bg-body)', fontFamily: "'Outfit', sans-serif" }}>
       <header style={{ marginBottom: 40, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
-          <h1 style={{ fontSize: 32, fontWeight: 900, color: '#0f172a' }}>
-            Good morning, <span style={{ color: '#0a84ff' }}>{user?.name?.split(' ')[0] || 'Admin'}</span>
+          <h1 style={{ fontSize: 32, fontWeight: 900, color: 'var(--text-main)' }}>
+            Good morning, <span style={{ color: 'var(--theme-primary)' }}>{user?.name?.split(' ')[0] || 'Admin'}</span>
           </h1>
-          <p style={{ color: '#64748b', marginTop: 4, fontWeight: 500 }}>Here's what's happening with your business today.</p>
+          <p style={{ color: 'var(--text-muted)', marginTop: 4, fontWeight: 500 }}>Here's what's happening with your business today.</p>
         </div>
         <div style={{ display: 'flex', gap: 12 }}>
           {role === 'admin' && (
-            <button style={{ padding: '12px 20px', borderRadius: 14, border: '1px solid #e2e8f0', background: 'white', fontWeight: 700, cursor: 'pointer' }} onClick={() => setShowSettings(true)}>
+            <button style={{ padding: '12px 20px', borderRadius: 14, border: '1px solid var(--border-main)', background: 'var(--bg-surface)', fontWeight: 700, cursor: 'pointer' }} onClick={() => setShowSettings(true)}>
               ⚙️ Settings
             </button>
           )}
-          <button style={{ padding: '12px 20px', borderRadius: 14, border: '1px solid #e2e8f0', background: 'white', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8 }} onClick={() => { fetchTodayStats(); }}>
+          <button style={{ padding: '12px 20px', borderRadius: 14, border: '1px solid var(--border-main)', background: 'var(--bg-surface)', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8 }} onClick={() => { fetchTodayStats(); }}>
             <Calendar size={18} /> Today
           </button>
           <button style={{ padding: '12px 20px', borderRadius: 14, background: '#0f172a', color: 'white', fontWeight: 700, border: 'none', cursor: 'pointer' }} onClick={handleDownloadReport}>
@@ -307,7 +307,7 @@ const handleDownloadReport = async () => {
         <>
           <AdminDash />
           {alerts.lowStock?.length > 0 && (
-            <div style={{ background: 'white', padding: 32, borderRadius: 32, border: '1px solid rgba(0,0,0,0.05)', marginTop: 24 }}>
+            <div style={{ background: 'var(--bg-surface)', padding: 32, borderRadius: 32, border: '1px solid var(--border-main)', marginTop: 24 }}>
               <h3 style={{ fontSize: 18, fontWeight: 900, marginBottom: 20, display: 'flex', alignItems: 'center', gap: 10 }}>
                 <AlertTriangle size={20} color="#f59e0b" /> Critical Low Stock Items
               </h3>
@@ -335,23 +335,23 @@ const handleDownloadReport = async () => {
         {showSettings && (
           <div style={{ position: 'fixed', inset: 0, zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowSettings(false)} style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.3)' }} />
-            <motion.div initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9 }} style={{ background: 'white', borderRadius: 24, width: '100%', maxWidth: 400, position: 'relative', padding: 32 }}>
+            <motion.div initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9 }} style={{ background: 'var(--bg-surface)', borderRadius: 24, width: '100%', maxWidth: 400, position: 'relative', padding: 32 }}>
               <h2 style={{ fontSize: 20, fontWeight: 900, marginBottom: 24 }}>System Settings</h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
                 <div>
-                  <label style={{ fontSize: 12, fontWeight: 700, color: '#64748b', marginBottom: 4, display: 'block' }}>Company Name</label>
-                  <input value={settingsForm.companyName} onChange={e => setSettingsForm({ ...settingsForm, companyName: e.target.value })} style={{ width: '100%', padding: '10px 14px', borderRadius: 10, border: '1.5px solid #e2e8f0', outline: 'none' }} />
+                  <label style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-muted)', marginBottom: 4, display: 'block' }}>Company Name</label>
+                  <input value={settingsForm.companyName} onChange={e => setSettingsForm({ ...settingsForm, companyName: e.target.value })} style={{ width: '100%', padding: '10px 14px', borderRadius: 10, border: '1.5px solid var(--border-main)', outline: 'none' }} />
                 </div>
                 <div>
-                  <label style={{ fontSize: 12, fontWeight: 700, color: '#64748b', marginBottom: 4, display: 'block' }}>Office Latitude</label>
-                  <input type="number" step="any" value={settingsForm.officeLat} onChange={e => setSettingsForm({ ...settingsForm, officeLat: e.target.value })} style={{ width: '100%', padding: '10px 14px', borderRadius: 10, border: '1.5px solid #e2e8f0', outline: 'none' }} />
+                  <label style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-muted)', marginBottom: 4, display: 'block' }}>Office Latitude</label>
+                  <input type="number" step="any" value={settingsForm.officeLat} onChange={e => setSettingsForm({ ...settingsForm, officeLat: e.target.value })} style={{ width: '100%', padding: '10px 14px', borderRadius: 10, border: '1.5px solid var(--border-main)', outline: 'none' }} />
                 </div>
                 <div>
-                  <label style={{ fontSize: 12, fontWeight: 700, color: '#64748b', marginBottom: 4, display: 'block' }}>Office Longitude</label>
-                  <input type="number" step="any" value={settingsForm.officeLng} onChange={e => setSettingsForm({ ...settingsForm, officeLng: e.target.value })} style={{ width: '100%', padding: '10px 14px', borderRadius: 10, border: '1.5px solid #e2e8f0', outline: 'none' }} />
+                  <label style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-muted)', marginBottom: 4, display: 'block' }}>Office Longitude</label>
+                  <input type="number" step="any" value={settingsForm.officeLng} onChange={e => setSettingsForm({ ...settingsForm, officeLng: e.target.value })} style={{ width: '100%', padding: '10px 14px', borderRadius: 10, border: '1.5px solid var(--border-main)', outline: 'none' }} />
                 </div>
                 <div style={{ display: 'flex', gap: 10, marginTop: 16 }}>
-                  <button onClick={() => setShowSettings(false)} style={{ flex: 1, padding: 12, borderRadius: 10, background: '#f1f5f9', color: '#64748b', fontWeight: 800, border: 'none', cursor: 'pointer' }}>Cancel</button>
+                  <button onClick={() => setShowSettings(false)} style={{ flex: 1, padding: 12, borderRadius: 10, background: 'var(--bg-hover)', color: 'var(--text-muted)', fontWeight: 800, border: 'none', cursor: 'pointer' }}>Cancel</button>
                   <button onClick={async () => {
                     try {
                       await settingsAPI.update(settingsForm);
@@ -360,7 +360,7 @@ const handleDownloadReport = async () => {
                       // reload to update sidebar globally
                       window.location.reload();
                     } catch(e) { alert('Failed to save settings'); }
-                  }} style={{ flex: 1, padding: 12, borderRadius: 10, background: '#0a84ff', color: 'white', fontWeight: 800, border: 'none', cursor: 'pointer' }}>Save & Reload</button>
+                  }} style={{ flex: 1, padding: 12, borderRadius: 10, background: 'var(--theme-primary)', color: 'white', fontWeight: 800, border: 'none', cursor: 'pointer' }}>Save & Reload</button>
                 </div>
               </div>
             </motion.div>

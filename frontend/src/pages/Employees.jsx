@@ -400,7 +400,7 @@ const Employees = () => {
       style={{
         padding: 40,
         minHeight: '100vh',
-        background: '#f8fafc',
+        background: 'var(--bg-body)',
         direction:
           isRTL ? 'rtl' : 'ltr'
       }}
@@ -429,7 +429,7 @@ const Employees = () => {
               margin: 0,
               fontSize: 32,
               fontWeight: 900,
-              color: '#0f172a'
+              color: 'var(--text-main)'
             }}
           >
             {t('employees')} Directory
@@ -438,7 +438,7 @@ const Employees = () => {
           <p
             style={{
               marginTop: 8,
-              color: '#64748b',
+              color: 'var(--text-muted)',
               fontWeight: 600
             }}
           >
@@ -470,8 +470,8 @@ const Employees = () => {
               padding:
                 '10px 16px',
               borderRadius: 12,
-              background: 'white',
-              color: '#0f172a',
+              background: 'var(--bg-surface)',
+              color: 'var(--text-main)',
               border:
                 '1px solid rgba(0,0,0,0.1)',
               fontWeight: 700,
@@ -512,8 +512,8 @@ const Employees = () => {
               padding:
                 '10px 16px',
               borderRadius: 12,
-              background: 'white',
-              color: '#0f172a',
+              background: 'var(--bg-surface)',
+              color: 'var(--text-main)',
               border:
                 '1px solid rgba(0,0,0,0.1)',
               fontWeight: 700,
@@ -545,7 +545,7 @@ const Employees = () => {
                 '10px 16px',
               borderRadius: 12,
               background:
-                '#0a84ff',
+                'var(--theme-primary)',
               color: 'white',
               border: 'none',
               fontWeight: 800,
@@ -728,7 +728,7 @@ const Employees = () => {
               showFilters
                 ? '#e0f2fe'
                 : 'white',
-            color: '#0f172a',
+            color: 'var(--text-main)',
             border:
               '1px solid rgba(0,0,0,0.1)',
             fontWeight: 700,
@@ -751,7 +751,7 @@ const Employees = () => {
                 borderRadius:
                   '50%',
                 background:
-                  '#0a84ff',
+                  'var(--theme-primary)',
                 color: 'white',
                 display: 'flex',
                 alignItems:
@@ -777,8 +777,7 @@ const Employees = () => {
       {showFilters && (
         <div
           style={{
-            background:
-              'white',
+            background: 'var(--bg-surface)',
             padding: 20,
             borderRadius: 16,
             marginBottom: 24,
@@ -801,7 +800,7 @@ const Employees = () => {
                 display: 'block',
                 marginBottom: 8,
                 fontWeight: 700,
-                color: '#475569'
+                color: 'var(--text-main)'
               }}
             >
               Department
@@ -824,8 +823,7 @@ const Employees = () => {
                 border:
                   '1px solid #cbd5e1',
                 outline: 'none',
-                background:
-                  'white'
+                background: 'var(--bg-surface)'
               }}
             >
 
@@ -860,7 +858,7 @@ const Employees = () => {
                 display: 'block',
                 marginBottom: 8,
                 fontWeight: 700,
-                color: '#475569'
+                color: 'var(--text-main)'
               }}
             >
               Status
@@ -883,8 +881,7 @@ const Employees = () => {
                 border:
                   '1px solid #cbd5e1',
                 outline: 'none',
-                background:
-                  'white'
+                background: 'var(--bg-surface)'
               }}
             >
 
@@ -947,7 +944,7 @@ const Employees = () => {
       <div
         style={{
           marginBottom: 12,
-          color: '#64748b',
+          color: 'var(--text-muted)',
           fontSize: 14,
           fontWeight: 700
         }}
@@ -965,11 +962,9 @@ const Employees = () => {
 
       <div
         style={{
-          background:
-            'white',
+          background: 'var(--bg-surface)',
           borderRadius: 24,
-          border:
-            '1px solid rgba(0,0,0,0.05)',
+          border: '1px solid var(--border-main)',
           overflow: 'auto'
         }}
       >
@@ -991,8 +986,7 @@ const Employees = () => {
 
             <tr
               style={{
-                background:
-                  '#f8fafc',
+                background: 'var(--bg-body)',
                 borderBottom:
                   '1px solid rgba(0,0,0,0.05)'
               }}
@@ -1120,8 +1114,7 @@ const Employees = () => {
                             style={{
                               fontWeight:
                                 800,
-                              color:
-                                '#0f172a'
+                              color: 'var(--text-main)'
                             }}
                           >
                             {isRTL
@@ -1134,8 +1127,7 @@ const Employees = () => {
                             style={{
                               fontSize:
                                 12,
-                              color:
-                                '#94a3b8',
+                              color: 'var(--text-muted)',
                               fontWeight:
                                 600
                             }}
@@ -1158,8 +1150,7 @@ const Employees = () => {
                       style={{
                         ...tdStyle,
                         fontWeight: 700,
-                        color:
-                          '#475569'
+                        color: 'var(--text-main)'
                       }}
                     >
                       {id}
@@ -1178,8 +1169,7 @@ const Employees = () => {
                         style={{
                           fontWeight:
                             700,
-                          color:
-                            '#0f172a',
+                          color: 'var(--text-main)',
                           fontSize:
                             14
                         }}
@@ -1191,8 +1181,7 @@ const Employees = () => {
                         style={{
                           fontSize:
                             12,
-                          color:
-                            '#64748b',
+                          color: 'var(--text-muted)',
                           fontWeight:
                             600
                         }}
@@ -1210,8 +1199,7 @@ const Employees = () => {
                         ...tdStyle,
                         fontWeight:
                           700,
-                        color:
-                          '#475569'
+                        color: 'var(--text-main)'
                       }}
                     >
                       {emp.siteProject ||
@@ -1323,8 +1311,7 @@ const Employees = () => {
               padding: 50,
               textAlign:
                 'center',
-              color:
-                '#64748b',
+              color: 'var(--text-muted)',
               fontWeight: 700
             }}
           >
@@ -1343,8 +1330,7 @@ const Employees = () => {
                 padding: 60,
                 textAlign:
                   'center',
-                color:
-                  '#94a3b8'
+                color: 'var(--text-muted)'
               }}
             >
 
@@ -1360,8 +1346,7 @@ const Employees = () => {
                 style={{
                   fontWeight:
                     800,
-                  color:
-                    '#475569'
+                  color: 'var(--text-main)'
                 }}
               >
                 No employees found
@@ -1399,11 +1384,9 @@ const SummaryCard = ({
   return (
     <div
       style={{
-        background:
-          'white',
+        background: 'var(--bg-surface)',
         borderRadius: 18,
-        border:
-          '1px solid rgba(0,0,0,0.05)',
+        border: '1px solid var(--border-main)',
         padding: 18
       }}
     >
@@ -1442,8 +1425,7 @@ const SummaryCard = ({
 
           <div
             style={{
-              color:
-                '#64748b',
+              color: 'var(--text-muted)',
               fontSize: 13,
               fontWeight:
                 700
@@ -1454,8 +1436,7 @@ const SummaryCard = ({
 
           <div
             style={{
-              color:
-                '#0f172a',
+              color: 'var(--text-main)',
               fontSize: 24,
               fontWeight:
                 900
@@ -1482,8 +1463,7 @@ const thStyle = {
     '16px 24px',
   fontSize: 12,
   fontWeight: 800,
-  color:
-    '#64748b',
+  color: 'var(--text-muted)',
   textTransform:
     'uppercase',
   whiteSpace:

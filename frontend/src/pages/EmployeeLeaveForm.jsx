@@ -243,7 +243,7 @@ const EmployeeLeaveForm = () => {
       style={{
         minHeight: '100vh',
         width: '100%',
-        background: '#f8fafc',
+        background: 'var(--bg-body)',
         padding: '32px',
         boxSizing: 'border-box',
         direction: isRTL ? 'rtl' : 'ltr',
@@ -265,7 +265,7 @@ const EmployeeLeaveForm = () => {
             display: 'inline-flex',
             alignItems: 'center',
             gap: '6px',
-            color: '#64748b',
+            color: 'var(--text-muted)',
             textDecoration: 'none',
             fontSize: '14px',
             fontWeight: 700,
@@ -281,7 +281,7 @@ const EmployeeLeaveForm = () => {
             margin: 0,
             fontSize: '32px',
             fontWeight: 900,
-            color: '#0f172a',
+            color: 'var(--text-main)',
           }}
         >
           Apply for Leave
@@ -290,7 +290,7 @@ const EmployeeLeaveForm = () => {
         <p
           style={{
             margin: '8px 0 0',
-            color: '#64748b',
+            color: 'var(--text-muted)',
             fontSize: '15px',
             fontWeight: 600,
           }}
@@ -378,7 +378,7 @@ const EmployeeLeaveForm = () => {
           width: '100%',
           maxWidth: '850px',
           background: '#ffffff',
-          border: '1px solid #e2e8f0',
+          border: '1px solid var(--border-main)',
           borderRadius: '22px',
           padding: '30px',
           boxShadow: '0 5px 25px rgba(15,23,42,0.05)',
@@ -593,7 +593,7 @@ const EmployeeLeaveForm = () => {
               style={{
                 marginTop: '6px',
                 fontSize: '12px',
-                color: '#94a3b8',
+                color: 'var(--text-muted)',
                 fontWeight: 600,
               }}
             >
@@ -720,7 +720,7 @@ const EmployeeLeaveForm = () => {
 const labelStyle = {
   display: 'block',
   marginBottom: '8px',
-  color: '#334155',
+  color: 'var(--text-main)',
   fontSize: '13px',
   fontWeight: 800,
 };
@@ -732,7 +732,7 @@ const inputStyle = {
   border: '1px solid #cbd5e1',
   borderRadius: '10px',
   background: '#ffffff',
-  color: '#0f172a',
+  color: 'var(--text-main)',
   fontSize: '14px',
   fontFamily: 'inherit',
   transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
@@ -743,7 +743,7 @@ const iconStyle = {
   left: '14px',
   top: '50%',
   transform: 'translateY(-50%)',
-  color: '#64748b',
+  color: 'var(--text-muted)',
   pointerEvents: 'none',
   zIndex: 1,
 };

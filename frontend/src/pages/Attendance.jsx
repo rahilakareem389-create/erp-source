@@ -71,14 +71,14 @@ const Attendance = () => {
   const tabLabels = { clock: '🕐 Clock In/Out', team: '👥 Team Overview', history: '📋 My History' };
 
   return (
-    <div style={{ padding: 40, minHeight: '100vh', background: '#f8fafc', direction: isRTL ? 'rtl' : 'ltr' }}>
+    <div style={{ padding: 40, minHeight: '100vh', background: 'var(--bg-body)', direction: isRTL ? 'rtl' : 'ltr' }}>
       <header style={{ marginBottom: 32 }}>
-        <h1 style={{ fontSize: 32, fontWeight: 900, color: '#0f172a' }}>{t('attendance')} & Time Tracking</h1>
-        <p style={{ color: '#64748b', fontWeight: 600 }}>Manage your work hours and monitor staff presence across sites.</p>
+        <h1 style={{ fontSize: 32, fontWeight: 900, color: 'var(--text-main)' }}>{t('attendance')} & Time Tracking</h1>
+        <p style={{ color: 'var(--text-muted)', fontWeight: 600 }}>Manage your work hours and monitor staff presence across sites.</p>
       </header>
 
       {/* Tab Bar */}
-      <div style={{ display: 'flex', gap: 8, background: 'white', padding: 6, borderRadius: 18, border: '1px solid #e2e8f0', marginBottom: 32, width: 'fit-content' }}>
+      <div style={{ display: 'flex', gap: 8, background: 'var(--bg-surface)', padding: 6, borderRadius: 18, border: '1px solid var(--border-main)', marginBottom: 32, width: 'fit-content' }}>
         {TABS.map(tab => (
           <button key={tab} onClick={() => setActiveTab(tab)}
             style={{
@@ -98,17 +98,17 @@ const Attendance = () => {
             style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 32 }}>
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-              <div style={{ background: 'white', padding: 32, borderRadius: 32, border: '1px solid rgba(0,0,0,0.05)', textAlign: 'center' }}>
-                <div style={{ width: 80, height: 80, borderRadius: '50%', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
+              <div style={{ background: 'var(--bg-surface)', padding: 32, borderRadius: 32, border: '1px solid var(--border-main)', textAlign: 'center' }}>
+                <div style={{ width: 80, height: 80, borderRadius: '50%', background: 'var(--bg-hover)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
                   <Clock size={40} color="#0f172a" />
                 </div>
-                <div style={{ fontSize: 48, fontWeight: 900, color: '#0a84ff', marginBottom: 4, fontVariantNumeric: 'tabular-nums' }}>
+                <div style={{ fontSize: 48, fontWeight: 900, color: 'var(--theme-primary)', marginBottom: 4, fontVariantNumeric: 'tabular-nums' }}>
                   {liveTime.toLocaleTimeString()}
                 </div>
                 
                 {/* Site Selection */}
                 <div style={{ marginBottom: 24, textAlign: isRTL ? 'right' : 'left' }}>
-                  <label style={{ fontSize: 13, fontWeight: 700, color: '#64748b', marginBottom: 8, display: 'block' }}>Current Site/Project</label>
+                  <label style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-muted)', marginBottom: 8, display: 'block' }}>Current Site/Project</label>
                   <select value={selectedProject} onChange={e => setSelectedProject(e.target.value)}
                     style={{ width: '100%', padding: '12px 16px', borderRadius: 12, border: '1px solid rgba(0,0,0,0.1)', fontWeight: 700, outline: 'none' }}>
                     <option value="HQ">HQ / Office</option>
@@ -132,7 +132,7 @@ const Attendance = () => {
                   <button 
                     disabled={!activeAttendance} onClick={handleClockOut}
                     style={{ 
-                      padding: '16px', borderRadius: 16, background: 'white', color: !activeAttendance ? '#e2e8f0' : '#ef4444', 
+                      padding: '16px', borderRadius: 16, background: 'var(--bg-surface)', color: !activeAttendance ? '#e2e8f0' : '#ef4444', 
                       border: `2px solid ${!activeAttendance ? '#f1f5f9' : '#fee2e2'}`, fontWeight: 800, fontSize: 16, cursor: 'pointer',
                       display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10
                     }}>
@@ -143,29 +143,29 @@ const Attendance = () => {
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-              <div style={{ background: 'white', padding: 32, borderRadius: 32, border: '1px solid rgba(0,0,0,0.05)' }}>
-                <h2 style={{ fontSize: 20, fontWeight: 900, color: '#0f172a', marginBottom: 24 }}>Today's Activity Log</h2>
+              <div style={{ background: 'var(--bg-surface)', padding: 32, borderRadius: 32, border: '1px solid var(--border-main)' }}>
+                <h2 style={{ fontSize: 20, fontWeight: 900, color: 'var(--text-main)', marginBottom: 24 }}>Today's Activity Log</h2>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                   {todayLogs.map(log => (
-                    <div key={log.id} style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '16px 20px', borderRadius: 20, background: '#f8fafc' }}>
+                    <div key={log.id} style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '16px 20px', borderRadius: 20, background: 'var(--bg-body)' }}>
                       <div style={{ flex: 1, textAlign: isRTL ? 'right' : 'left' }}>
-                        <div style={{ fontWeight: 800, color: '#0f172a', fontSize: 14 }}>{log.employeeId}</div>
-                        <div style={{ fontSize: 12, color: '#64748b', fontWeight: 600 }}>Site: {log.projectId}</div>
+                        <div style={{ fontWeight: 800, color: 'var(--text-main)', fontSize: 14 }}>{log.employeeId}</div>
+                        <div style={{ fontSize: 12, color: 'var(--text-muted)', fontWeight: 600 }}>Site: {log.projectId}</div>
                       </div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
                         <div style={{ textAlign: 'center' }}>
                           <div style={{ fontWeight: 800, color: '#10b981', fontSize: 13 }}>{log.clockIn}</div>
-                          <div style={{ fontSize: 10, color: '#94a3b8', fontWeight: 700 }}>IN</div>
+                          <div style={{ fontSize: 10, color: 'var(--text-muted)', fontWeight: 700 }}>IN</div>
                         </div>
                         <ArrowRight size={14} color="#cbd5e1" style={{ transform: isRTL ? 'rotate(180deg)' : 'none' }} />
                         <div style={{ textAlign: 'center' }}>
                           <div style={{ fontWeight: 800, color: log.clockOut ? '#ef4444' : '#94a3b8', fontSize: 13 }}>{log.clockOut || '--:--'}</div>
-                          <div style={{ fontSize: 10, color: '#94a3b8', fontWeight: 700 }}>OUT</div>
+                          <div style={{ fontSize: 10, color: 'var(--text-muted)', fontWeight: 700 }}>OUT</div>
                         </div>
                       </div>
                     </div>
                   ))}
-                  {todayLogs.length === 0 && <div style={{ textAlign: 'center', padding: 40, color: '#94a3b8', fontWeight: 700 }}>No attendance records today.</div>}
+                  {todayLogs.length === 0 && <div style={{ textAlign: 'center', padding: 40, color: 'var(--text-muted)', fontWeight: 700 }}>No attendance records today.</div>}
                 </div>
               </div>
             </div>

@@ -46,8 +46,8 @@ const AIAgent = () => {
         onClick={() => setIsOpen(true)}
         style={{
           position: 'fixed', bottom: 32, right: 32, width: 64, height: 64, borderRadius: 32,
-          background: 'linear-gradient(135deg, #0a84ff, #8b5cf6)', color: 'white', border: 'none',
-          boxShadow: '0 12px 24px rgba(10,132,255,0.3)', cursor: 'pointer', zIndex: 100,
+          background: 'linear-gradient(135deg, var(--theme-primary), #8b5cf6)', color: 'white', border: 'none',
+          boxShadow: '0 12px 24px rgba(var(--theme-primary-rgb),0.3)', cursor: 'pointer', zIndex: 100,
           display: 'flex', alignItems: 'center', justifyContent: 'center'
         }}
       >
@@ -62,12 +62,12 @@ const AIAgent = () => {
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             style={{
               position: 'fixed', bottom: 110, right: 32, width: 380, height: 600,
-              background: 'white', borderRadius: 24, boxShadow: '0 24px 48px rgba(0,0,0,0.12)',
-              border: '1px solid rgba(0,0,0,0.05)', zIndex: 100, display: 'flex', flexDirection: 'column',
+              background: 'var(--bg-surface)', borderRadius: 24, boxShadow: '0 24px 48px rgba(0,0,0,0.12)',
+              border: '1px solid var(--border-main)', zIndex: 100, display: 'flex', flexDirection: 'column',
               overflow: 'hidden'
             }}
           >
-            <div style={{ background: 'linear-gradient(135deg, #0a84ff, #8b5cf6)', padding: 24, color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ background: 'linear-gradient(135deg, var(--theme-primary), #8b5cf6)', padding: 24, color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <Sparkles size={20} />
                 <div>
@@ -80,7 +80,7 @@ const AIAgent = () => {
               </button>
             </div>
 
-            <div style={{ flex: 1, padding: 24, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 16, background: '#f8fafc' }}>
+            <div style={{ flex: 1, padding: 24, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 16, background: 'var(--bg-body)' }}>
               {messages.map((m, i) => (
                 <div key={i} style={{ alignSelf: m.role === 'user' ? 'flex-end' : 'flex-start', maxWidth: '85%' }}>
                   <div style={{
@@ -96,25 +96,25 @@ const AIAgent = () => {
                 </div>
               ))}
               {isTyping && (
-                <div style={{ alignSelf: 'flex-start', background: 'white', padding: '12px 16px', borderRadius: 16, border: '1px solid rgba(0,0,0,0.05)' }}>
-                  <motion.div animate={{ opacity: [0.4, 1, 0.4] }} transition={{ repeat: Infinity, duration: 1.5 }} style={{ fontWeight: 700, color: '#94a3b8', fontSize: 12 }}>
+                <div style={{ alignSelf: 'flex-start', background: 'var(--bg-surface)', padding: '12px 16px', borderRadius: 16, border: '1px solid var(--border-main)' }}>
+                  <motion.div animate={{ opacity: [0.4, 1, 0.4] }} transition={{ repeat: Infinity, duration: 1.5 }} style={{ fontWeight: 700, color: 'var(--text-muted)', fontSize: 12 }}>
                     Analyzing data...
                   </motion.div>
                 </div>
               )}
             </div>
 
-            <div style={{ padding: 16, background: 'white', borderTop: '1px solid rgba(0,0,0,0.05)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12, background: '#f1f5f9', padding: '8px 16px', borderRadius: 20 }}>
+            <div style={{ padding: 16, background: 'var(--bg-surface)', borderTop: '1px solid rgba(0,0,0,0.05)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, background: 'var(--bg-hover)', padding: '8px 16px', borderRadius: 20 }}>
                 <input 
                   type="text" 
                   value={query} 
                   onChange={e => setQuery(e.target.value)} 
                   onKeyDown={e => e.key === 'Enter' && handleSend()}
                   placeholder="Ask about payroll, loans, expiry..."
-                  style={{ flex: 1, border: 'none', background: 'transparent', outline: 'none', fontSize: 14, fontWeight: 600, color: '#0f172a' }}
+                  style={{ flex: 1, border: 'none', background: 'transparent', outline: 'none', fontSize: 14, fontWeight: 600, color: 'var(--text-main)' }}
                 />
-                <button onClick={handleSend} style={{ background: '#0a84ff', border: 'none', width: 32, height: 32, borderRadius: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', cursor: 'pointer', flexShrink: 0 }}>
+                <button onClick={handleSend} style={{ background: 'var(--theme-primary)', border: 'none', width: 32, height: 32, borderRadius: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', cursor: 'pointer', flexShrink: 0 }}>
                   <Send size={14} style={{ marginLeft: -2 }} />
                 </button>
               </div>

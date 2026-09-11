@@ -49,34 +49,34 @@ const HR = () => {
 
   const StatBox = ({ title, value, icon, color, subtitle, onClick }) => (
     <motion.div whileHover={{ y: -2 }} onClick={onClick}
-      style={{ background: 'white', padding: 24, borderRadius: 24, border: '1px solid rgba(0,0,0,0.05)', display: 'flex', alignItems: 'center', gap: 20, cursor: onClick ? 'pointer' : 'default' }}>
+      style={{ background: 'var(--bg-surface)', padding: 24, borderRadius: 24, border: '1px solid var(--border-main)', display: 'flex', alignItems: 'center', gap: 20, cursor: onClick ? 'pointer' : 'default' }}>
       <div style={{ width: 56, height: 56, borderRadius: 16, background: `${color}15`, color: color, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
         {icon}
       </div>
       <div style={{ flex: 1, textAlign: isRTL ? 'right' : 'left' }}>
-        <div style={{ fontSize: 13, fontWeight: 700, color: '#64748b' }}>{title}</div>
-        <div style={{ fontSize: 28, fontWeight: 900, color: '#0f172a', lineHeight: 1.1 }}>{value}</div>
-        {subtitle && <div style={{ fontSize: 11, color: '#94a3b8', fontWeight: 600, marginTop: 2 }}>{subtitle}</div>}
+        <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-muted)' }}>{title}</div>
+        <div style={{ fontSize: 28, fontWeight: 900, color: 'var(--text-main)', lineHeight: 1.1 }}>{value}</div>
+        {subtitle && <div style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 600, marginTop: 2 }}>{subtitle}</div>}
       </div>
       {onClick && <ChevronRight size={16} color="#94a3b8" style={{ transform: isRTL ? 'rotate(180deg)' : 'none' }} />}
     </motion.div>
   );
 
   return (
-    <div style={{ padding: 40, minHeight: '100vh', background: '#f8fafc', direction: isRTL ? 'rtl' : 'ltr' }}>
+    <div style={{ padding: 40, minHeight: '100vh', background: 'var(--bg-body)', direction: isRTL ? 'rtl' : 'ltr' }}>
       <header style={{ marginBottom: 40, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
-          <h1 style={{ fontSize: 32, fontWeight: 900, color: '#0f172a' }}>{t('hrCenter')} Dashboard</h1>
-          <p style={{ color: '#64748b', fontWeight: 600 }}>Overview of headcount, payroll, and compliance.</p>
+          <h1 style={{ fontSize: 32, fontWeight: 900, color: 'var(--text-main)' }}>{t('hrCenter')} Dashboard</h1>
+          <p style={{ color: 'var(--text-muted)', fontWeight: 600 }}>Overview of headcount, payroll, and compliance.</p>
         </div>
         <button onClick={() => navigate('/employees')} 
-          style={{ padding: '12px 20px', borderRadius: 14, background: '#0a84ff', color: 'white', border: 'none', fontWeight: 800, cursor: 'pointer', fontSize: 14 }}>
+          style={{ padding: '12px 20px', borderRadius: 14, background: 'var(--theme-primary)', color: 'white', border: 'none', fontWeight: 800, cursor: 'pointer', fontSize: 14 }}>
           {t('addEmployee')}
         </button>
       </header>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 24, marginBottom: 40 }}>
-        <StatBox title={t('totalStaff')} value={employees.length} icon={<Users size={24} />} color="#0a84ff"
+        <StatBox title={t('totalStaff')} value={employees.length} icon={<Users size={24} />} color="var(--theme-primary)"
           subtitle={`${activeEmployees.length} ${t('active')}`} onClick={() => navigate('/employees')} />
           
         <StatBox title="Nationality Mix" value={`${saudi} / ${nonSaudi}`} icon={<Globe size={24} />} color="#10b981"
@@ -91,8 +91,8 @@ const HR = () => {
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32, marginBottom: 32 }}>
         {/* Department Breakdown */}
-        <div style={{ background: 'white', borderRadius: 24, border: '1px solid rgba(0,0,0,0.05)', padding: 32 }}>
-          <h2 style={{ fontSize: 20, fontWeight: 900, color: '#0f172a', marginBottom: 24 }}>Employees by Department</h2>
+        <div style={{ background: 'var(--bg-surface)', borderRadius: 24, border: '1px solid var(--border-main)', padding: 32 }}>
+          <h2 style={{ fontSize: 20, fontWeight: 900, color: 'var(--text-main)', marginBottom: 24 }}>Employees by Department</h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
             {['Engineering', 'HR', 'Finance', 'Operations'].map(dept => {
               const count = employees.filter(e => e.department === dept).length;
@@ -100,9 +100,9 @@ const HR = () => {
               const max = employees.length;
               return (
                 <div key={dept} style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-                  <div style={{ width: 100, fontSize: 13, fontWeight: 700, color: '#0f172a', flexShrink: 0 }}>{dept}</div>
-                  <div style={{ flex: 1, height: 32, background: '#f1f5f9', borderRadius: 8, overflow: 'hidden' }}>
-                    <div style={{ height: '100%', width: `${(count / max) * 100}%`, background: 'linear-gradient(90deg, #0a84ff, #6366f1)', borderRadius: 8, display: 'flex', alignItems: 'center', padding: '0 12px', minWidth: 36 }}>
+                  <div style={{ width: 100, fontSize: 13, fontWeight: 700, color: 'var(--text-main)', flexShrink: 0 }}>{dept}</div>
+                  <div style={{ flex: 1, height: 32, background: 'var(--bg-hover)', borderRadius: 8, overflow: 'hidden' }}>
+                    <div style={{ height: '100%', width: `${(count / max) * 100}%`, background: 'linear-gradient(90deg, var(--theme-primary), #6366f1)', borderRadius: 8, display: 'flex', alignItems: 'center', padding: '0 12px', minWidth: 36 }}>
                       <span style={{ fontSize: 12, fontWeight: 800, color: 'white' }}>{count}</span>
                     </div>
                   </div>

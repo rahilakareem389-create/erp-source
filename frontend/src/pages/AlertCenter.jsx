@@ -44,34 +44,34 @@ const AlertCenter = () => {
   const alerts = getExpiringDocs();
 
   return (
-    <div style={{ padding: 40, minHeight: '100vh', background: '#f8fafc', direction: isRTL ? 'rtl' : 'ltr' }}>
+    <div style={{ padding: 40, minHeight: '100vh', background: 'var(--bg-body)', direction: isRTL ? 'rtl' : 'ltr' }}>
       <header style={{ marginBottom: 32 }}>
-        <h1 style={{ fontSize: 32, fontWeight: 900, color: '#0f172a', display: 'flex', alignItems: 'center', gap: 12 }}>
+        <h1 style={{ fontSize: 32, fontWeight: 900, color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: 12 }}>
           <AlertTriangle color="#ef4444" /> Document Expiry Alerts
         </h1>
-        <p style={{ color: '#64748b', fontWeight: 600 }}>Track Iqama, Passport, and Contract expirations (90, 60, 30, 7 days).</p>
+        <p style={{ color: 'var(--text-muted)', fontWeight: 600 }}>Track Iqama, Passport, and Contract expirations (90, 60, 30, 7 days).</p>
       </header>
 
-      <div style={{ background: 'white', borderRadius: 24, padding: 32, border: '1px solid rgba(0,0,0,0.05)' }}>
+      <div style={{ background: 'var(--bg-surface)', borderRadius: 24, padding: 32, border: '1px solid var(--border-main)' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: isRTL ? 'right' : 'left' }}>
           <thead>
-            <tr style={{ background: '#f8fafc', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
-              <th style={{ padding: '16px 24px', fontSize: 12, fontWeight: 800, color: '#64748b' }}>Employee</th>
-              <th style={{ padding: '16px 24px', fontSize: 12, fontWeight: 800, color: '#64748b' }}>Document Type</th>
-              <th style={{ padding: '16px 24px', fontSize: 12, fontWeight: 800, color: '#64748b' }}>Expiry Date</th>
-              <th style={{ padding: '16px 24px', fontSize: 12, fontWeight: 800, color: '#64748b' }}>Status</th>
-              <th style={{ padding: '16px 24px', fontSize: 12, fontWeight: 800, color: '#64748b' }}>Action</th>
+            <tr style={{ background: 'var(--bg-body)', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
+              <th style={{ padding: '16px 24px', fontSize: 12, fontWeight: 800, color: 'var(--text-muted)' }}>Employee</th>
+              <th style={{ padding: '16px 24px', fontSize: 12, fontWeight: 800, color: 'var(--text-muted)' }}>Document Type</th>
+              <th style={{ padding: '16px 24px', fontSize: 12, fontWeight: 800, color: 'var(--text-muted)' }}>Expiry Date</th>
+              <th style={{ padding: '16px 24px', fontSize: 12, fontWeight: 800, color: 'var(--text-muted)' }}>Status</th>
+              <th style={{ padding: '16px 24px', fontSize: 12, fontWeight: 800, color: 'var(--text-muted)' }}>Action</th>
             </tr>
           </thead>
           <tbody>
             {alerts.map((alert, idx) => (
               <tr key={idx} style={{ borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
                 <td style={{ padding: '16px 24px' }}>
-                  <div style={{ fontWeight: 800, color: '#0f172a' }}>{alert.name}</div>
-                  <div style={{ fontSize: 12, color: '#64748b', fontWeight: 600 }}>{alert.empId}</div>
+                  <div style={{ fontWeight: 800, color: 'var(--text-main)' }}>{alert.name}</div>
+                  <div style={{ fontSize: 12, color: 'var(--text-muted)', fontWeight: 600 }}>{alert.empId}</div>
                 </td>
-                <td style={{ padding: '16px 24px', fontWeight: 700, color: '#475569', fontSize: 14 }}>{alert.type}</td>
-                <td style={{ padding: '16px 24px', fontWeight: 700, color: '#0f172a' }}>{alert.expiry}</td>
+                <td style={{ padding: '16px 24px', fontWeight: 700, color: 'var(--text-main)', fontSize: 14 }}>{alert.type}</td>
+                <td style={{ padding: '16px 24px', fontWeight: 700, color: 'var(--text-main)' }}>{alert.expiry}</td>
                 <td style={{ padding: '16px 24px' }}>
                   <span style={{ padding: '6px 12px', borderRadius: 8, background: alert.status.bg, color: alert.status.color, fontWeight: 800, fontSize: 12, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
                     {alert.status.days < 0 ? <AlertTriangle size={14} /> : <Clock size={14} />}

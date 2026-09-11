@@ -29,7 +29,7 @@ const SalesHistory = () => {
     switch (status) {
       case 'active': return { bg: '#f0fdf4', color: '#16a34a' };
       case 'voided': return { bg: '#fff1f2', color: '#e11d48' };
-      default: return { bg: '#f1f5f9', color: '#64748b' };
+      default: return { bg: '#f1f5f9', color: 'var(--text-muted)' };
     }
   };
 
@@ -106,7 +106,7 @@ const SalesHistory = () => {
               <span>Discount</span><span>-$${discount.toFixed(2)}</span>
             </div>` : ''}
             <div style="display:flex; justify-content:space-between; font-size:18px; color:#0f172a; font-weight:900; margin-top:8px; padding-top:8px; border-top:1px solid #f1f5f9;">
-              <span>Grand Total</span><span style="color:#0a84ff;">$${grandTotal.toFixed(2)}</span>
+              <span>Grand Total</span><span style="color:var(--theme-primary);">$${grandTotal.toFixed(2)}</span>
             </div>
           </div>
 
@@ -161,38 +161,38 @@ const SalesHistory = () => {
   };
 
   return (
-    <div style={{ padding: 40, minHeight: '100vh', background: '#f8fafc', fontFamily: "'Outfit', sans-serif" }}>
+    <div style={{ padding: 40, minHeight: '100vh', background: 'var(--bg-body)', fontFamily: "'Outfit', sans-serif" }}>
       <header style={{ marginBottom: 40, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
-          <h1 style={{ fontSize: 32, fontWeight: 900, color: '#0f172a' }}>Transaction Ledger</h1>
-          <p style={{ color: '#64748b', fontWeight: 600 }}>Audit past sales, void transactions, and re-print receipts.</p>
+          <h1 style={{ fontSize: 32, fontWeight: 900, color: 'var(--text-main)' }}>Transaction Ledger</h1>
+          <p style={{ color: 'var(--text-muted)', fontWeight: 600 }}>Audit past sales, void transactions, and re-print receipts.</p>
         </div>
         <div style={{ display: 'flex', gap: 16 }}>
           <div style={{ position: 'relative' }}>
-            <Search size={18} style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+            <Search size={18} style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
             <input 
               value={search} onChange={e => setSearch(e.target.value)}
               onKeyPress={e => e.key === 'Enter' && fetchHistory()}
               placeholder="Search by ID or Status..." 
-              style={{ padding: '12px 12px 12px 44px', borderRadius: 14, border: '1px solid #e2e8f0', width: 300, fontWeight: 600 }}
+              style={{ padding: '12px 12px 12px 44px', borderRadius: 14, border: '1px solid var(--border-main)', width: 300, fontWeight: 600 }}
             />
           </div>
-          <button style={{ padding: '12px 24px', borderRadius: 14, background: 'white', border: '1px solid #e2e8f0', fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8 }}>
+          <button style={{ padding: '12px 24px', borderRadius: 14, background: 'var(--bg-surface)', border: '1px solid var(--border-main)', fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8 }}>
             <Filter size={18} /> Filters
           </button>
         </div>
       </header>
 
-      <div style={{ background: 'white', borderRadius: 24, border: '1px solid rgba(0,0,0,0.05)', overflow: 'hidden' }}>
+      <div style={{ background: 'var(--bg-surface)', borderRadius: 24, border: '1px solid var(--border-main)', overflow: 'hidden' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
           <thead>
-            <tr style={{ background: '#f8fafc', borderBottom: '1px solid #f1f5f9' }}>
-              <th style={{ padding: '20px 24px', color: '#64748b', fontSize: 12, fontWeight: 800, textTransform: 'uppercase' }}>Transaction ID</th>
-              <th style={{ padding: '20px 24px', color: '#64748b', fontSize: 12, fontWeight: 800, textTransform: 'uppercase' }}>Date & Time</th>
-              <th style={{ padding: '20px 24px', color: '#64748b', fontSize: 12, fontWeight: 800, textTransform: 'uppercase' }}>Customer</th>
-              <th style={{ padding: '20px 24px', color: '#64748b', fontSize: 12, fontWeight: 800, textTransform: 'uppercase' }}>Amount</th>
-              <th style={{ padding: '20px 24px', color: '#64748b', fontSize: 12, fontWeight: 800, textTransform: 'uppercase' }}>Status</th>
-              <th style={{ padding: '20px 24px', color: '#64748b', fontSize: 12, fontWeight: 800, textTransform: 'uppercase' }}></th>
+            <tr style={{ background: 'var(--bg-body)', borderBottom: '1px solid #f1f5f9' }}>
+              <th style={{ padding: '20px 24px', color: 'var(--text-muted)', fontSize: 12, fontWeight: 800, textTransform: 'uppercase' }}>Transaction ID</th>
+              <th style={{ padding: '20px 24px', color: 'var(--text-muted)', fontSize: 12, fontWeight: 800, textTransform: 'uppercase' }}>Date & Time</th>
+              <th style={{ padding: '20px 24px', color: 'var(--text-muted)', fontSize: 12, fontWeight: 800, textTransform: 'uppercase' }}>Customer</th>
+              <th style={{ padding: '20px 24px', color: 'var(--text-muted)', fontSize: 12, fontWeight: 800, textTransform: 'uppercase' }}>Amount</th>
+              <th style={{ padding: '20px 24px', color: 'var(--text-muted)', fontSize: 12, fontWeight: 800, textTransform: 'uppercase' }}>Status</th>
+              <th style={{ padding: '20px 24px', color: 'var(--text-muted)', fontSize: 12, fontWeight: 800, textTransform: 'uppercase' }}></th>
             </tr>
           </thead>
           <tbody>
@@ -200,20 +200,20 @@ const SalesHistory = () => {
               const style = getStatusStyle(sale.status);
               return (
                 <tr key={sale.id} style={{ borderBottom: '1px solid #f8fafc' }}>
-                  <td style={{ padding: '16px 24px', fontWeight: 800, color: '#0f172a' }}>#{sale.id.slice(0,8).toUpperCase()}</td>
+                  <td style={{ padding: '16px 24px', fontWeight: 800, color: 'var(--text-main)' }}>#{sale.id.slice(0,8).toUpperCase()}</td>
                   <td style={{ padding: '16px 24px' }}>
-                    <div style={{ fontWeight: 700, color: '#0f172a', fontSize: 14 }}>{new Date(sale.createdAt).toLocaleDateString()}</div>
-                    <div style={{ fontSize: 12, color: '#94a3b8', fontWeight: 600 }}>{new Date(sale.createdAt).toLocaleTimeString()}</div>
+                    <div style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: 14 }}>{new Date(sale.createdAt).toLocaleDateString()}</div>
+                    <div style={{ fontSize: 12, color: 'var(--text-muted)', fontWeight: 600 }}>{new Date(sale.createdAt).toLocaleTimeString()}</div>
                   </td>
                   <td style={{ padding: '16px 24px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                      <div style={{ width: 32, height: 32, borderRadius: 8, background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b' }}>
+                      <div style={{ width: 32, height: 32, borderRadius: 8, background: 'var(--bg-hover)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>
                         <User size={16} />
                       </div>
-                      <span style={{ fontWeight: 700, color: '#64748b', fontSize: 14 }}>{sale.Customer?.name || 'Walk-in'}</span>
+                      <span style={{ fontWeight: 700, color: 'var(--text-muted)', fontSize: 14 }}>{sale.Customer?.name || 'Walk-in'}</span>
                     </div>
                   </td>
-                  <td style={{ padding: '16px 24px', fontWeight: 900, color: '#0f172a' }}>${sale.grandTotal}</td>
+                  <td style={{ padding: '16px 24px', fontWeight: 900, color: 'var(--text-main)' }}>${sale.grandTotal}</td>
                   <td style={{ padding: '16px 24px' }}>
                     <span style={{ padding: '6px 12px', borderRadius: 8, background: style.bg, color: style.color, fontSize: 12, fontWeight: 800, textTransform: 'capitalize' }}>
                       {sale.status}
@@ -222,7 +222,7 @@ const SalesHistory = () => {
                   <td style={{ padding: '16px 24px', textAlign: 'right' }}>
                     <button 
                       onClick={() => setSelectedSale(sale)}
-                      style={{ padding: '8px 12px', borderRadius: 10, background: 'transparent', border: '1px solid #e2e8f0', color: '#64748b', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}
+                      style={{ padding: '8px 12px', borderRadius: 10, background: 'transparent', border: '1px solid var(--border-main)', color: 'var(--text-muted)', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}
                     >
                       <Eye size={16} /> Details
                     </button>
@@ -238,7 +238,7 @@ const SalesHistory = () => {
       <AnimatePresence>
         {selectedSale && (
           <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }} style={{ background: 'white', width: '100%', maxWidth: 500, borderRadius: 32, overflow: 'hidden' }}>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }} style={{ background: 'var(--bg-surface)', width: '100%', maxWidth: 500, borderRadius: 32, overflow: 'hidden' }}>
               <div style={{ padding: 32, background: '#0f172a', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div>
                   <h3 style={{ fontSize: 20, fontWeight: 900 }}>Sale Details</h3>
@@ -253,25 +253,25 @@ const SalesHistory = () => {
                   {selectedSale.Items?.map(item => (
                     <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <div>
-                        <div style={{ fontWeight: 800, color: '#0f172a', fontSize: 14 }}>{item.Product?.name}</div>
-                        <div style={{ fontSize: 12, color: '#94a3b8', fontWeight: 600 }}>${item.price} × {item.quantity}</div>
+                        <div style={{ fontWeight: 800, color: 'var(--text-main)', fontSize: 14 }}>{item.Product?.name}</div>
+                        <div style={{ fontSize: 12, color: 'var(--text-muted)', fontWeight: 600 }}>${item.price} × {item.quantity}</div>
                       </div>
-                      <div style={{ fontWeight: 900, color: '#0f172a' }}>${item.total}</div>
+                      <div style={{ fontWeight: 900, color: 'var(--text-main)' }}>${item.total}</div>
                     </div>
                   ))}
                 </div>
                 <div style={{ borderTop: '2px dashed #f1f5f9', paddingTop: 24 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
-                    <span style={{ fontWeight: 700, color: '#64748b' }}>Total Amount</span>
-                    <span style={{ fontWeight: 900, color: '#0f172a', fontSize: 24 }}>${selectedSale.grandTotal}</span>
+                    <span style={{ fontWeight: 700, color: 'var(--text-muted)' }}>Total Amount</span>
+                    <span style={{ fontWeight: 900, color: 'var(--text-main)', fontSize: 24 }}>${selectedSale.grandTotal}</span>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 14 }}>
-                    <span style={{ fontWeight: 700, color: '#64748b' }}>Payment Method</span>
-                    <span style={{ fontWeight: 800, color: '#0a84ff', textTransform: 'capitalize' }}>{selectedSale.paymentMethod}</span>
+                    <span style={{ fontWeight: 700, color: 'var(--text-muted)' }}>Payment Method</span>
+                    <span style={{ fontWeight: 800, color: 'var(--theme-primary)', textTransform: 'capitalize' }}>{selectedSale.paymentMethod}</span>
                   </div>
                 </div>
                 <div style={{ display: 'flex', gap: 12, marginTop: 32 }}>
-                  <button onClick={() => handleReprint(selectedSale)} style={{ flex: 1, padding: 14, borderRadius: 16, background: '#f1f5f9', border: 'none', fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
+                  <button onClick={() => handleReprint(selectedSale)} style={{ flex: 1, padding: 14, borderRadius: 16, background: 'var(--bg-hover)', border: 'none', fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
                     <Printer size={18} /> Re-print
                   </button>
                   <button onClick={() => handleVoid(selectedSale)} style={{ flex: 1, padding: 14, borderRadius: 16, background: '#ef444415', color: '#ef4444', border: 'none', fontWeight: 800, cursor: 'pointer' }}>

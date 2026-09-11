@@ -32,26 +32,26 @@ const EmployeeProfile = () => {
 
   const Field = ({ label, value }) => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-      <span style={{ fontSize: 12, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase' }}>{label}</span>
-      <span style={{ fontSize: 15, fontWeight: 600, color: '#0f172a' }}>{value || '-'}</span>
+      <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase' }}>{label}</span>
+      <span style={{ fontSize: 15, fontWeight: 600, color: 'var(--text-main)' }}>{value || '-'}</span>
     </div>
   );
 
   return (
-    <div style={{ padding: 40, minHeight: '100vh', background: '#f8fafc', direction: isRTL ? 'rtl' : 'ltr' }}>
+    <div style={{ padding: 40, minHeight: '100vh', background: 'var(--bg-body)', direction: isRTL ? 'rtl' : 'ltr' }}>
       <button onClick={() => navigate('/employees')} 
-        style={{ display: 'flex', alignItems: 'center', gap: 8, border: 'none', background: 'transparent', color: '#64748b', fontWeight: 700, cursor: 'pointer', marginBottom: 24 }}>
+        style={{ display: 'flex', alignItems: 'center', gap: 8, border: 'none', background: 'transparent', color: 'var(--text-muted)', fontWeight: 700, cursor: 'pointer', marginBottom: 24 }}>
         <ArrowLeft size={18} style={{ transform: isRTL ? 'rotate(180deg)' : 'none' }} /> Back to Employees
       </button>
 
       <div style={{ display: 'flex', gap: 32, alignItems: 'flex-start' }}>
         {/* Profile Card */}
-        <div style={{ width: 320, background: 'white', borderRadius: 24, padding: 32, border: '1px solid rgba(0,0,0,0.05)', textAlign: 'center' }}>
-          <div style={{ width: 100, height: 100, borderRadius: 50, background: '#0a84ff', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 32, fontWeight: 900, margin: '0 auto 20px' }}>
+        <div style={{ width: 320, background: 'var(--bg-surface)', borderRadius: 24, padding: 32, border: '1px solid var(--border-main)', textAlign: 'center' }}>
+          <div style={{ width: 100, height: 100, borderRadius: 50, background: 'var(--theme-primary)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 32, fontWeight: 900, margin: '0 auto 20px' }}>
             {employee.englishName.charAt(0)}
           </div>
-          <h2 style={{ fontSize: 22, fontWeight: 900, color: '#0f172a', margin: 0 }}>{isRTL ? employee.arabicName : employee.englishName}</h2>
-          <div style={{ color: '#64748b', fontWeight: 600, fontSize: 14, marginTop: 4 }}>{employee.jobTitle} • {employee.department}</div>
+          <h2 style={{ fontSize: 22, fontWeight: 900, color: 'var(--text-main)', margin: 0 }}>{isRTL ? employee.arabicName : employee.englishName}</h2>
+          <div style={{ color: 'var(--text-muted)', fontWeight: 600, fontSize: 14, marginTop: 4 }}>{employee.jobTitle} • {employee.department}</div>
           <div style={{ marginTop: 16, display: 'inline-block', padding: '6px 12px', borderRadius: 8, background: employee.employeeStatus === 'Active' ? '#dcfce7' : '#fee2e2', color: employee.employeeStatus === 'Active' ? '#16a34a' : '#dc2626', fontWeight: 800, fontSize: 12 }}>
             {employee.employeeStatus}
           </div>
@@ -59,7 +59,7 @@ const EmployeeProfile = () => {
 
         {/* Details Area */}
         <div style={{ flex: 1 }}>
-          <div style={{ display: 'flex', gap: 8, marginBottom: 24, background: 'white', padding: 8, borderRadius: 16, border: '1px solid rgba(0,0,0,0.05)' }}>
+          <div style={{ display: 'flex', gap: 8, marginBottom: 24, background: 'var(--bg-surface)', padding: 8, borderRadius: 16, border: '1px solid var(--border-main)' }}>
             <TabButton id="personal" label="Personal" icon={<User size={18} />} />
             <TabButton id="employment" label="Employment" icon={<Briefcase size={18} />} />
             <TabButton id="salary" label="Salary" icon={<DollarSign size={18} />} />
@@ -69,7 +69,7 @@ const EmployeeProfile = () => {
           </div>
 
           <motion.div key={activeTab} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-            style={{ background: 'white', borderRadius: 24, padding: 32, border: '1px solid rgba(0,0,0,0.05)' }}>
+            style={{ background: 'var(--bg-surface)', borderRadius: 24, padding: 32, border: '1px solid var(--border-main)' }}>
             
             {activeTab === 'personal' && (
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32 }}>
@@ -112,12 +112,12 @@ const EmployeeProfile = () => {
                   const expDate = new Date(doc.expiryDate);
                   const isExpiring = (expDate - new Date()) / (1000 * 60 * 60 * 24) < 90;
                   return (
-                    <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 20px', borderRadius: 12, border: '1px solid rgba(0,0,0,0.05)', background: isExpiring ? '#fef2f2' : '#f8fafc' }}>
+                    <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 20px', borderRadius: 12, border: '1px solid var(--border-main)', background: isExpiring ? '#fef2f2' : '#f8fafc' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                         <FileText size={24} color={isExpiring ? '#ef4444' : '#64748b'} />
                         <div>
-                          <div style={{ fontWeight: 800, color: '#0f172a' }}>{doc.type}</div>
-                          <div style={{ fontSize: 12, color: '#64748b', fontWeight: 600 }}>Issued: {doc.issueDate}</div>
+                          <div style={{ fontWeight: 800, color: 'var(--text-main)' }}>{doc.type}</div>
+                          <div style={{ fontSize: 12, color: 'var(--text-muted)', fontWeight: 600 }}>Issued: {doc.issueDate}</div>
                         </div>
                       </div>
                       <div style={{ textAlign: 'right' }}>
@@ -132,8 +132,8 @@ const EmployeeProfile = () => {
 
             {activeTab === 'eos' && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-                <div style={{ background: '#f8fafc', padding: 24, borderRadius: 16, border: '1px solid rgba(0,0,0,0.05)' }}>
-                  <h3 style={{ fontSize: 16, fontWeight: 900, color: '#0f172a', marginBottom: 16 }}>Estimated Indemnity (Saudi Labor Law)</h3>
+                <div style={{ background: 'var(--bg-body)', padding: 24, borderRadius: 16, border: '1px solid var(--border-main)' }}>
+                  <h3 style={{ fontSize: 16, fontWeight: 900, color: 'var(--text-main)', marginBottom: 16 }}>Estimated Indemnity (Saudi Labor Law)</h3>
                   
                   {(() => {
                     const joinDate = new Date(employee.joiningDate);
@@ -155,8 +155,8 @@ const EmployeeProfile = () => {
                         <Field label="Years of Service" value={`${years.toFixed(1)} Years`} />
                         <Field label="Last Total Salary" value={`SAR ${totalSalary.toLocaleString()}`} />
                         <div style={{ gridColumn: '1 / -1', background: '#eff6ff', padding: 20, borderRadius: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                          <span style={{ fontWeight: 800, color: '#0a84ff' }}>Total Estimated Accrual</span>
-                          <span style={{ fontSize: 24, fontWeight: 900, color: '#0f172a' }}>SAR {indemnity.toLocaleString(undefined, {maximumFractionDigits: 0})}</span>
+                          <span style={{ fontWeight: 800, color: 'var(--theme-primary)' }}>Total Estimated Accrual</span>
+                          <span style={{ fontSize: 24, fontWeight: 900, color: 'var(--text-main)' }}>SAR {indemnity.toLocaleString(undefined, {maximumFractionDigits: 0})}</span>
                         </div>
                       </div>
                     );
@@ -169,17 +169,17 @@ const EmployeeProfile = () => {
               <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
                 {employee.history?.length ? (
                   employee.history.map((hist, idx) => (
-                    <div key={idx} style={{ display: 'flex', gap: 16, padding: '16px 20px', borderRadius: 12, border: '1px solid rgba(0,0,0,0.05)', background: '#f8fafc' }}>
-                      <div style={{ padding: '8px 12px', background: 'white', borderRadius: 8, fontWeight: 800, color: '#64748b', fontSize: 12, height: 'fit-content' }}>
+                    <div key={idx} style={{ display: 'flex', gap: 16, padding: '16px 20px', borderRadius: 12, border: '1px solid var(--border-main)', background: 'var(--bg-body)' }}>
+                      <div style={{ padding: '8px 12px', background: 'var(--bg-surface)', borderRadius: 8, fontWeight: 800, color: 'var(--text-muted)', fontSize: 12, height: 'fit-content' }}>
                         {hist.date}
                       </div>
-                      <div style={{ flex: 1, fontWeight: 700, color: '#0f172a', display: 'flex', alignItems: 'center' }}>
+                      <div style={{ flex: 1, fontWeight: 700, color: 'var(--text-main)', display: 'flex', alignItems: 'center' }}>
                         {hist.event}
                       </div>
                     </div>
                   ))
                 ) : (
-                  <div style={{ padding: 40, textAlign: 'center', color: '#94a3b8', fontWeight: 700 }}>No historical records found.</div>
+                  <div style={{ padding: 40, textAlign: 'center', color: 'var(--text-muted)', fontWeight: 700 }}>No historical records found.</div>
                 )}
               </div>
             )}

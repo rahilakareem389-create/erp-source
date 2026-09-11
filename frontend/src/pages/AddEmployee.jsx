@@ -146,7 +146,7 @@ const AddEmployee = () => {
   };
 
   return (
-    <div className="w-full bg-slate-50">
+    <div className="w-full bg-body">
 
       {/* ==================================================
           MAIN CONTENT
@@ -175,7 +175,7 @@ const AddEmployee = () => {
               type="button"
               onClick={handleCancel}
               disabled={loading}
-              className="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-slate-500 transition hover:bg-white hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-50"
+              className="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-text-muted transition hover:bg-surface hover:text-text-main disabled:cursor-not-allowed disabled:opacity-50"
             >
               <ArrowLeft size={18} />
 
@@ -187,13 +187,13 @@ const AddEmployee = () => {
               HEADER
           ================================================== */}
 
-          <div className="mb-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:mb-8 sm:p-6">
+          <div className="mb-6 rounded-2xl border border-border-main bg-surface p-5 shadow-sm sm:mb-8 sm:p-6">
 
             <div className="flex items-center gap-4">
 
               {/* Icon */}
 
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-blue-100 text-blue-600 sm:h-16 sm:w-16">
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-theme-100 text-theme-600 sm:h-16 sm:w-16">
                 <UserPlus size={28} />
               </div>
 
@@ -201,11 +201,11 @@ const AddEmployee = () => {
 
               <div className="min-w-0">
 
-                <h1 className="text-2xl font-black tracking-tight text-slate-900 sm:text-3xl">
+                <h1 className="text-2xl font-black tracking-tight text-text-main sm:text-3xl">
                   Add Employee
                 </h1>
 
-                <p className="mt-1 text-sm font-medium leading-6 text-slate-500 sm:text-base">
+                <p className="mt-1 text-sm font-medium leading-6 text-text-muted sm:text-base">
                   Create a new employee profile and payroll record.
                 </p>
 
@@ -293,7 +293,7 @@ const AddEmployee = () => {
                     value={form.empCode}
                     onChange={handleChange}
                     placeholder="EMP-001"
-                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                    className="w-full rounded-xl border border-border-main bg-surface px-4 py-2.5 text-sm font-medium text-text-main outline-none transition placeholder:text-text-muted focus:border-theme-500 focus:ring-4 focus:ring-theme-100"
                   />
                 </Field>
 
@@ -309,7 +309,7 @@ const AddEmployee = () => {
                     value={form.englishName}
                     onChange={handleChange}
                     placeholder="Enter full name"
-                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                    className="w-full rounded-xl border border-border-main bg-surface px-4 py-2.5 text-sm font-medium text-text-main outline-none transition placeholder:text-text-muted focus:border-theme-500 focus:ring-4 focus:ring-theme-100"
                   />
                 </Field>
 
@@ -323,7 +323,7 @@ const AddEmployee = () => {
                     onChange={handleChange}
                     placeholder="Arabic name"
                     dir="rtl"
-                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                    className="w-full rounded-xl border border-border-main bg-surface px-4 py-2.5 text-sm font-medium text-text-main outline-none transition placeholder:text-text-muted focus:border-theme-500 focus:ring-4 focus:ring-theme-100"
                   />
                 </Field>
 
@@ -336,7 +336,7 @@ const AddEmployee = () => {
                     value={form.cnic}
                     onChange={handleChange}
                     placeholder="National ID"
-                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                    className="w-full rounded-xl border border-border-main bg-surface px-4 py-2.5 text-sm font-medium text-text-main outline-none transition placeholder:text-text-muted focus:border-theme-500 focus:ring-4 focus:ring-theme-100"
                   />
                 </Field>
 
@@ -349,7 +349,7 @@ const AddEmployee = () => {
                     value={form.nationality}
                     onChange={handleChange}
                     placeholder="e.g. Pakistani"
-                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                    className="w-full rounded-xl border border-border-main bg-surface px-4 py-2.5 text-sm font-medium text-text-main outline-none transition placeholder:text-text-muted focus:border-theme-500 focus:ring-4 focus:ring-theme-100"
                   />
                 </Field>
 
@@ -362,7 +362,7 @@ const AddEmployee = () => {
                     value={form.passport}
                     onChange={handleChange}
                     placeholder="Passport number"
-                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                    className="w-full rounded-xl border border-border-main bg-surface px-4 py-2.5 text-sm font-medium text-text-main outline-none transition placeholder:text-text-muted focus:border-theme-500 focus:ring-4 focus:ring-theme-100"
                   />
                 </Field>
 
@@ -375,7 +375,7 @@ const AddEmployee = () => {
                     value={form.mobile}
                     onChange={handleChange}
                     placeholder="+92 300 0000000"
-                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                    className="w-full rounded-xl border border-border-main bg-surface px-4 py-2.5 text-sm font-medium text-text-main outline-none transition placeholder:text-text-muted focus:border-theme-500 focus:ring-4 focus:ring-theme-100"
                   />
                 </Field>
 
@@ -388,7 +388,7 @@ const AddEmployee = () => {
                     value={form.email}
                     onChange={handleChange}
                     placeholder="employee@example.com"
-                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                    className="w-full rounded-xl border border-border-main bg-surface px-4 py-2.5 text-sm font-medium text-text-main outline-none transition placeholder:text-text-muted focus:border-theme-500 focus:ring-4 focus:ring-theme-100"
                   />
                 </Field>
 
@@ -401,7 +401,7 @@ const AddEmployee = () => {
                     onChange={handleChange}
                     placeholder="Enter complete address"
                     rows={3}
-                    className="w-full resize-none rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                    className="w-full resize-none rounded-xl border border-border-main bg-surface px-4 py-2.5 text-sm font-medium text-text-main outline-none transition placeholder:text-text-muted focus:border-theme-500 focus:ring-4 focus:ring-theme-100"
                   />
                 </Field>
 
@@ -430,7 +430,7 @@ const AddEmployee = () => {
                     value={form.departmentId}
                     onChange={handleChange}
                     placeholder="Department ID"
-                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                    className="w-full rounded-xl border border-border-main bg-surface px-4 py-2.5 text-sm font-medium text-text-main outline-none transition placeholder:text-text-muted focus:border-theme-500 focus:ring-4 focus:ring-theme-100"
                   />
                 </Field>
 
@@ -443,7 +443,7 @@ const AddEmployee = () => {
                     value={form.designationId}
                     onChange={handleChange}
                     placeholder="Designation ID"
-                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                    className="w-full rounded-xl border border-border-main bg-surface px-4 py-2.5 text-sm font-medium text-text-main outline-none transition placeholder:text-text-muted focus:border-theme-500 focus:ring-4 focus:ring-theme-100"
                   />
                 </Field>
 
@@ -456,7 +456,7 @@ const AddEmployee = () => {
                     value={form.siteProject}
                     onChange={handleChange}
                     placeholder="Project or site"
-                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                    className="w-full rounded-xl border border-border-main bg-surface px-4 py-2.5 text-sm font-medium text-text-main outline-none transition placeholder:text-text-muted focus:border-theme-500 focus:ring-4 focus:ring-theme-100"
                   />
                 </Field>
 
@@ -468,7 +468,7 @@ const AddEmployee = () => {
                     name="joiningDate"
                     value={form.joiningDate}
                     onChange={handleChange}
-                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-900 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                    className="w-full rounded-xl border border-border-main bg-surface px-4 py-2.5 text-sm font-medium text-text-main outline-none transition focus:border-theme-500 focus:ring-4 focus:ring-theme-100"
                   />
                 </Field>
 
@@ -480,7 +480,7 @@ const AddEmployee = () => {
                     name="contractStartDate"
                     value={form.contractStartDate}
                     onChange={handleChange}
-                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-900 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                    className="w-full rounded-xl border border-border-main bg-surface px-4 py-2.5 text-sm font-medium text-text-main outline-none transition focus:border-theme-500 focus:ring-4 focus:ring-theme-100"
                   />
                 </Field>
 
@@ -492,7 +492,7 @@ const AddEmployee = () => {
                     name="contractExpiryDate"
                     value={form.contractExpiryDate}
                     onChange={handleChange}
-                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-900 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                    className="w-full rounded-xl border border-border-main bg-surface px-4 py-2.5 text-sm font-medium text-text-main outline-none transition focus:border-theme-500 focus:ring-4 focus:ring-theme-100"
                   />
                 </Field>
 
@@ -503,7 +503,7 @@ const AddEmployee = () => {
                     name="employeeStatus"
                     value={form.employeeStatus}
                     onChange={handleChange}
-                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-900 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                    className="w-full rounded-xl border border-border-main bg-surface px-4 py-2.5 text-sm font-semibold text-text-main outline-none transition focus:border-theme-500 focus:ring-4 focus:ring-theme-100"
                   >
                     <option value="Active">
                       Active
@@ -564,7 +564,7 @@ const AddEmployee = () => {
 
                     <div className="relative">
 
-                      <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-400">
+                      <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-sm font-bold text-text-muted">
                         $
                       </span>
 
@@ -576,7 +576,7 @@ const AddEmployee = () => {
                         value={form[field.name]}
                         onChange={handleChange}
                         placeholder="0.00"
-                        className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-9 pr-4 text-sm font-semibold text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                        className="w-full rounded-xl border border-border-main bg-surface py-2.5 pl-9 pr-4 text-sm font-semibold text-text-main outline-none transition placeholder:text-text-muted focus:border-theme-500 focus:ring-4 focus:ring-theme-100"
                       />
 
                     </div>
@@ -592,7 +592,7 @@ const AddEmployee = () => {
                 ACTION BUTTONS
             ================================================== */}
 
-            <div className="flex flex-wrap items-center justify-end gap-3 border-t border-slate-200 pt-6 pb-10">
+            <div className="flex flex-wrap items-center justify-end gap-3 border-t border-border-main pt-6 pb-10">
 
               {/* Clear All */}
 
@@ -600,7 +600,7 @@ const AddEmployee = () => {
                 type="button"
                 onClick={handleClear}
                 disabled={loading}
-                className="flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-600 transition hover:bg-slate-50 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex items-center justify-center gap-2 rounded-xl border border-border-main bg-surface px-5 py-3 text-sm font-bold text-text-main transition hover:bg-body hover:text-text-main disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <Eraser size={18} />
 
@@ -613,7 +613,7 @@ const AddEmployee = () => {
                 type="button"
                 onClick={handleCancel}
                 disabled={loading}
-                className="w-full rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-bold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+                className="w-full rounded-xl border border-border-main bg-surface px-6 py-3 text-sm font-bold text-text-main transition hover:bg-surface-hover disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
               >
                 Cancel
               </button>
@@ -623,7 +623,7 @@ const AddEmployee = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-7 py-3 text-sm font-extrabold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-theme-600 px-7 py-3 text-sm font-extrabold text-white shadow-lg shadow-blue-200 transition hover:bg-theme-700 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
               >
 
                 {loading ? (
@@ -668,17 +668,17 @@ const Section = ({
   children,
 }) => {
   return (
-    <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div className="overflow-hidden rounded-2xl border border-border-main bg-surface shadow-sm">
 
       {/* Section Header */}
 
-      <div className="border-b border-slate-100 bg-slate-50 px-5 py-4 sm:px-6 sm:py-5">
+      <div className="border-b border-border-main bg-body px-5 py-4 sm:px-6 sm:py-5">
 
         <div className="flex items-center gap-3">
 
           {/* Icon */}
 
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-blue-600">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-theme-100 text-theme-600">
             {icon}
           </div>
 
@@ -686,11 +686,11 @@ const Section = ({
 
           <div>
 
-            <h2 className="text-base font-black text-slate-900 sm:text-lg">
+            <h2 className="text-base font-black text-text-main sm:text-lg">
               {title}
             </h2>
 
-            <p className="text-xs font-medium text-slate-500 sm:text-sm">
+            <p className="text-xs font-medium text-text-muted sm:text-sm">
               {desc}
             </p>
 
@@ -724,7 +724,7 @@ const Field = ({
 
       {/* Label */}
 
-      <label className="text-sm font-bold text-slate-700">
+      <label className="text-sm font-bold text-text-main">
 
         {label}
 

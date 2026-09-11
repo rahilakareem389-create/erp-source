@@ -126,22 +126,22 @@ const SalaryAdvancePage = () => {
 
   const inputStyle = {
     width: '100%', padding: '13px 16px', borderRadius: 14,
-    border: '1.5px solid #e2e8f0', outline: 'none',
+    border: '1.5px solid var(--border-main)', outline: 'none',
     fontFamily: "'Outfit', sans-serif", fontWeight: 600,
-    fontSize: 15, color: '#0f172a', background: '#f8fafc',
+    fontSize: 15, color: 'var(--text-main)', background: 'var(--bg-body)',
     boxSizing: 'border-box', transition: 'border-color 0.2s',
   };
 
   const pendingCount = allAdvances.filter(a => a.status === 'pending').length;
 
   return (
-    <div style={{ padding: 40, minHeight: '100vh', background: '#f8fafc', fontFamily: "'Outfit', sans-serif" }}>
+    <div style={{ padding: 40, minHeight: '100vh', background: 'var(--bg-body)', fontFamily: "'Outfit', sans-serif" }}>
 
       {/* Header */}
       <header style={{ marginBottom: 36, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div>
-          <h1 style={{ fontSize: 32, fontWeight: 900, color: '#0f172a', margin: 0 }}>Salary Advance</h1>
-          <p style={{ color: '#64748b', fontWeight: 600, marginTop: 6 }}>
+          <h1 style={{ fontSize: 32, fontWeight: 900, color: 'var(--text-main)', margin: 0 }}>Salary Advance</h1>
+          <p style={{ color: 'var(--text-muted)', fontWeight: 600, marginTop: 6 }}>
             Request an advance on your salary — reviewed and approved by HR.
           </p>
         </div>
@@ -151,11 +151,11 @@ const SalaryAdvancePage = () => {
           title={hasPending ? 'You already have a pending request' : 'Submit new advance request'}
           style={{
             padding: '13px 24px', borderRadius: 16,
-            background: hasPending ? '#e2e8f0' : 'linear-gradient(135deg, #0a84ff, #6366f1)',
+            background: hasPending ? '#e2e8f0' : 'linear-gradient(135deg, var(--theme-primary), #6366f1)',
             color: hasPending ? '#94a3b8' : 'white', border: 'none',
             fontWeight: 800, cursor: hasPending ? 'not-allowed' : 'pointer',
             display: 'flex', alignItems: 'center', gap: 10, fontSize: 14,
-            boxShadow: hasPending ? 'none' : '0 4px 20px rgba(10,132,255,0.35)',
+            boxShadow: hasPending ? 'none' : '0 4px 20px rgba(var(--theme-primary-rgb),0.35)',
           }}
         >
           <CreditCard size={18} />
@@ -180,7 +180,7 @@ const SalaryAdvancePage = () => {
       {!isHR && (
         <div style={{ marginBottom: 28, padding: '16px 24px', borderRadius: 16, background: '#eff6ff',
           border: '1px solid #bfdbfe', display: 'flex', alignItems: 'flex-start', gap: 12 }}>
-          <Info size={20} color="#0a84ff" style={{ flexShrink: 0, marginTop: 1 }} />
+          <Info size={20} color="var(--theme-primary)" style={{ flexShrink: 0, marginTop: 1 }} />
           <div style={{ color: '#1e40af', fontWeight: 600, fontSize: 14, lineHeight: 1.6 }}>
             <strong>How it works:</strong> Submit a salary advance request with the amount and reason. 
             HR will review and approve or reject your request. Approved advances are automatically 
@@ -191,8 +191,8 @@ const SalaryAdvancePage = () => {
 
       {/* Tabs — only shown if HR */}
       {isHR && (
-        <div style={{ marginBottom: 28, display: 'flex', gap: 4, background: 'white', padding: 4,
-          borderRadius: 16, border: '1px solid #e2e8f0', alignSelf: 'flex-start', width: 'fit-content' }}>
+        <div style={{ marginBottom: 28, display: 'flex', gap: 4, background: 'var(--bg-surface)', padding: 4,
+          borderRadius: 16, border: '1px solid var(--border-main)', alignSelf: 'flex-start', width: 'fit-content' }}>
           {[
             { id: 'my',  label: 'My Requests' },
             { id: 'hr',  label: `Approval Queue${pendingCount > 0 ? ` (${pendingCount})` : ''}` },
@@ -214,43 +214,43 @@ const SalaryAdvancePage = () => {
           {/* Summary cards */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20, marginBottom: 28 }}>
             {[
-              { label: 'Total Requested', value: fmtMoney(myAdvances.reduce((s, a) => s + parseFloat(a.amount || 0), 0)), color: '#0a84ff', icon: <DollarSign size={22} /> },
+              { label: 'Total Requested', value: fmtMoney(myAdvances.reduce((s, a) => s + parseFloat(a.amount || 0), 0)), color: 'var(--theme-primary)', icon: <DollarSign size={22} /> },
               { label: 'Approved', value: myAdvances.filter(a => a.status === 'approved').length, color: '#10b981', icon: <CheckCircle size={22} /> },
               { label: 'Pending Review', value: myAdvances.filter(a => a.status === 'pending').length, color: '#f59e0b', icon: <Clock size={22} /> },
             ].map(card => (
               <motion.div key={card.label} whileHover={{ y: -2 }}
-                style={{ background: 'white', padding: '24px 28px', borderRadius: 24, border: '1px solid rgba(0,0,0,0.05)',
+                style={{ background: 'var(--bg-surface)', padding: '24px 28px', borderRadius: 24, border: '1px solid var(--border-main)',
                   display: 'flex', alignItems: 'center', gap: 20 }}>
                 <div style={{ width: 52, height: 52, borderRadius: 16, background: `${card.color}15`,
                   color: card.color, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                   {card.icon}
                 </div>
                 <div>
-                  <div style={{ fontSize: 13, fontWeight: 700, color: '#64748b' }}>{card.label}</div>
-                  <div style={{ fontSize: 22, fontWeight: 900, color: '#0f172a', lineHeight: 1.2, marginTop: 2 }}>{card.value}</div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-muted)' }}>{card.label}</div>
+                  <div style={{ fontSize: 22, fontWeight: 900, color: 'var(--text-main)', lineHeight: 1.2, marginTop: 2 }}>{card.value}</div>
                 </div>
               </motion.div>
             ))}
           </div>
 
           {/* My advance history */}
-          <div style={{ background: 'white', borderRadius: 28, border: '1px solid rgba(0,0,0,0.05)', padding: 32 }}>
+          <div style={{ background: 'var(--bg-surface)', borderRadius: 28, border: '1px solid var(--border-main)', padding: 32 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-              <h2 style={{ fontSize: 20, fontWeight: 900, color: '#0f172a', display: 'flex', alignItems: 'center', gap: 10, margin: 0 }}>
+              <h2 style={{ fontSize: 20, fontWeight: 900, color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: 10, margin: 0 }}>
                 <FileText size={20} /> My Advance History
               </h2>
-              <button onClick={fetchMyAdvances} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#64748b', display: 'flex', alignItems: 'center', gap: 6, fontWeight: 700, fontSize: 13 }}>
+              <button onClick={fetchMyAdvances} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 6, fontWeight: 700, fontSize: 13 }}>
                 <RefreshCw size={14} /> Refresh
               </button>
             </div>
 
             {loading ? (
-              <div style={{ padding: 80, textAlign: 'center', color: '#94a3b8', fontWeight: 700 }}>Loading your requests…</div>
+              <div style={{ padding: 80, textAlign: 'center', color: 'var(--text-muted)', fontWeight: 700 }}>Loading your requests…</div>
             ) : myAdvances.length === 0 ? (
               <div style={{ padding: 80, textAlign: 'center' }}>
                 <CreditCard size={56} style={{ opacity: 0.12, marginBottom: 16 }} />
-                <div style={{ fontWeight: 800, color: '#64748b', fontSize: 18 }}>No advance requests yet</div>
-                <div style={{ color: '#94a3b8', fontWeight: 600, marginTop: 8 }}>Click "Request Advance" to submit your first request.</div>
+                <div style={{ fontWeight: 800, color: 'var(--text-muted)', fontSize: 18 }}>No advance requests yet</div>
+                <div style={{ color: 'var(--text-muted)', fontWeight: 600, marginTop: 8 }}>Click "Request Advance" to submit your first request.</div>
               </div>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
@@ -261,17 +261,17 @@ const SalaryAdvancePage = () => {
                       border: `1.5px solid ${adv.status === 'approved' ? '#bbf7d0' : adv.status === 'rejected' ? '#fecaca' : '#fde68a'}`,
                       background: adv.status === 'approved' ? '#f0fdf4' : adv.status === 'rejected' ? '#fff5f5' : '#fffbeb' }}>
                     <div>
-                      <div style={{ fontSize: 20, fontWeight: 900, color: '#0f172a' }}>{fmtMoney(adv.amount)}</div>
-                      <div style={{ fontSize: 12, color: '#64748b', fontWeight: 600, marginTop: 3 }}>
+                      <div style={{ fontSize: 20, fontWeight: 900, color: 'var(--text-main)' }}>{fmtMoney(adv.amount)}</div>
+                      <div style={{ fontSize: 12, color: 'var(--text-muted)', fontWeight: 600, marginTop: 3 }}>
                         Over {adv.deductionMonths} month{adv.deductionMonths > 1 ? 's' : ''} &nbsp;·&nbsp; Remaining: {fmtMoney(adv.remainingAmount)}
                       </div>
                     </div>
                     <div>
-                      <div style={{ fontSize: 14, fontWeight: 700, color: '#334155', lineHeight: 1.5 }}>
-                        {adv.reason || <span style={{ color: '#94a3b8', fontStyle: 'italic' }}>No reason provided</span>}
+                      <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-main)', lineHeight: 1.5 }}>
+                        {adv.reason || <span style={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>No reason provided</span>}
                       </div>
                     </div>
-                    <div style={{ fontSize: 12, color: '#64748b', fontWeight: 600 }}>{fmtDate(adv.createdAt)}</div>
+                    <div style={{ fontSize: 12, color: 'var(--text-muted)', fontWeight: 600 }}>{fmtDate(adv.createdAt)}</div>
                     <div><StatusBadge status={adv.status} /></div>
                   </motion.div>
                 ))}
@@ -283,28 +283,28 @@ const SalaryAdvancePage = () => {
 
       {/* ── HR APPROVAL TAB ── */}
       {isHR && activeTab === 'hr' && (
-        <div style={{ background: 'white', borderRadius: 28, border: '1px solid rgba(0,0,0,0.05)', padding: 32 }}>
+        <div style={{ background: 'var(--bg-surface)', borderRadius: 28, border: '1px solid var(--border-main)', padding: 32 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 28 }}>
             <div>
-              <h2 style={{ fontSize: 20, fontWeight: 900, color: '#0f172a', display: 'flex', alignItems: 'center', gap: 10, margin: 0 }}>
-                <ShieldCheck size={22} color="#0a84ff" /> Advance Approval Queue
+              <h2 style={{ fontSize: 20, fontWeight: 900, color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: 10, margin: 0 }}>
+                <ShieldCheck size={22} color="var(--theme-primary)" /> Advance Approval Queue
               </h2>
-              <p style={{ color: '#64748b', fontWeight: 600, marginTop: 6, fontSize: 14 }}>
+              <p style={{ color: 'var(--text-muted)', fontWeight: 600, marginTop: 6, fontSize: 14 }}>
                 Review and approve or reject employee salary advance requests.
               </p>
             </div>
-            <button onClick={fetchAllAdvances} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#64748b', display: 'flex', alignItems: 'center', gap: 6, fontWeight: 700, fontSize: 13 }}>
+            <button onClick={fetchAllAdvances} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 6, fontWeight: 700, fontSize: 13 }}>
               <RefreshCw size={14} /> Refresh
             </button>
           </div>
 
           {allLoading ? (
-            <div style={{ padding: 80, textAlign: 'center', color: '#94a3b8', fontWeight: 700 }}>Loading…</div>
+            <div style={{ padding: 80, textAlign: 'center', color: 'var(--text-muted)', fontWeight: 700 }}>Loading…</div>
           ) : allAdvances.length === 0 ? (
             <div style={{ padding: 80, textAlign: 'center' }}>
               <CheckCircle size={56} style={{ opacity: 0.12, marginBottom: 16 }} />
-              <div style={{ fontWeight: 800, color: '#64748b', fontSize: 18 }}>All clear!</div>
-              <div style={{ color: '#94a3b8', fontWeight: 600, marginTop: 8 }}>No advance requests to review.</div>
+              <div style={{ fontWeight: 800, color: 'var(--text-muted)', fontSize: 18 }}>All clear!</div>
+              <div style={{ color: 'var(--text-muted)', fontWeight: 600, marginTop: 8 }}>No advance requests to review.</div>
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
@@ -330,7 +330,7 @@ const SalaryAdvancePage = () => {
                       {/* Info */}
                       <div style={{ flex: 1 }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', marginBottom: 6 }}>
-                          <span style={{ fontWeight: 900, color: '#0f172a', fontSize: 16 }}>{empName}</span>
+                          <span style={{ fontWeight: 900, color: 'var(--text-main)', fontSize: 16 }}>{empName}</span>
                           <StatusBadge status={adv.status} />
                           {isSelf && (
                             <span style={{ fontSize: 11, fontWeight: 800, color: '#d97706', padding: '3px 10px',
@@ -339,21 +339,21 @@ const SalaryAdvancePage = () => {
                         </div>
                         <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
                           <div>
-                            <div style={{ fontSize: 11, fontWeight: 800, color: '#94a3b8', marginBottom: 2 }}>AMOUNT</div>
-                            <div style={{ fontWeight: 900, color: '#0f172a', fontSize: 18 }}>{fmtMoney(adv.amount)}</div>
+                            <div style={{ fontSize: 11, fontWeight: 800, color: 'var(--text-muted)', marginBottom: 2 }}>AMOUNT</div>
+                            <div style={{ fontWeight: 900, color: 'var(--text-main)', fontSize: 18 }}>{fmtMoney(adv.amount)}</div>
                           </div>
                           <div>
-                            <div style={{ fontSize: 11, fontWeight: 800, color: '#94a3b8', marginBottom: 2 }}>REPAYMENT</div>
-                            <div style={{ fontWeight: 700, color: '#334155' }}>{adv.deductionMonths} month{adv.deductionMonths > 1 ? 's' : ''}</div>
+                            <div style={{ fontSize: 11, fontWeight: 800, color: 'var(--text-muted)', marginBottom: 2 }}>REPAYMENT</div>
+                            <div style={{ fontWeight: 700, color: 'var(--text-main)' }}>{adv.deductionMonths} month{adv.deductionMonths > 1 ? 's' : ''}</div>
                           </div>
                           <div>
-                            <div style={{ fontSize: 11, fontWeight: 800, color: '#94a3b8', marginBottom: 2 }}>SUBMITTED</div>
-                            <div style={{ fontWeight: 700, color: '#334155' }}>{fmtDate(adv.createdAt)}</div>
+                            <div style={{ fontSize: 11, fontWeight: 800, color: 'var(--text-muted)', marginBottom: 2 }}>SUBMITTED</div>
+                            <div style={{ fontWeight: 700, color: 'var(--text-main)' }}>{fmtDate(adv.createdAt)}</div>
                           </div>
                           {adv.reason && (
                             <div style={{ flex: 1, minWidth: 200 }}>
-                              <div style={{ fontSize: 11, fontWeight: 800, color: '#94a3b8', marginBottom: 2 }}>REASON</div>
-                              <div style={{ fontWeight: 600, color: '#64748b', fontSize: 14 }}>{adv.reason}</div>
+                              <div style={{ fontSize: 11, fontWeight: 800, color: 'var(--text-muted)', marginBottom: 2 }}>REASON</div>
+                              <div style={{ fontWeight: 600, color: 'var(--text-muted)', fontSize: 14 }}>{adv.reason}</div>
                             </div>
                           )}
                         </div>
@@ -363,8 +363,8 @@ const SalaryAdvancePage = () => {
                       {adv.status === 'pending' && (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 8, flexShrink: 0 }}>
                           {isSelf ? (
-                            <div style={{ padding: '10px 16px', borderRadius: 12, background: '#f1f5f9',
-                              color: '#94a3b8', textAlign: 'center', fontWeight: 700, fontSize: 12, whiteSpace: 'nowrap' }}>
+                            <div style={{ padding: '10px 16px', borderRadius: 12, background: 'var(--bg-hover)',
+                              color: 'var(--text-muted)', textAlign: 'center', fontWeight: 700, fontSize: 12, whiteSpace: 'nowrap' }}>
                               ⛔ Cannot self-approve
                             </div>
                           ) : (
@@ -378,7 +378,7 @@ const SalaryAdvancePage = () => {
                               </motion.button>
                               <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
                                 onClick={() => handleApproveAction(adv.id, 'rejected')}
-                                style={{ padding: '11px 20px', borderRadius: 12, background: 'white', color: '#ef4444',
+                                style={{ padding: '11px 20px', borderRadius: 12, background: 'var(--bg-surface)', color: '#ef4444',
                                   border: '1.5px solid #fecaca', fontWeight: 800, cursor: 'pointer', display: 'flex',
                                   alignItems: 'center', gap: 6, fontSize: 13, whiteSpace: 'nowrap' }}>
                                 <ThumbsDown size={15} /> Reject
@@ -410,23 +410,23 @@ const SalaryAdvancePage = () => {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
               transition={{ type: 'spring', damping: 20, stiffness: 300 }}
-              style={{ background: 'white', borderRadius: 32, padding: 44, width: '100%', maxWidth: 500,
+              style={{ background: 'var(--bg-surface)', borderRadius: 32, padding: 44, width: '100%', maxWidth: 500,
                 boxShadow: '0 32px 80px rgba(0,0,0,0.22)' }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 8 }}>
                 <div style={{ width: 52, height: 52, borderRadius: 16, background: '#eff6ff',
                   display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <CreditCard size={24} color="#0a84ff" />
+                  <CreditCard size={24} color="var(--theme-primary)" />
                 </div>
                 <div>
-                  <h2 style={{ fontSize: 22, fontWeight: 900, color: '#0f172a', margin: 0 }}>Request Salary Advance</h2>
-                  <p style={{ color: '#64748b', fontWeight: 600, fontSize: 13, margin: 0, marginTop: 4 }}>
+                  <h2 style={{ fontSize: 22, fontWeight: 900, color: 'var(--text-main)', margin: 0 }}>Request Salary Advance</h2>
+                  <p style={{ color: 'var(--text-muted)', fontWeight: 600, fontSize: 13, margin: 0, marginTop: 4 }}>
                     Your request will be reviewed by HR before processing.
                   </p>
                 </div>
               </div>
 
-              <div style={{ height: 1, background: '#f1f5f9', margin: '24px 0' }} />
+              <div style={{ height: 1, background: 'var(--bg-hover)', margin: '24px 0' }} />
 
               {formError && (
                 <div style={{ marginBottom: 20, padding: '14px 18px', borderRadius: 14, background: '#fff5f5',
@@ -438,11 +438,11 @@ const SalaryAdvancePage = () => {
 
               <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: 12, fontWeight: 800, color: '#64748b', marginBottom: 8, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                  <label style={{ display: 'block', fontSize: 12, fontWeight: 800, color: 'var(--text-muted)', marginBottom: 8, textTransform: 'uppercase', letterSpacing: 0.5 }}>
                     Advance Amount (PKR)
                   </label>
                   <div style={{ position: 'relative' }}>
-                    <DollarSign size={16} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+                    <DollarSign size={16} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
                     <input
                       type="number" min="1" step="1" required
                       value={form.amount}
@@ -454,7 +454,7 @@ const SalaryAdvancePage = () => {
                 </div>
 
                 <div>
-                  <label style={{ display: 'block', fontSize: 12, fontWeight: 800, color: '#64748b', marginBottom: 8, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                  <label style={{ display: 'block', fontSize: 12, fontWeight: 800, color: 'var(--text-muted)', marginBottom: 8, textTransform: 'uppercase', letterSpacing: 0.5 }}>
                     Repayment Period
                   </label>
                   <select
@@ -470,7 +470,7 @@ const SalaryAdvancePage = () => {
                 </div>
 
                 <div>
-                  <label style={{ display: 'block', fontSize: 12, fontWeight: 800, color: '#64748b', marginBottom: 8, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                  <label style={{ display: 'block', fontSize: 12, fontWeight: 800, color: 'var(--text-muted)', marginBottom: 8, textTransform: 'uppercase', letterSpacing: 0.5 }}>
                     Reason for Request
                   </label>
                   <textarea
@@ -496,15 +496,15 @@ const SalaryAdvancePage = () => {
 
                 <div style={{ display: 'flex', gap: 12, marginTop: 8 }}>
                   <button type="button" onClick={() => { setShowForm(false); setFormError(''); }}
-                    style={{ flex: 1, padding: '15px', borderRadius: 16, background: '#f1f5f9', border: 'none', fontWeight: 800, cursor: 'pointer', fontSize: 15 }}>
+                    style={{ flex: 1, padding: '15px', borderRadius: 16, background: 'var(--bg-hover)', border: 'none', fontWeight: 800, cursor: 'pointer', fontSize: 15 }}>
                     Cancel
                   </button>
                   <motion.button type="submit" disabled={submitting} whileHover={{ scale: submitting ? 1 : 1.02 }} whileTap={{ scale: 0.97 }}
                     style={{ flex: 2, padding: '15px', borderRadius: 16,
-                      background: submitting ? '#94a3b8' : 'linear-gradient(135deg, #0a84ff, #6366f1)',
+                      background: submitting ? '#94a3b8' : 'linear-gradient(135deg, var(--theme-primary), #6366f1)',
                       color: 'white', border: 'none', fontWeight: 800, cursor: submitting ? 'not-allowed' : 'pointer',
                       display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, fontSize: 15,
-                      boxShadow: submitting ? 'none' : '0 4px 16px rgba(10,132,255,0.35)' }}>
+                      boxShadow: submitting ? 'none' : '0 4px 16px rgba(var(--theme-primary-rgb),0.35)' }}>
                     <Send size={17} />
                     {submitting ? 'Submitting…' : 'Submit Request'}
                   </motion.button>
